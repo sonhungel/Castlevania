@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{5c21547e-4467-4807-81cf-a101fe8eac1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{5c2212c4-985d-446b-8dde-54e67fa11b89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager Textures">
+      <UniqueIdentifier>{e012f30b-282d-4fda-bcef-af5ea3b07779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{c09509ec-bafd-42fc-87b2-0c98f73fb5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\StaticObject">
+      <UniqueIdentifier>{8e409d16-17d1-49a3-b092-3eea28a05a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KeyEventHandler">
+      <UniqueIdentifier>{97844d13-3cc2-4a63-8d78-164a138528c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Portal">
+      <UniqueIdentifier>{37a38009-f7db-4c00-b2c9-34085b55716f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes Manager">
+      <UniqueIdentifier>{6468e177-0e96-4dd1-8059-191c87ee4ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Item">
+      <UniqueIdentifier>{082a692f-77ed-4f0c-9a97-2616239bf107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Weapon">
+      <UniqueIdentifier>{181bdc51-9615-4b43-9fa7-6a059c3e5066}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Manager Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Manager Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MagagementTexture.h">
+      <Filter>Manager Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>KeyEventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Manager Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>GameObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scenes Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="WhipNormal.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Manager Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Manager Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagementTexture.cpp">
+      <Filter>Manager Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Manager Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scenes Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="WhipNormal.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
