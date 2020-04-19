@@ -40,11 +40,11 @@
     <Filter Include="GameObject\Item">
       <UniqueIdentifier>{082a692f-77ed-4f0c-9a97-2616239bf107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Debug">
-      <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Weapon">
       <UniqueIdentifier>{181bdc51-9615-4b43-9fa7-6a059c3e5066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug&amp;Define4Object">
+      <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,13 +67,10 @@
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="debug.h">
-      <Filter>Debug</Filter>
+      <Filter>Debug&amp;Define4Object</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>GameObject\StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="MagagementTexture.h">
-      <Filter>Manager Textures</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>KeyEventHandler</Filter>
@@ -99,6 +96,15 @@
     <ClInclude Include="WhipNormal.h">
       <Filter>GameObject\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="MagagementTexture.h">
+      <Filter>Manager Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Debug&amp;Define4Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Scenes Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,13 +129,10 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="debug.cpp">
-      <Filter>Debug</Filter>
+      <Filter>Debug&amp;Define4Object</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>GameObject\StaticObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagementTexture.cpp">
-      <Filter>Manager Textures</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Manager Textures</Filter>
@@ -151,6 +154,12 @@
     </ClCompile>
     <ClCompile Include="WhipNormal.cpp">
       <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagementTexture.cpp">
+      <Filter>Manager Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Scenes Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

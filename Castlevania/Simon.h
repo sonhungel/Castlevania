@@ -66,7 +66,7 @@ public:
 	virtual void Render();
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
-	void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj);
+	//void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
 	CWhipNormal* GetWeapon(int i = 0) { return (CWhipNormal*)(weapons[0]); }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	int GetTrend() { return nx; }

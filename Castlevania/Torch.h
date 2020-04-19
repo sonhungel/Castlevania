@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 
 #include"GameObject.h"
@@ -19,13 +19,15 @@
 #define ID_DAGGER		2
 #define ID_HEART		3
 
+#define FIRE_TIME 300
+
 class CTorch:public CGameObject
 {
-	DWORD dt_die;
+	DWORD dt_die; // đo thời gian cho animation lửa xuất hiện sau khi đánh stroke torch
 	// item
 	//int level;
+	
 public:
-
 	CTorch(int id = 0, int level = 0);
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -35,8 +37,6 @@ public:
 	{ 
 		x = _x; 
 		y = _y; 
-		
-		
 	}
 };
 

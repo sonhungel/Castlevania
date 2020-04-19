@@ -9,6 +9,7 @@ CManagementTexture::CManagementTexture()
 
 	textures->Add(ID_TEX_SIMON, L"simon\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add(ID_TEX_SIMON_TRANS, L"simon\\simon_trans.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_WHIPNORMAL, L"simon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_MAP, L"map\\map.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_GROUND, L"map\\ground.png", D3DCOLOR_XRGB(0, 0, 0));
 	textures->Add(ID_TEX_TORCH, L"map\\torch.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -19,7 +20,7 @@ CManagementTexture::CManagementTexture()
 
 	LPDIRECT3DTEXTURE9 texmap = textures->Get(ID_TEX_MAP);
 
-	ifstream inFile("texture/sprites.txt");
+	ifstream inFile("txt_file/sprites.txt");
 
 	// If the file opened correctly then call load methods
 	while (inFile)
@@ -36,7 +37,7 @@ CManagementTexture::CManagementTexture()
 	LPANIMATION ani;
 
 	ani = new CAnimation(100); //simon idle left
-	ani->Add(10004);
+	ani->Add(10001);
 	animations->Add(400, ani);
 
 	ani = new CAnimation(1); //simon trans idle left
@@ -47,7 +48,7 @@ CManagementTexture::CManagementTexture()
 	ani = new CAnimation(100);// simon walk left
 	ani->Add(10011);
 	ani->Add(10012);
-	// ani->Add(10013); // Thêm 1 frame để simon di chuyển mượt hơn
+	ani->Add(10013); 
 	animations->Add(401, ani);
 
 	ani = new CAnimation(100);// simon jump left
@@ -72,6 +73,30 @@ CManagementTexture::CManagementTexture()
 
 
 #pragma endregion
+
+#pragma region add sprites WhipNormal
+
+	ani = new CAnimation(100); // Level 1, whip bình thường
+	ani->Add(12000);
+	ani->Add(12001);
+	ani->Add(12002);
+	animations->Add(600, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(12010);
+	ani->Add(12011);
+	ani->Add(12012);
+	animations->Add(601, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(12020);
+	ani->Add(12021);
+	ani->Add(12022);
+	animations->Add(602, ani);
+#pragma endregion
+
+
+
 
 #pragma region Add sprites Map
 	int index = 0;

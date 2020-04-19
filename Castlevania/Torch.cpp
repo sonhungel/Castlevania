@@ -8,10 +8,7 @@ CTorch::CTorch(int id, int level) : CGameObject()
 	{
 		AddAnimation(501);
 	}
-	else
-	{
-		AddAnimation(502);
-	}
+	
 	AddAnimation(800);
 
 }
@@ -31,8 +28,12 @@ void CTorch::Render()
 	{
 		animations[0]->Render(x, y);
 	}
-
-}
+	else 
+	{
+		if (GetTickCount() - dt_die < FIRE_TIME)
+			animations[1]->Render(x, y);
+	}
+		}
 
 void CTorch::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {

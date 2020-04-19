@@ -21,19 +21,19 @@ void CScene::LoadResoure()
 
 
 	CTorch* torch0 = new CTorch();
-	torch0->SetPosition(190, 300);
+	torch0->SetPosition(190, 296);
 	objects.push_back(torch0);
 
 	CTorch* torch1 = new CTorch();
-	torch1->SetPosition(416, 300);
+	torch1->SetPosition(420, 296);
 	objects.push_back(torch1);
 
 	CTorch* torch2 = new CTorch();
-	torch2->SetPosition(640, 300);
+	torch2->SetPosition(640, 296);
 	objects.push_back(torch2);
 
 	CTorch* torch3 = new CTorch();
-	torch3->SetPosition(864, 300);
+	torch3->SetPosition(870, 296);
 	objects.push_back(torch3);
 
 

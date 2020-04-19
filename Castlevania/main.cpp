@@ -47,11 +47,15 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		simon->SetState(SIMON_STATE_JUMP);
+	case DIK_Z:
+		if (game->IsKeyDown(DIK_DOWN))
+			simon->SetState (SIMON_STATE_SIT_ATTACK);
+		else
+			simon->SetState (SIMON_STATE_STAND_ATTACK);
 		break;
 	
 	case DIK_X:
+		simon->SetState(SIMON_STATE_JUMP);
 		break;
 	case DIK_DOWN:
 		simon->SetState(SIMON_STATE_SIT);
@@ -78,17 +82,20 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
-	// disable control key when Simon die 
-	if (simon->GetState() == SIMON_STATE_DIE) return;
-	//disable when jump
-	if (simon->GetState() == SIMON_STATE_JUMP) return;
-
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (game->IsKeyDown(DIK_DOWN))
+		simon->SetState(SIMON_STATE_SIT);
+	else if (game->IsKeyDown(DIK_Z))
+	{
+		
+	}
+	else if (game->IsKeyDown(DIK_RIGHT))
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	else if (game->IsKeyDown(DIK_LEFT))
 		simon->SetState(SIMON_STATE_WALKING_LEFT);
-	else if (game->IsKeyDown(DIK_DOWN))
-		simon->SetState(SIMON_STATE_SIT);
+	
+	else if (game->IsKeyDown(DIK_X))
+	{
+	}
 	else
 		simon->SetState(SIMON_STATE_IDLE);
 }

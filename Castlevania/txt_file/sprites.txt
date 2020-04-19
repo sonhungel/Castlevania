@@ -6,37 +6,9 @@ bottom= 32
 idTexture= 20
 
 id= 10001
-left= 190
-top= 3
-right= 225
-bottom= 65
-idTexture= 0
-
-id= 10002
-left= 130
-top= 3
-right= 170
-bottom= 65
-idTexture= 0
-
-id= 10003
-left= 71
-top= 3
-right= 108
-bottom= 65
-idTexture= 0
-
-id= 10004
 left= 6
 top= 3
 right= 50
-bottom= 65
-idTexture= 0
-
-id= 10005
-left= 190
-top= 3
-right= 255
 bottom= 65
 idTexture= 0
 
@@ -61,59 +33,10 @@ right= 108
 bottom= 65
 idTexture= 0
 
-id= 10014
-left= 6
-top= 3
-right= 50
-bottom= 65
-idTexture= 0
-
-id= 10015
-left= 190
-top= 3
-right= 255
-bottom= 65
-idTexture= 0
-
-id= 10101
-left= 250
-top= 68
-right= 295
-bottom= 133
-idTexture= 0
-
 id= 10102
 left= 180
 top= 68
 right= 255
-bottom= 133
-idTexture= 0
-
-id= 10103
-left= 120
-top= 68
-right= 165
-bottom= 133
-idTexture= 0
-
-id= 10111
-left= 250
-top= 68
-right= 295
-bottom= 133
-idTexture= 0
-
-id= 10112
-left= 180
-top= 68
-right= 255
-bottom= 133
-idTexture= 0
-
-id= 10113
-left= 120
-top= 68
-right= 165
 bottom= 133
 idTexture= 0
 
@@ -124,35 +47,26 @@ right= 290
 bottom= 55
 idTexture= 0
 
-id= 10202
-left= 245
-top= 0
-right= 290
-bottom= 55
-idTexture= 0
-
 id= 10300
-left= 290
+left= 300
 top= 0
-right= 360
+right= 363
 bottom= 65
 idTexture= 0
 
 id= 10301
-left= 360
+left= 365
 top= 0
-right= 418
+right= 410
 bottom= 65
 idTexture= 0
-
 
 id= 10302
-left= 418
+left= 415
 top= 0
-right= 480
+right= 470
 bottom= 65
 idTexture= 0
-
 
 id= 10310
 left= 425
@@ -179,15 +93,78 @@ id= 11000
 left= 0
 top= 0
 right= 32
-bottom= 64
+bottom= 65
 idTexture= 30
 
 id= 11001
 left= 32
 top= 0
 right= 64
-bottom= 64
+bottom= 65
 idTexture= 30
+
+id= 12000
+left= 25
+top= 0
+right= 160
+bottom= 70
+idTexture= 40
+
+id= 12001
+left= 186
+top= 0
+right= 320
+bottom= 70
+idTexture= 40
+
+id= 12002
+left= 352
+top= 0
+right= 455
+bottom= 70
+idTexture= 40
+
+id= 12010
+left= 25
+top= 70
+right= 160
+bottom= 137
+idTexture= 40
+
+id= 12011
+left= 186
+top= 70
+right= 320
+bottom= 137
+idTexture= 40
+
+id= 12012
+left= 346
+top= 70
+right= 470
+bottom= 137
+idTexture= 40
+
+id= 12020
+left= 0
+top= 137
+right= 160
+bottom= 204
+idTexture= 40
+
+id= 12021
+left= 160
+top= 137
+right= 320
+bottom= 204
+idTexture= 40
+
+id= 12022
+left= 320
+top= 137
+right= 470
+bottom= 204
+idTexture= 40
 
 id= 14000
 left= 0

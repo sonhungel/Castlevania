@@ -25,7 +25,10 @@ void CWeapon::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			{
 				LPCOLLISIONEVENT temp = SweptAABBEx(listObj.at(i));
 				if (temp->t > 0) // => có đụng độ
+				{
 					listObj.at(i)->SetState(TORCH_STATE_NOT_EXSIST);
+					
+				}
 			}
 		}
 	}
