@@ -111,9 +111,9 @@ bottom= 70
 idTexture= 40
 
 id= 12001
-left= 186
+left= 195
 top= 0
-right= 320
+right= 310
 bottom= 70
 idTexture= 40
 
@@ -139,9 +139,9 @@ bottom= 137
 idTexture= 40
 
 id= 12012
-left= 346
+left= 351
 top= 70
-right= 470
+right= 455
 bottom= 137
 idTexture= 40
 
@@ -162,9 +162,23 @@ idTexture= 40
 id= 12022
 left= 320
 top= 137
-right= 470
+right= 455
 bottom= 204
 idTexture= 40
+
+id= 13000
+left= 244
+top= 108
+right= 275
+bottom= 139
+idTexture= 50
+
+id= 13001
+left= 86
+top= 80
+right= 122
+bottom= 115
+idTexture= 50
 
 id= 14000
 left= 0

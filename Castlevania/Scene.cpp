@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include"ItemHeart.h"
 
 CScene::CScene(int id)
 {
@@ -11,28 +12,31 @@ void CScene::LoadResoure()
 	CManagementTexture* manage = new CManagementTexture();
 	objects.clear();
 	
-	map = new CMap();
-	map->LoadMap();
+	//map = new CMap();
+	//map->LoadMap();
 
 
 	simon = CSimon::GetInstance();
 	simon->SetPosition(0.0f, 20.0f);
 	objects.push_back(simon);
 
+	CItemHeart* heart = new CItemHeart();
+	heart->SetPosition(250, 300);
+	objects.push_back(heart);
 
-	CTorch* torch0 = new CTorch();
+	CTorch* torch0 = new CTorch(1);
 	torch0->SetPosition(190, 296);
 	objects.push_back(torch0);
 
-	CTorch* torch1 = new CTorch();
+	CTorch* torch1 = new CTorch(1);
 	torch1->SetPosition(420, 296);
 	objects.push_back(torch1);
 
-	CTorch* torch2 = new CTorch();
+	CTorch* torch2 = new CTorch(1);
 	torch2->SetPosition(640, 296);
 	objects.push_back(torch2);
 
-	CTorch* torch3 = new CTorch();
+	CTorch* torch3 = new CTorch(1);
 	torch3->SetPosition(870, 296);
 	objects.push_back(torch3);
 
@@ -74,7 +78,7 @@ void CScene::Update(DWORD dt)
 }
 void CScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
 	{

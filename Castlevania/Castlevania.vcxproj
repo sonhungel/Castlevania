@@ -129,6 +129,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemHeart.h" />
+    <ClInclude Include="ItemWhipUpgrade.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="MagagementTexture.h" />
     <ClInclude Include="Map.h" />
@@ -140,7 +142,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="Weapon.h" />
-    <ClInclude Include="WhipNormal.h" />
+    <ClInclude Include="Whip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
@@ -149,6 +151,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemHeart.cpp" />
+    <ClCompile Include="ItemWhipUpgrade.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagementTexture.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -160,7 +164,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Weapon.cpp" />
-    <ClCompile Include="WhipNormal.cpp" />
+    <ClCompile Include="Whip.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

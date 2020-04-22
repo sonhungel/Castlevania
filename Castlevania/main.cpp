@@ -19,7 +19,7 @@
 #define WINDOW_CLASS_NAME L"Window"
 #define MAIN_WINDOW_TITLE L"Castlevania 1986"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(0,0,0)
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(255,255,255)
 #define SCREEN_WIDTH 560
 #define SCREEN_HEIGHT 460
 
@@ -49,16 +49,16 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	{
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN))
-			simon->SetState (SIMON_STATE_SIT_ATTACK);
+			simon->SetState (STATE_SIMON_SIT_ATTACK);
 		else
-			simon->SetState (SIMON_STATE_STAND_ATTACK);
+			simon->SetState (STATE_SIMON_STAND_ATTACK);
 		break;
 	
 	case DIK_X:
-		simon->SetState(SIMON_STATE_JUMP);
+		simon->SetState(STATE_SIMON_JUMP);
 		break;
 	case DIK_DOWN:
-		simon->SetState(SIMON_STATE_SIT);
+		simon->SetState(STATE_SIMON_SIT);
 		break;
 	}
 }
@@ -68,36 +68,42 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	switch (KeyCode)
 	{
+	case DIK_Z:
+		//simon->SetState(STATE_SIMON_IDLE);
+		break;
 	case DIK_DOWN:
-		simon->SetState(SIMON_STATE_UP);
+		simon->SetState(STATE_SIMON_UP);
 		break;
 	case DIK_LEFT:
-		simon->SetState(SIMON_STATE_IDLE);
+		simon->SetState(STATE_SIMON_IDLE);
 		break;
 	case DIK_RIGHT:
-		simon->SetState(SIMON_STATE_IDLE);
+		simon->SetState(STATE_SIMON_IDLE);
 		break;
 	}
 }
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
+	//if (simon->GetState() == STATE_SIMON_SIT_ATTACK || simon->GetState() == STATE_SIMON_STAND_ATTACK)
+		//return;
 	if (game->IsKeyDown(DIK_DOWN))
-		simon->SetState(SIMON_STATE_SIT);
+		simon->SetState(STATE_SIMON_SIT);
 	else if (game->IsKeyDown(DIK_Z))
 	{
-		
+		if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			simon->SetState(STATE_SIMON_UP);
 	}
 	else if (game->IsKeyDown(DIK_RIGHT))
-		simon->SetState(SIMON_STATE_WALKING_RIGHT);
+		simon->SetState(STATE_SIMON_WALKING_RIGHT);
 	else if (game->IsKeyDown(DIK_LEFT))
-		simon->SetState(SIMON_STATE_WALKING_LEFT);
-	
+		simon->SetState(STATE_SIMON_WALKING_LEFT);
 	else if (game->IsKeyDown(DIK_X))
 	{
+		simon->SetState(STATE_SIMON_JUMP);
 	}
 	else
-		simon->SetState(SIMON_STATE_IDLE);
+		simon->SetState(STATE_SIMON_IDLE);
 }
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

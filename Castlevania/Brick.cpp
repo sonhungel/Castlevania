@@ -6,10 +6,10 @@ void CBrick::Render()
 	//RenderBoundingBox();
 }
 
-void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	l = x;
-	t = y;
-	r = x + BRICK_WIDTH;
-	b = y + BRICK_WIDTH;
+	left = x;
+	top = y;
+	right = x + BRICK_WIDTH;
+	bottom = y + BRICK_WIDTH;
 }

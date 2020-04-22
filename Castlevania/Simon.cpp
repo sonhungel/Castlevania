@@ -4,7 +4,7 @@
 #include "Simon.h"
 #include "Game.h"
 #include"Torch.h"
-#include"WhipNormal.h"
+#include"Whip.h"
 #include"Brick.h"
 
 CSimon* CSimon::__instance = NULL;
@@ -17,13 +17,13 @@ CSimon* CSimon::GetInstance()
 
 CSimon::CSimon()
 {
-	CWhipNormal *rob = CWhipNormal::GetInstance();
-	weapons.push_back(rob);
+	CWhip *whip = CWhip::GetInstance();
+	weapons.push_back(whip);
 	
 	untouchable = 0;
 	attack_start = 0;
 	trans_start = 0;
-	_heart = 5;
+	_heartCount = 5;
 
 	CSimon::AddAnimation(400);		//0. idle left 
 	CSimon::AddAnimation(401);		//1. walk left
@@ -49,8 +49,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vector<LPGAMEOBJECT> listTorch;
 	vector<LPGAMEOBJECT> listBrick;
 	vector<LPGAMEOBJECT> listObject;
+	vector<LPGAMEOBJECT> listItem;
 
-	// lọc object tương ứng vào từng list
+	// lọc object tương ứng vào từng list để thuận tiện cho việc xử lý va chạm cũng như update
 	for (int i = 0; i <coObjects->size() ; i++)
 	{
 		if (dynamic_cast<CTorch*>(coObjects->at(i)))
@@ -65,23 +66,23 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	if (state == SIMON_STATE_SIT_ATTACK || state == SIMON_STATE_STAND_ATTACK)
+	if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 	{
-		//weapon 0 là roi, sau này phải xây dựng các define cho từng vũ khí, cũng như item
+		//weapon 0 là roi
 		weapons[0]->SetPosition(x, y);
 		weapons[0]->SetTrend(nx);
 		weapons[0]->CollisionWithObject(dt, listTorch);
 		attack_start = GetTickCount();
 	}
-
+	// Cần xử lý với 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != SIMON_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);
+	if (state != STATE_SIMON_DIE)
+		CalcPotentialCollisions(&listBrick, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
@@ -114,12 +115,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			vy = 0;
 	}
 	
-	/*
+	
 	coEvents.clear(); 
 
 	// turn off collision when die 
-	if (state != SIMON_STATE_DIE)
-		CalcPotentialCollisions(&listTorch, coEvents);
+	if (state != STATE_SIMON_DIE)
+		CalcPotentialCollisions(&listTorch, coEvents); // 
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
@@ -135,11 +136,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float rdy = 0;
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-		// phần này nếu quên tìm hiểu lại trong collision detection
 		x += dx;
 
-		// Collision logic with items
-		// xử lý phần simon đánh roi torch rơi ra item
+		// Collision logic with item
 		
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -147,17 +146,24 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CTorch*>(temp->obj)) // if e->obj is torch 
 			{
 				CTorch* torch = dynamic_cast<CTorch*>(temp->obj);
-				if (torch->GetState() == TORCH_STATE_EXSIST)
+				if (torch->GetState() == STATE_TORCH_EXSIST)
 				{
-					torch->fire_start = GetTickCount();
+					
+				}
+				else
+				{
+					if (dynamic_cast<CItem*>(torch->GetItem()))	// check item					
+					{
+						CItem* item = dynamic_cast<CItem*>(torch->GetItem());
+						listItem.push_back(item);
+						torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST); // item đã đc eated
+					}
 				}
 			}
 		}
-		
-		
+		CollisionWithItem(dt, listItem);
 	}
-	*/
-
+	
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -165,40 +171,41 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CSimon::Render()
 {
 	int ani;
-	if (state == SIMON_STATE_IDLE)
+	if (state == STATE_SIMON_DIE)
 	{
-		ani = SIMON_ANI_IDLE;
+		ani = ANI_SIMON_IDLE;
 	}
-	else if (state == SIMON_STATE_SIT)
+	else if (state == STATE_SIMON_SIT)
 	{
-		ani = SIMON_ANI_SITTING;
+		ani = ANI_SIMON_SITTING;
 	}
-	else if (state == SIMON_STATE_JUMP)
+	else if (state == STATE_SIMON_JUMP)
 	{
 		if (vy < 0)
-			ani = SIMON_ANI_JUMPING;
+			ani = ANI_SIMON_JUMPING;
 		else
-			ani = SIMON_ANI_IDLE;
+			ani = ANI_SIMON_IDLE;
 	}
-	else if (state == SIMON_STATE_STAND_ATTACK)
+	else if (state == STATE_SIMON_STAND_ATTACK)
 	{
-		ani = SIMON_ANI_STANDING_ATTACKING;
+		ani = ANI_SIMON_STANDING_ATTACKING;
 		weapons[0]->Render();
 	}
-	else if(state== SIMON_STATE_SIT_ATTACK)
+	else if(state== STATE_SIMON_SIT_ATTACK)
 	{
-		ani = SIMON_ANI_SITTING_ATTACKING;
+		ani = ANI_SIMON_SITTING_ATTACKING;
 		weapons[0]->Render();
 	}
 	// thiếu attack knife
 	else {
 		if (vx == 0)
 		{
-			ani = SIMON_ANI_IDLE;
+			if(state!=STATE_SIMON_SIT_ATTACK||state!=STATE_SIMON_STAND_ATTACK)
+			ani = ANI_SIMON_IDLE;
 		}
 		else
 		{
-			ani = SIMON_ANI_WALKING;
+			ani = ANI_SIMON_WALKING;
 		}
 	}
 	//if (trans_start > 0) {
@@ -211,7 +218,7 @@ void CSimon::Render()
 	
 	animations[ani]->RenderTrend(x, y, nx);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 
@@ -221,30 +228,29 @@ void CSimon::SetState(int state)
 
 	switch (state)
 	{
-	case SIMON_STATE_WALKING_RIGHT:
+	case STATE_SIMON_WALKING_RIGHT:
 		vx = SIMON_WALKING_SPEED;
 		nx = 1;
 		break;
-	case SIMON_STATE_WALKING_LEFT:
+	case STATE_SIMON_WALKING_LEFT:
 		vx = -SIMON_WALKING_SPEED;
 		nx = -1;
 		break;
-	case SIMON_STATE_SIT:
-		vx = 0;
+	case STATE_SIMON_SIT:
+		//vx = 0;
 		break;
-	case SIMON_STATE_JUMP:
+	case STATE_SIMON_JUMP:
 		if (vy == 0) {
 			vy = -SIMON_JUMP_SPEED_Y;
 			//vx = 0;
 		}
 		break;
-	case SIMON_STATE_UP:
+	case STATE_SIMON_UP:
 		y -= 20;
-
-	case SIMON_STATE_IDLE:
+	case STATE_SIMON_IDLE:
 		vx = 0;
 		break;
-	case SIMON_STATE_STAND_ATTACK:
+	case STATE_SIMON_STAND_ATTACK:
 		if (attack_start != 0)
 		{
 			if (GetTickCount() - attack_start >= ATTACK_TIME)
@@ -257,7 +263,7 @@ void CSimon::SetState(int state)
 		}
 		break;
 
-	case SIMON_STATE_SIT_ATTACK:
+	case STATE_SIMON_SIT_ATTACK:
 		if (attack_start != 0)
 		{
 			if (GetTickCount() - attack_start >= ATTACK_TIME)
@@ -273,14 +279,20 @@ void CSimon::SetState(int state)
 	}
 	
 }
-
-//void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
-//{
-//	for (int i = 0; i < listObj.size(); i++)
-//	{
-			// chưa xây dựng các item
-//	}
-//}
+void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
+{
+	for (int i = 0; i < listObj.size(); i++)
+	{
+		if (listObj.at(i)->GetState() == STATE_ITEM_EXSIST)
+		{
+			if (listObj.at(i)->getType() == TYPE_ITEM_HEART)
+			{
+				_heartCount++;
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+		}
+	}
+}
 
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -289,7 +301,7 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	top = this->y;
 	right = this->x + SIMON_WIDTH;
 	bottom = this->y + SIMON_HEIGHT_STAND;
-	if (state == SIMON_STATE_SIT ||state==SIMON_STATE_SIT_ATTACK)
+	if (state == STATE_SIMON_SIT ||state== STATE_SIMON_SIT_ATTACK)
 	{
 		bottom = this->y + SIMON_HEIGHT_SIT;
 	}

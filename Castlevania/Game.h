@@ -78,7 +78,7 @@ public:
 
 	static CGame* GetInstance();
 
-	bool isCollision(RECT r1, RECT r2);
+	bool isCollision(RECT r1, RECT r2); // Chỉ sử dụng cho những trường hợp va chạm đơn giản, k có vx
 
 	~CGame();
 };

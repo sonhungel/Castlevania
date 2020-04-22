@@ -1,36 +1,35 @@
-
+﻿
 #pragma once
 
 #include"GameObject.h"
 #include"Simon.h"
 #include"Textures.h"
 
+//===========DEFINE================
 
-//============DEFINE============
+#define STATE_ITEM_NOT_EXSIST	0
+#define STATE_ITEM_EXSIST		1
 
-#define ITEM_STATE_NOT_EXSIST 0
-#define ITEM_STATE_EXSIST 1
+#define TYPE_ITEM				0
+#define TYPE_ITEM_KNIFE			1
+#define TYPE_ITEM_WHIPUPGRADE	2
+#define TYPE_ITEM_HEART			3
 
-#define TYPE_ITEM			  0
-#define TYPE_ITEM_DAGGER	  1
-#define TYPE_ITEM_WHIPUPGRADE 2
-#define TYPE_ITEM_HEART		  3
-
-#define ITEM_GRAVITY		  0.05f
+#define GRAVITY_ITEM		  0.05f
 
 class CItem:public CGameObject
 {
 protected:
-	int _type;
+	int type_Item; // định dang item
 public:
-	CItem()
+	CItem() :CGameObject()
 	{
-		state = ITEM_STATE_EXSIST;
-		_type = TYPE_ITEM;
+		state = STATE_ITEM_EXSIST;
+		type_Item = TYPE_ITEM;
 	}
-	virtual int getType() { return _type; }
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual int GetType() { return type_Item; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

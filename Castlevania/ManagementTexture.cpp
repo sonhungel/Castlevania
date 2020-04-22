@@ -1,18 +1,22 @@
 ﻿#include "MagagementTexture.h"
 #include "Simon.h"
 #include "Brick.h"
+#include"Whip.h"
 
 
 CManagementTexture::CManagementTexture()
 {
 	CTextures* textures = CTextures::GetInstance();
 
+	textures->Add(ID_TEX_BBOX, L"map\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+
 	textures->Add(ID_TEX_SIMON, L"simon\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add(ID_TEX_SIMON_TRANS, L"simon\\simon_trans.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_WHIPNORMAL, L"simon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_MAP, L"map\\map.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_GROUND, L"map\\ground.png", D3DCOLOR_XRGB(0, 0, 0));
 	textures->Add(ID_TEX_TORCH, L"map\\torch.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_WHIPNORMAL, L"simon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM, L"item\\items.png", D3DCOLOR_XRGB(128, 0, 0));
 	textures->Add(ID_TEX_TORCH_FIRE, L"item\\Torch_fire.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	CSprites* sprites = CSprites::GetInstance();
@@ -20,7 +24,7 @@ CManagementTexture::CManagementTexture()
 
 	LPDIRECT3DTEXTURE9 texmap = textures->Get(ID_TEX_MAP);
 
-	ifstream inFile("txt_file/sprites.txt");
+	ifstream inFile("txt_file/sprites.txt"); // cẩn thận củi lửa file txt =))))
 
 	// If the file opened correctly then call load methods
 	while (inFile)
@@ -82,13 +86,13 @@ CManagementTexture::CManagementTexture()
 	ani->Add(12002);
 	animations->Add(600, ani);
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(100);	// level 2, whip upgrade short
 	ani->Add(12010);
 	ani->Add(12011);
 	ani->Add(12012);
 	animations->Add(601, ani);
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(100);	// level 3, whip upgrade long
 	ani->Add(12020);
 	ani->Add(12021);
 	ani->Add(12022);
@@ -129,13 +133,27 @@ CManagementTexture::CManagementTexture()
 
 #pragma endregion
 
+#pragma region Add sprites Item
+	ani = new CAnimation(100);
+
+	ani->Add(13000);
+	animations->Add(700, ani); //  item heart
+
+	ani = new CAnimation(100);
+	ani->Add(13001);
+	animations->Add(701, ani); // Item WhipUpgrade
+
+#pragma endregion
+
 #pragma region Add sprites fire after torch not exsist
 	ani = new CAnimation(100);
 
-	ani->Add(14002);
 	ani->Add(14001);
 	ani->Add(14000);
+	ani->Add(14002);
 	animations->Add(800, ani); // fire after torch not exsist
 #pragma endregion
+
+
 
 }

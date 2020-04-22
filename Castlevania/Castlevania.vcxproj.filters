@@ -43,16 +43,22 @@
     <Filter Include="GameObject\Weapon">
       <UniqueIdentifier>{181bdc51-9615-4b43-9fa7-6a059c3e5066}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Debug&amp;Define4Object">
+    <Filter Include="GameObject\Item\Base">
+      <UniqueIdentifier>{c9cdb1f0-16b6-498f-8363-ef5e22c72626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Weapon\Base">
+      <UniqueIdentifier>{92ce3f47-5705-4921-b8eb-c2ca89f81e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug&amp;Define">
       <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Base GameObject">
+      <UniqueIdentifier>{fc93e5dc-86c6-4cbb-89c3-9ee007a43179}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>GameObject</Filter>
@@ -67,7 +73,7 @@
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="debug.h">
-      <Filter>Debug&amp;Define4Object</Filter>
+      <Filter>Debug&amp;Define</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>GameObject\StaticObject</Filter>
@@ -87,23 +93,32 @@
     <ClInclude Include="Scene.h">
       <Filter>Scenes Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>GameObject\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="WhipNormal.h">
-      <Filter>GameObject\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="MagagementTexture.h">
       <Filter>Manager Textures</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
-      <Filter>Debug&amp;Define4Object</Filter>
+      <Filter>Debug&amp;Define</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Scenes Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObject\Item\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObject\Weapon\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHeart.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject\Base GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemWhipUpgrade.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Whip.h">
+      <Filter>GameObject\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +127,6 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Simon.cpp">
       <Filter>GameObject</Filter>
@@ -129,7 +141,7 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="debug.cpp">
-      <Filter>Debug&amp;Define4Object</Filter>
+      <Filter>Debug&amp;Define</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>GameObject\StaticObject</Filter>
@@ -146,20 +158,29 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Scenes Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>GameObject\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="WhipNormal.cpp">
-      <Filter>GameObject\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="ManagementTexture.cpp">
       <Filter>Manager Textures</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Scenes Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObject\Item\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObject\Weapon\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHeart.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject\Base GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemWhipUpgrade.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Whip.cpp">
+      <Filter>GameObject\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

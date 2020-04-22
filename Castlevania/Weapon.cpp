@@ -21,13 +21,12 @@ void CWeapon::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
-			if (listObj.at(i)->GetState() == TORCH_STATE_EXSIST)
+			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
 			{
 				LPCOLLISIONEVENT temp = SweptAABBEx(listObj.at(i));
 				if (temp->t > 0) // => có đụng độ
 				{
-					listObj.at(i)->SetState(TORCH_STATE_NOT_EXSIST);
-					
+					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
 				}
 			}
 		}

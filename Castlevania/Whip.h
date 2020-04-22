@@ -6,21 +6,22 @@
 #include"Weapon.h"
 #include"Textures.h"
 
-#define WHIPNORMAL_HEIGHT 64
-#define WHIPNORMAL_WIDTH 160
+//===================DEFINE===========
+#define WHIPNORMAL_HEIGHT 40
+#define WHIPNORMAL_WIDTH 100
+
 
 #define WHIPNORMAL_EXSIST 1
 #define WHIPNORMAL_NOT_EXSIST 0
 
 
-
-class CWhipNormal :public CWeapon
+class CWhip :public CWeapon
 {
 	int _level; // level tượng trưng cho độ dài của Whip, 1 và 2 ngắn. 3 dài
-	static CWhipNormal* __instance;
+	static CWhip* __instance;
 public:
-	static CWhipNormal* GetInstance();
-	CWhipNormal();
+	static CWhip* GetInstance();
+	CWhip();
 	void SetPosition(float simon_x, float simon_y);
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
