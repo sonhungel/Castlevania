@@ -15,7 +15,7 @@
 #define TYPE_ITEM_WHIPUPGRADE	2
 #define TYPE_ITEM_HEART			3
 
-#define GRAVITY_ITEM		  0.05f
+#define GRAVITY_ITEM		  0.03f
 
 class CItem:public CGameObject
 {
@@ -29,7 +29,7 @@ public:
 	}
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	virtual int GetType() { return type_Item; }
+	virtual int getType() { return type_Item; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

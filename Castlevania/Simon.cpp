@@ -64,17 +64,22 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			CBrick* brick = dynamic_cast<CBrick*>(coObjects->at(i));
 			listBrick.push_back(brick);
 		}
+		if (dynamic_cast<CItem*>(coObjects->at(i)))
+		{
+			CItem* item = dynamic_cast<CItem*>(coObjects->at(i));
+			listItem.push_back(item);
+		}
 	}
 
 	if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 	{
-		//weapon 0 là roi
+		//weapon 0 is whip
 		weapons[0]->SetPosition(x, y);
 		weapons[0]->SetTrend(nx);
 		weapons[0]->CollisionWithObject(dt, listTorch);
 		attack_start = GetTickCount();
 	}
-	// Cần xử lý với 
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -114,7 +119,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (ny != 0) 
 			vy = 0;
 	}
-	
 	
 	coEvents.clear(); 
 
@@ -156,7 +160,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						CItem* item = dynamic_cast<CItem*>(torch->GetItem());
 						listItem.push_back(item);
-						torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST); // item đã đc eated
+						torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST); // item  eated
 					}
 				}
 			}
@@ -275,7 +279,7 @@ void CSimon::SetState(int state)
 			vx = 0;
 		}
 		break;
-		// còn phóng dao
+		//  mis attack knife
 	}
 	
 }
@@ -287,7 +291,12 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 		{
 			if (listObj.at(i)->getType() == TYPE_ITEM_HEART)
 			{
-				_heartCount++;
+				_heartCount += 5;
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)
+			{
+				CWhip::GetInstance()->setUpLevel();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}

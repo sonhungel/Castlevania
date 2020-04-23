@@ -143,6 +143,10 @@ CManagementTexture::CManagementTexture()
 	ani->Add(13001);
 	animations->Add(701, ani); // Item WhipUpgrade
 
+	ani = new CAnimation(100);
+	ani->Add(13002);
+	animations->Add(702, ani);	// Item Knife
+
 #pragma endregion
 
 #pragma region Add sprites fire after torch not exsist

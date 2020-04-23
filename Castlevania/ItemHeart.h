@@ -3,7 +3,7 @@
 
 //=========DEFINE================
 
-#define HEART_WIDTH 30
+#define HEART_WIDTH 28
 #define HEART_HEIGHT 25
 class CItemHeart :public CItem
 {

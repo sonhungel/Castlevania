@@ -20,19 +20,19 @@ void CScene::LoadResoure()
 	simon->SetPosition(0.0f, 20.0f);
 	objects.push_back(simon);
 
-	CItemHeart* heart = new CItemHeart();
-	heart->SetPosition(250, 300);
-	objects.push_back(heart);
+	//CItemHeart* heart = new CItemHeart();
+	//heart->SetPosition(250, 300);
+	//objects.push_back(heart);
 
 	CTorch* torch0 = new CTorch(1);
 	torch0->SetPosition(190, 296);
 	objects.push_back(torch0);
 
-	CTorch* torch1 = new CTorch(1);
+	CTorch* torch1 = new CTorch(2);
 	torch1->SetPosition(420, 296);
 	objects.push_back(torch1);
 
-	CTorch* torch2 = new CTorch(1);
+	CTorch* torch2 = new CTorch(3);
 	torch2->SetPosition(640, 296);
 	objects.push_back(torch2);
 

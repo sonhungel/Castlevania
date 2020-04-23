@@ -130,6 +130,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemHeart.h" />
+    <ClInclude Include="ItemKnife.h" />
     <ClInclude Include="ItemWhipUpgrade.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="MagagementTexture.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemHeart.cpp" />
+    <ClCompile Include="ItemKnife.cpp" />
     <ClCompile Include="ItemWhipUpgrade.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagementTexture.cpp" />

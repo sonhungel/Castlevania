@@ -1,5 +1,4 @@
 #include "Torch.h"
-//#include"debug.h"
 
 CTorch::CTorch(int id,int level) : CGameObject()
 {
@@ -16,9 +15,12 @@ CTorch::CTorch(int id,int level) : CGameObject()
 	case ID_ITEM_HEART:
 		item = new CItemHeart();
 		break;
-	case 0:
+	case ID_ITEM_WHIPUPGRADE:
+		item = new CItemWhipUpgrade();
 		break;
-	default:
+	case ID_ITEM_KNIFE:
+		item = new CItemKnife();
+	case 0:
 		break;
 	}
 
@@ -61,7 +63,6 @@ void CTorch::Render()
 		if (item != NULL)
 		{
 			item->Render();
-			//item -> RenderBoundingBox();
 		}
 	}
 	RenderBoundingBox();

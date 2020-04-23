@@ -167,17 +167,24 @@ bottom= 204
 idTexture= 40
 
 id= 13000
-left= 244
-top= 108
+left= 245
+top= 110
 right= 275
 bottom= 139
 idTexture= 50
 
 id= 13001
 left= 86
-top= 80
+top= 78
 right= 122
 bottom= 115
+idTexture= 50
+
+id= 13002
+left= 352
+top= 72
+right= 395
+bottom= 96
 idTexture= 50
 
 id= 14000

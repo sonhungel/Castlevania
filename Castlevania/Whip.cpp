@@ -17,7 +17,7 @@ CWhip::CWhip()
 	AddAnimation(600);
 	AddAnimation(601); // level 2
 	AddAnimation(602);	// level 3
-	animation = animations[0]; // whip level 1
+	animation = animations[ANI_WHIP_LEVEL_1]; // whip level 1
 }
 
 void CWhip::SetPosition(float simon_x, float simon_y)

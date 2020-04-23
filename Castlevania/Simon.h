@@ -31,7 +31,6 @@
 //#define ANI_SIMON_ATTACK_KNIFE					6
 #define ANI_SIMON_TRANS						6	// transition
 
-
 #define SIMON_HEIGHT_STAND			60
 #define SIMON_HEIGHT_SIT			45
 #define SIMON_WIDTH					40
@@ -39,6 +38,9 @@
 
 #define ATTACK_TIME			100
 #define JUMP_TIME			0
+
+#define ID_WEAPON_WHIP 0		// main weapon
+#define ID_WEAPON_SECONDARY
 
 class CSimon : public CGameObject
 {
@@ -57,12 +59,12 @@ public:
 	virtual void Render();
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	//  Cần optimize lại, hạn chế sử dụng for
 	void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
 	//void CollisionWithBrick();
 	CWhip* GetWeapon(int i = 0) { return (CWhip*)(weapons[0]); }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	int GetTrend() { return nx; } // chủ yếu dùng để lấy trend cho vũ khí phụ
-	int GetHeart() { return _heartCount; }
-	void SetHeart(int heart) { _heartCount = heart; }
+	int GetTrend() { return nx; } // for the weapon
+	int GetHeart() { return _heartCount; } // for HUD
 };
 #endif

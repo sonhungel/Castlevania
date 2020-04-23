@@ -14,6 +14,10 @@
 #define WHIPNORMAL_EXSIST 1
 #define WHIPNORMAL_NOT_EXSIST 0
 
+#define ANI_WHIP_LEVEL_1	0
+#define ANI_WHIP_LEVEL_2	1
+#define ANI_WHIP_LEVEL_3	2
+
 
 class CWhip :public CWeapon
 {

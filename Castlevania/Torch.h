@@ -6,6 +6,8 @@
 #include"Textures.h"
 #include"Item.h"
 #include"ItemHeart.h"
+#include"ItemWhipUpgrade.h"
+#include"ItemKnife.h"
 
 
 //===========DEFINE=======================
@@ -19,7 +21,7 @@
 
 #define ID_ITEM_HEART				1
 #define ID_ITEM_WHIPUPGRADE			2
-#define ID_ITEM_DAGGER				3
+#define ID_ITEM_KNIFE				3
 
 #define FIRE_TIME			300
 
