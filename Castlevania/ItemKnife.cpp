@@ -4,6 +4,6 @@ void CItemKnife::GetBoundingBox(float& left, float& top, float& right, float& bo
 {
 	left = x;
 	top = y;
-	right = x + KNIFE_WIDTH;
-	bottom = y + KNIFE_HEIGHT;
+	right = x + ITEM_KNIFE_WIDTH;
+	bottom = y + ITEM_KNIFE_HEIGHT;
 }

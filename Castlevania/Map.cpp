@@ -29,7 +29,7 @@ void CMap::DrawMap()
 			for (int j = 0; j < 24; j++) 
 			{
 				
-				CSprites::GetInstance()->Get(getTile(i, j))->Draw(64 * j, 64 * i +100);
+				CSprites::GetInstance()->Get(getTile(i, j))->Draw(64 * j, 64 * i +40);
 			}
 		}
 	}

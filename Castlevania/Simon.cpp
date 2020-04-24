@@ -6,6 +6,7 @@
 #include"Torch.h"
 #include"Whip.h"
 #include"Brick.h"
+#include"Knife.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -202,7 +203,8 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_ATTACK_KNIFE)
 	{
-		ani = ANI_SIMON_STANDING_ATTACKING;
+		if(weapons.size()>0)
+			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else {
 		if (vx == 0)
@@ -216,13 +218,6 @@ void CSimon::Render()
 		}
 	}
 	
-	//if (trans_start > 0) {
-	//	ani = SIMON_ANI_TRANS;
-	//	if (GetTickCount() - trans_start > 200)
-	//	{
-	//		trans_start = 0;
-	//	}
-	//}
 	
 	animations[ani]->RenderTrend(x, y, nx);
 
@@ -306,17 +301,17 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (listObj.at(i)->GetState() == STATE_ITEM_EXSIST)
 		{
-			if (listObj.at(i)->getType() == TYPE_ITEM_HEART)
+			if (listObj.at(i)->getType() == TYPE_ITEM_HEART) // item heart
 			{
 				_heartCount += 5;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)
+			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)	// item whipUpgrade
 			{
 				CWhip::GetInstance()->setUpLevel();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)
+			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)	// item knife
 			{
 				CKnife* knife = CKnife::GetInstance();
 				weapons.push_back(knife);
