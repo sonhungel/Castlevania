@@ -25,4 +25,4 @@ public:
 	void Clear();
 	static CTextures* GetInstance();
 };
-#endif // !1
+#endif 

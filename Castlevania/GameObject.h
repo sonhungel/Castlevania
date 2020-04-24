@@ -1,4 +1,7 @@
 ﻿#pragma once
+#ifndef __GAMEOBJECT_H_
+#define __GAMEOBJECT_H_
+
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -107,3 +110,5 @@ public:
 	~CGameObject();
 };
 
+
+#endif

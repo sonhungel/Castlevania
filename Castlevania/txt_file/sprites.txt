@@ -113,12 +113,12 @@ idTexture= 40
 id= 12001
 left= 195
 top= 0
-right= 310
+right= 315
 bottom= 70
 idTexture= 40
 
 id= 12002
-left= 352
+left= 350
 top= 0
 right= 455
 bottom= 70
@@ -126,23 +126,23 @@ idTexture= 40
 
 id= 12010
 left= 25
-top= 70
+top= 68
 right= 160
-bottom= 137
+bottom= 138
 idTexture= 40
 
 id= 12011
-left= 186
-top= 70
-right= 320
-bottom= 137
+left= 190
+top= 68
+right= 315
+bottom= 138
 idTexture= 40
 
 id= 12012
 left= 351
-top= 70
+top= 68
 right= 455
-bottom= 137
+bottom= 138
 idTexture= 40
 
 id= 12020
@@ -155,7 +155,7 @@ idTexture= 40
 id= 12021
 left= 160
 top= 137
-right= 320
+right= 316
 bottom= 204
 idTexture= 40
 
@@ -181,9 +181,9 @@ bottom= 115
 idTexture= 50
 
 id= 13002
-left= 352
+left= 350
 top= 72
-right= 395
+right= 392
 bottom= 96
 idTexture= 50
 

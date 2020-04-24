@@ -1,5 +1,7 @@
-﻿
-#pragma once
+﻿#pragma once
+#ifndef __ITEM_H_
+#define __ITEM_H_
+
 
 #include"GameObject.h"
 #include"Simon.h"
@@ -32,4 +34,5 @@ public:
 	virtual int getType() { return type_Item; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
+#endif
 

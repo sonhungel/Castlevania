@@ -1,6 +1,6 @@
-﻿#ifndef __WHIPNORMAL_H__
+﻿#ifndef __WHIP_H__
 
-#define __WHIPNORMAL_H__
+#define __WHIP_H__
 
 #include"GameObject.h"
 #include"Weapon.h"
@@ -8,7 +8,7 @@
 
 //===================DEFINE===========
 #define WHIPNORMAL_HEIGHT 40
-#define WHIPNORMAL_WIDTH 100
+#define WHIPNORMAL_WIDTH 105
 
 
 #define WHIPNORMAL_EXSIST 1
@@ -26,7 +26,7 @@ class CWhip :public CWeapon
 public:
 	static CWhip* GetInstance();
 	CWhip();
-	void SetPosition(float simon_x, float simon_y);
+	void SetPosition(float x, float y);
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void setDefaultLevel() { _level = 1; }
@@ -35,5 +35,5 @@ public:
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 
 };
-#endif // !__WHIPNORMAL_H__
+#endif 
 

@@ -200,7 +200,10 @@ void CSimon::Render()
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		weapons[0]->Render();
 	}
-	// thiếu attack knife
+	else if (state == STATE_SIMON_ATTACK_KNIFE)
+	{
+		ani = ANI_SIMON_STANDING_ATTACKING;
+	}
 	else {
 		if (vx == 0)
 		{
@@ -212,6 +215,7 @@ void CSimon::Render()
 			ani = ANI_SIMON_WALKING;
 		}
 	}
+	
 	//if (trans_start > 0) {
 	//	ani = SIMON_ANI_TRANS;
 	//	if (GetTickCount() - trans_start > 200)
@@ -279,7 +283,20 @@ void CSimon::SetState(int state)
 			vx = 0;
 		}
 		break;
-		//  mis attack knife
+	case STATE_SIMON_ATTACK_KNIFE:
+		vx = 0;
+		if (weapons.size() > 1)
+		{
+			CKnife* knife = CKnife::GetInstance();
+			if (knife->GetState() == STATE_KNIFE_HIDE)
+			{
+				knife->SetState(STATE_KNIFE_APPEAR);
+				knife->SetPosition(x, y);
+				knife->SetTrend(nx);
+			}
+		}
+		break;
+
 	}
 	
 }
@@ -297,6 +314,12 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)
 			{
 				CWhip::GetInstance()->setUpLevel();
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)
+			{
+				CKnife* knife = CKnife::GetInstance();
+				weapons.push_back(knife);
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}

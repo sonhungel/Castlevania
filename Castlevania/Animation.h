@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __ANIMATION_H_
+#define __ANIMATION_H_
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -77,3 +79,4 @@ public:
 
 	static CAnimationSets* GetInstance();
 };
+#endif

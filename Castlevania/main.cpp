@@ -49,7 +49,9 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	{
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN))
-			simon->SetState (STATE_SIMON_SIT_ATTACK);
+			simon->SetState(STATE_SIMON_SIT_ATTACK);
+		else if (game->IsKeyDown(DIK_UP))
+			simon->SetState(STATE_SIMON_ATTACK_KNIFE);
 		else
 			simon->SetState (STATE_SIMON_STAND_ATTACK);
 		break;

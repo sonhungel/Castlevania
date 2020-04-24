@@ -38,4 +38,4 @@ class CManagementTexture
 public:
 	CManagementTexture();
 };
-#endif // !__MANAGEMENTTEXTURE_H_
+#endif 

@@ -1,4 +1,8 @@
 ﻿#pragma once
+#ifndef __SPRITES_H_
+#define __SPRITES_H_
+
+
 #include <Windows.h>
 #include <d3dx9.h>
 #include <unordered_map>
@@ -50,9 +54,4 @@ public:
 	static CSprites* GetInstance();
 };
 
-
-
-
-
-
-
+#endif

@@ -1,5 +1,6 @@
-﻿
-#pragma once
+﻿#pragma once
+#ifndef __TORCH_H_
+#define __TORCH_H_
 
 #include"GameObject.h"
 #include"Simon.h"
@@ -51,4 +52,4 @@ public:
 	}
 	CItem* GetItem() { return item; }
 };
-
+#endif

@@ -1,6 +1,6 @@
-﻿#ifndef __CMAP_H__
+﻿#ifndef __MAP_H__
 
-#define __CMAP_H__
+#define __MAP_H__
 
 #include "Sprites.h"
 #include "Textures.h"
@@ -19,4 +19,4 @@ public:
 	void LoadMap();
 	void DrawMap();
 };
-#endif // !__CMAP_H__
+#endif 

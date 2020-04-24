@@ -123,6 +123,9 @@
     <ClInclude Include="ItemKnife.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Knife.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="ItemKnife.cpp">
       <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Knife.cpp">
+      <Filter>GameObject\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

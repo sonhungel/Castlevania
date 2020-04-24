@@ -133,6 +133,7 @@
     <ClInclude Include="ItemKnife.h" />
     <ClInclude Include="ItemWhipUpgrade.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Knife.h" />
     <ClInclude Include="MagagementTexture.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="PlayScene.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="ItemHeart.cpp" />
     <ClCompile Include="ItemKnife.cpp" />
     <ClCompile Include="ItemWhipUpgrade.cpp" />
+    <ClCompile Include="Knife.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagementTexture.cpp" />
     <ClCompile Include="Map.cpp" />

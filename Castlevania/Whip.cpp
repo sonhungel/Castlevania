@@ -20,33 +20,44 @@ CWhip::CWhip()
 	animation = animations[ANI_WHIP_LEVEL_1]; // whip level 1
 }
 
-void CWhip::SetPosition(float simon_x, float simon_y)
+void CWhip::SetPosition(float x, float y)
 {
-	if (_level == 1 || _level == 2)
+	if (_level == 1)
 	{
 		if (nx < 0)
 		{
-			x = simon_x - 45;
+			this->x = x - 40;
 		}
 		else {
-			x = simon_x - 10;
+			this->x = x - 10;
 		}
 	}
-	else
+	else if (_level == 2)
 	{
 		if (nx < 0)
 		{
-			x = simon_x - 80;
+			this->x = x - 40;
 		}
 		else {
-			x = simon_x - 10;
+			this->x = x - 10;
 		}
 	}
-	y = simon_y;
+	else if (_level == 3)
+	{
+		if (nx < 0)
+		{
+			this->x = x - 70;
+		}
+		else {
+			this->x = x - 10;
+		}
+	}
+	this->y = y;
 }
 
 void CWhip::Render()
 {
+	animation = animations[_level - 1];
 	animation->RenderTrend(x, y, nx);
 	RenderBoundingBox();
 }
@@ -72,6 +83,8 @@ void CWhip::setUpLevel()
 
 void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (animation->GetCurrentFrame() < 2)
+		return;
 	if (_level == 1 || _level == 2)
 	{
 		left = x;
@@ -79,12 +92,13 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		top = y;
 		bottom = y + WHIPNORMAL_HEIGHT;
 	}
+
 	else
 	{
 		left = x;
-		right = x + 145;
+		right = x + 138;
 		top = y;
-		bottom = y + 30;
+		bottom = y + WHIPUPGRADE_HEIGHT;
 
 	}
 }

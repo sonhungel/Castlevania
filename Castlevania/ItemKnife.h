@@ -1,4 +1,7 @@
 #pragma once
+#ifndef __ITEM_KNIFE_H_
+#define __ITEM_KNIFE_H_
+
 #include "Item.h"
 
 //==========DEFINE=====================
@@ -16,4 +19,5 @@ public:
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
+#endif
 

@@ -1,4 +1,8 @@
 #pragma once
+#pragma once
+#ifndef __ITEM_WHIP_UPGRADE_H
+#define __ITEM_WHIP_UPGRADE_H
+
 #include "Item.h"
 #include"Whip.h"
 
@@ -16,4 +20,5 @@ public:
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
+#endif
 

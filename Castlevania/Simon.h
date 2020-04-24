@@ -6,6 +6,7 @@
 
 #include "GameObject.h"
 #include"Whip.h"
+#include"Knife.h"
 
 #define SIMON_WALKING_SPEED		0.12f
 #define SIMON_JUMP_SPEED_Y		0.5f
@@ -20,15 +21,14 @@
 #define STATE_SIMON_SIT_ATTACK		600
 #define STATE_SIMON_DIE				700
 #define STATE_SIMON_UP				800
-//#define STATE_SIMON_ATTACK_KNIFE	900
+#define STATE_SIMON_ATTACK_KNIFE	900
 
 #define ANI_SIMON_IDLE						0
 #define ANI_SIMON_WALKING					1
 #define ANI_SIMON_JUMPING					2
 #define ANI_SIMON_SITTING					3
-#define ANI_SIMON_STANDING_ATTACKING 		4
+#define ANI_SIMON_STANDING_ATTACKING 		4	// sử dụng luôn cho simon_attack_knife
 #define ANI_SIMON_SITTING_ATTACKING			5
-//#define ANI_SIMON_ATTACK_KNIFE					6
 #define ANI_SIMON_TRANS						6	// transition
 
 #define SIMON_HEIGHT_STAND			60

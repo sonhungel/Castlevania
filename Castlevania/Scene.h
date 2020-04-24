@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef __SCENE_H_
+#define __SCENE_H_
 
 #include <windows.h>
 #include <d3d9.h>
@@ -41,3 +42,4 @@ public:
 	void Render();
 
 };
+#endif

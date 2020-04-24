@@ -1,4 +1,8 @@
 #pragma once
+#ifndef __KEYEVENTHANDLER_H_
+#define __KEYEVENTHANDLER_H_
+
+
 #include <Windows.h>
 
 /*
@@ -12,3 +16,4 @@ public:
 	virtual void OnKeyUp(int KeyCode) = 0;
 };
 typedef CKeyEventHandler* LPKEYEVENTHANDLER;
+#endif

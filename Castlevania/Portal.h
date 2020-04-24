@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __PORTAL_H_
+#define __PORTAL_H_
 
 #include "GameObject.h"
 
@@ -17,3 +19,4 @@ public:
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 	int GetSceneId() { return scene_id;  }
 };
+#endif
