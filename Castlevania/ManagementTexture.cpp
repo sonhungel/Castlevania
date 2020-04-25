@@ -46,6 +46,7 @@ CManagementTexture::CManagementTexture()
 
 	ani = new CAnimation(1); //simon trans idle left
 	ani->Add(10400);
+	ani->Add(10001);
 	//ani->Add(10004);
 	animations->Add(410, ani);
 
