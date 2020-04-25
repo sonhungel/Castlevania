@@ -17,7 +17,7 @@
 #define ID_TEX_WHIPNORMAL		40
 #define ID_TEX_ITEM				50
 #define ID_TEX_TORCH_FIRE		60
-//#define ID_TEX_SIMON_TRANS		70
+#define ID_TEX_SIMON_TRANS		70
 
 
 #define SIMON_ANI_IDLE				0
@@ -28,9 +28,6 @@
 #define SIMON_ANI_SITTING_ATTACKING	5
 #define BRICK_ANI					6
 #define TORCH_ANI_FIRE				7
-#define VAMPIREKILLER_1				8
-#define VAMPIREKILLER_2				9
-#define VAMPIREKILLER_3				10
 
 
 class CManagementTexture

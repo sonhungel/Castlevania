@@ -27,7 +27,7 @@
 class CScene
 {
 	CSimon* simon;
-	//CMap* map;
+	CMap* map;
 	CKnife* knife;
 	CGame* game;
 	vector<LPGAMEOBJECT> objects;

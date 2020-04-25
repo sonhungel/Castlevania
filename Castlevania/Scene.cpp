@@ -11,8 +11,8 @@ void CScene::LoadResoure()
 	CManagementTexture* manage = new CManagementTexture();
 	objects.clear();
 	
-	//map = new CMap();
-	//map->LoadMap();
+	map = new CMap();
+	map->LoadMap();
 
 
 	simon = CSimon::GetInstance();
@@ -80,7 +80,7 @@ void CScene::Update(DWORD dt)
 }
 void CScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
 	{

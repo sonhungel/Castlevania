@@ -89,6 +89,13 @@ right= 112
 bottom= 180
 idTexture= 0
 
+id= 10400
+left= 6
+top= 3
+right= 50
+bottom= 65
+idTexture= 70
+
 id= 11000
 left= 0
 top= 0

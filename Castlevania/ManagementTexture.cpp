@@ -11,7 +11,7 @@ CManagementTexture::CManagementTexture()
 	textures->Add(ID_TEX_BBOX, L"map\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	textures->Add(ID_TEX_SIMON, L"simon\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
-	//textures->Add(ID_TEX_SIMON_TRANS, L"simon\\simon_trans.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_SIMON_TRANS, L"simon\\simon_trans.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_MAP, L"map\\map.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_GROUND, L"map\\ground.png", D3DCOLOR_XRGB(0, 0, 0));
 	textures->Add(ID_TEX_TORCH, L"map\\torch.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -46,7 +46,7 @@ CManagementTexture::CManagementTexture()
 
 	ani = new CAnimation(1); //simon trans idle left
 	ani->Add(10400);
-	ani->Add(10004);
+	//ani->Add(10004);
 	animations->Add(410, ani);
 
 	ani = new CAnimation(100);// simon walk left
