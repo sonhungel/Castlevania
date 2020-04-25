@@ -36,7 +36,7 @@ class CScene
 	vector<LPGAMEOBJECT> objects;
 	int id;
 public:
-	//CScene(int id = 0);
+	
 	void LoadResoure();
 	void Update(DWORD dt);
 	void Render();

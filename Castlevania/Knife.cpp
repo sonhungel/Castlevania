@@ -34,8 +34,11 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKnife::Render()
 {
 	if (state == STATE_KNIFE_APPEAR)
+	{
 		animations[0]->RenderTrend(x, y, -nx);
-	RenderBoundingBox();
+		RenderBoundingBox();
+	}
+		
 }
 
 void CKnife::SetPosition(float x, float y)

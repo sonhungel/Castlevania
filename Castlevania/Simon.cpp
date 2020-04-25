@@ -175,7 +175,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSimon::Render()
 {
-	int ani;
+	int ani = 0;
 	if (state == STATE_SIMON_DIE)
 	{
 		ani = ANI_SIMON_IDLE;
@@ -203,7 +203,7 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_ATTACK_KNIFE)
 	{
-		if(weapons.size()>0)
+		if(weapons.size()>1)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else {
@@ -221,7 +221,7 @@ void CSimon::Render()
 	
 	animations[ani]->RenderTrend(x, y, nx);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 
@@ -288,6 +288,7 @@ void CSimon::SetState(int state)
 				knife->SetState(STATE_KNIFE_APPEAR);
 				knife->SetPosition(x, y);
 				knife->SetTrend(nx);
+				knife->Render();
 			}
 		}
 		break;

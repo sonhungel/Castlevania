@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include"ItemHeart.h"
 
-//CScene::CScene(int id)
+
 
 
 
