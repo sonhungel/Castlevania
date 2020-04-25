@@ -221,7 +221,7 @@ void CSimon::Render()
 	
 	animations[ani]->RenderTrend(x, y, nx);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 
@@ -288,7 +288,6 @@ void CSimon::SetState(int state)
 				knife->SetState(STATE_KNIFE_APPEAR);
 				knife->SetPosition(x, y);
 				knife->SetTrend(nx);
-				knife->Render();
 			}
 		}
 		break;

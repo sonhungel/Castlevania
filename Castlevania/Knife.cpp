@@ -64,7 +64,7 @@ void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (animation->GetCurrentFrame() < 2)
+	if (STATE_KNIFE_HIDE)
 		return;
 
 	RECT rect1, rect2;

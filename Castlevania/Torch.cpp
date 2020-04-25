@@ -65,7 +65,7 @@ void CTorch::Render()
 			item->Render();
 		}
 	}
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CTorch::GetBoundingBox(float& left, float& top, float& right, float& bottom)

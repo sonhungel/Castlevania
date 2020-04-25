@@ -13,13 +13,10 @@
 #include "Textures.h"
 #include "MagagementTexture.h"
 
-
-
-
 #include "Simon.h"
 #include "Map.h"
 #include "Torch.h"
-
+#include"Knife.h"
 #include "Brick.h"
 
 
@@ -30,11 +27,10 @@
 class CScene
 {
 	CSimon* simon;
-	CMap* map;
-
+	//CMap* map;
+	CKnife* knife;
 	CGame* game;
 	vector<LPGAMEOBJECT> objects;
-	int id;
 public:
 	
 	void LoadResoure();

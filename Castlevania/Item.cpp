@@ -9,7 +9,7 @@ void CItem::Render()
 			animations[0]->Render(x, y);
 		
 	}
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

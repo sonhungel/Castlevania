@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include"ItemHeart.h"
+#include"Knife.h"
 
 
 
@@ -10,13 +11,16 @@ void CScene::LoadResoure()
 	CManagementTexture* manage = new CManagementTexture();
 	objects.clear();
 	
-	map = new CMap();
-	map->LoadMap();
+	//map = new CMap();
+	//map->LoadMap();
 
 
 	simon = CSimon::GetInstance();
 	simon->SetPosition(0.0f, 20.0f);
 	objects.push_back(simon);
+
+	CKnife* knife = CKnife::GetInstance();
+	objects.push_back(knife);
 
 	//CItemHeart* heart = new CItemHeart();
 	//heart->SetPosition(250, 300);
@@ -76,7 +80,7 @@ void CScene::Update(DWORD dt)
 }
 void CScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
 	{
