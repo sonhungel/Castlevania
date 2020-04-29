@@ -33,7 +33,7 @@ public:
 	CKnife()
 	{
 		vx = KNIFE_SPEED;
-		AddAnimation(702);
+		AddAnimation(701);
 		start_attack = 0;
 		state = STATE_KNIFE_HIDE;
 	}

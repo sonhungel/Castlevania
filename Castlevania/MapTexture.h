@@ -1,5 +1,5 @@
-#ifndef __MANAGEMENTTEXTURE_H_
-#define __MANAGEMENTTEXTURE_H_
+#ifndef __MAPTEXTURE_H_
+#define __MAPTEXTURE_H_
 
 
 
@@ -14,7 +14,7 @@
 #define ID_TEX_MAP				10
 #define ID_TEX_GROUND			20
 #define ID_TEX_TORCH			30
-#define ID_TEX_WHIPNORMAL		40
+#define ID_TEX_WHIP				40
 #define ID_TEX_ITEM				50
 #define ID_TEX_TORCH_FIRE		60
 #define ID_TEX_SIMON_TRANS		70
@@ -30,9 +30,9 @@
 #define TORCH_ANI_FIRE				7
 
 
-class CManagementTexture
+class CMapTexture
 {
 public:
-	CManagementTexture();
+	CMapTexture(int id);
 };
 #endif 

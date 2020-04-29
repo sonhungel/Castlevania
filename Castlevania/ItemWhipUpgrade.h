@@ -16,7 +16,7 @@ public:
 	CItemWhipUpgrade()
 	{
 		type_Item = TYPE_ITEM_WHIPUPGRADE;
-		AddAnimation(701);
+		AddAnimation(700);
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

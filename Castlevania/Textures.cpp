@@ -3,7 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "debug.h"
+#include"Utils.h"
 #include "Game.h"
 #include "textures.h"
 

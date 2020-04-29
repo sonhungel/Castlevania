@@ -1,6 +1,7 @@
 ﻿#pragma once
 #ifndef __GAME_H_
 #define __GAME_H_
+#include<unordered_map>
 
 #include <Windows.h>
 #include <d3d9.h>
@@ -9,6 +10,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include"KeyEventHandler.h"
+#include"Scene.h"
 
 #define KEYBOARD_BUFFER_SIZE 1024
 /*
@@ -42,18 +44,30 @@ class CGame
 	int screen_width;
 	int screen_height;
 
+	// demo5
+	unordered_map<int, LPSCENE> scenes;
+	int current_scene;
+
+	void _ParseSection_SETTINGS(string line);
+	void _ParseSection_SCENES(string line);
+	//
+
 public:
-	void InitKeyboard(LPKEYEVENTHANDLER handler);//?
+	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);
 	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);
-	// 
-	void DrawStatic(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);
+	
 	void DrawFlipX(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);
 
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 
+	// demo5
+	void Load(LPCWSTR gameFile);
+	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
+	void SwitchScene(int scene_id);
+	//
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }

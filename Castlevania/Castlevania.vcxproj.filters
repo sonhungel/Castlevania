@@ -43,11 +43,17 @@
     <Filter Include="GameObject\Weapon">
       <UniqueIdentifier>{181bdc51-9615-4b43-9fa7-6a059c3e5066}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Debug&amp;Define">
-      <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Base GameObject">
       <UniqueIdentifier>{fc93e5dc-86c6-4cbb-89c3-9ee007a43179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{b4be041d-ce2f-4663-afc2-020b395b5fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Weapon\Weapon Base">
+      <UniqueIdentifier>{e77ee8a7-4511-4afe-8cbc-f02c1c0791ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +72,6 @@
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="debug.h">
-      <Filter>Debug&amp;Define</Filter>
-    </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>GameObject\StaticObject</Filter>
     </ClInclude>
@@ -86,9 +89,6 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scenes Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MagagementTexture.h">
-      <Filter>Manager Textures</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Scenes Manager</Filter>
@@ -114,8 +114,20 @@
     <ClInclude Include="Item.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="tinystr.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml.h">
+      <Filter>XML</Filter>
+    </ClInclude>
     <ClInclude Include="Weapon.h">
-      <Filter>GameObject\Weapon</Filter>
+      <Filter>GameObject\Weapon\Weapon Base</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTexture.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +149,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="debug.cpp">
-      <Filter>Debug&amp;Define</Filter>
-    </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>GameObject\StaticObject</Filter>
     </ClCompile>
@@ -154,9 +163,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scenes Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagementTexture.cpp">
-      <Filter>Manager Textures</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Scenes Manager</Filter>
@@ -182,8 +188,31 @@
     <ClCompile Include="Item.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>GameObject\Weapon</Filter>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="tinystr.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlerror.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlparser.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObject\Weapon\Weapon Base</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTexture.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="XML_file\Scene 1.xml">
+      <Filter>XML</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

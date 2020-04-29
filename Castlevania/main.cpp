@@ -2,7 +2,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "debug.h"
+#include"Utils.h"
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
@@ -11,7 +11,6 @@
 
 #include "Simon.h"
 #include"Map.h"
-#include"MagagementTexture.h"
 #include"Scene.h"
 
 
@@ -26,86 +25,7 @@
 
 
 CGame *game;
-CScene* scene;
-CSimon *simon;
 
-
-vector<LPGAMEOBJECT> objects;
-
-class CSampleKeyHander: public CKeyEventHandler
-{
-	virtual void KeyState(BYTE *states);
-	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode);
-};
-
-CSampleKeyHander * keyHandler; 
-
-void CSampleKeyHander::OnKeyDown(int KeyCode)
-{
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	switch (KeyCode)
-	{
-	case DIK_Z:
-		if (game->IsKeyDown(DIK_DOWN))
-			simon->SetState(STATE_SIMON_SIT_ATTACK);
-		else if (game->IsKeyDown(DIK_UP))
-			simon->SetState(STATE_SIMON_ATTACK_KNIFE);
-		else
-			simon->SetState (STATE_SIMON_STAND_ATTACK);
-		break;
-	
-	case DIK_X:
-		simon->SetState(STATE_SIMON_JUMP);
-		break;
-	case DIK_DOWN:
-		simon->SetState(STATE_SIMON_SIT);
-		break;
-	}
-}
-
-void CSampleKeyHander::OnKeyUp(int KeyCode)
-{
-	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-	switch (KeyCode)
-	{
-	case DIK_Z:
-		//simon->SetState(STATE_SIMON_IDLE);
-		break;
-	case DIK_DOWN:
-		simon->SetState(STATE_SIMON_UP);
-		break;
-	case DIK_LEFT:
-		simon->SetState(STATE_SIMON_IDLE);
-		break;
-	case DIK_RIGHT:
-		simon->SetState(STATE_SIMON_IDLE);
-		break;
-	}
-}
-
-void CSampleKeyHander::KeyState(BYTE *states)
-{
-	//if (simon->GetState() == STATE_SIMON_SIT_ATTACK || simon->GetState() == STATE_SIMON_STAND_ATTACK)
-		//return;
-	if (game->IsKeyDown(DIK_DOWN))
-		simon->SetState(STATE_SIMON_SIT);
-	else if (game->IsKeyDown(DIK_Z))
-	{
-		if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
-			simon->SetState(STATE_SIMON_UP);
-	}
-	else if (game->IsKeyDown(DIK_RIGHT))
-		simon->SetState(STATE_SIMON_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
-		simon->SetState(STATE_SIMON_WALKING_LEFT);
-	else if (game->IsKeyDown(DIK_X))
-	{
-		simon->SetState(STATE_SIMON_JUMP);
-	}
-	else
-		simon->SetState(STATE_SIMON_IDLE);
-}
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -119,27 +39,13 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
-
-/*
-	Load all game resources 
-	In this example: load textures, sprites, animations and simon object
-
-	TO-DO: Improve this function by loading texture,sprite,animation,object from file
-*/
-void LoadResources()
-{
-	scene->LoadResoure();
-	simon = CSimon::GetInstance();
-
-}
-
 /*
 	Update world status for this frame
 	dt: time period between beginning of last frame and beginning of this frame
 */
 void Update(DWORD dt)
 {
-	scene->Update(dt);
+	CGame::GetInstance()->GetCurrentScene()->Update(dt);
 }
 
 /*
@@ -158,7 +64,7 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		scene->Render();
+		CGame::GetInstance()->GetCurrentScene()->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -260,12 +166,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	game = CGame::GetInstance();
 	game->Init(hWnd);
-
-	keyHandler = new CSampleKeyHander();
-	game->InitKeyboard(keyHandler);
-	scene = new CScene();
-
-	LoadResources();
+	game->InitKeyboard();
+	game->Load(L"Scene_manager.txt");
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

@@ -1,6 +1,6 @@
 #include "Sprites.h"
 #include "Game.h"
-#include "debug.h"
+#include"Utils.h"
 #include "fstream"
 #include "Textures.h"
 
@@ -45,11 +45,7 @@ void CSprite::DrawCam(float x, float y)
 	CGame* game = CGame::GetInstance();
 	game->DrawFlipX(x, y, texture, left, top, right, bottom);
 }
-void CSprite::DrawStatic(float x, float y)
-{
-	CGame* game = CGame::GetInstance();
-	game->DrawStatic(x, y, texture, left, top, right, bottom);
-}
+
 void CSprite::DrawFlipX(float x, float y) {
 	LPD3DXSPRITE spriteHandler = CGame::GetInstance()->GetSpriteHandler();
 
@@ -92,6 +88,7 @@ void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DT
 {
 	LPSPRITE s = new CSprite(id, left, top, right, bottom, tex);
 	sprites[id] = s;
+	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
 }
 
 void CSprites::Add(LPSPRITE lpsprite)

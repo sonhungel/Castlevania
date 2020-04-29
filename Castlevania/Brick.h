@@ -10,7 +10,7 @@ class CBrick : public CGameObject
 public:
 	CBrick() :CGameObject()
 	{
-		AddAnimation(500);
+		AddAnimation(499);
 	}
 	virtual void Render();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

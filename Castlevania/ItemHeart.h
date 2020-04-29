@@ -15,7 +15,7 @@ public:
 	CItemHeart()
 	{
 		type_Item = TYPE_ITEM_HEART;
-		AddAnimation(700);
+		AddAnimation(702);
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

@@ -1,5 +1,5 @@
 ﻿#include <algorithm>
-#include "debug.h"
+#include"Utils.h"
 
 #include "Simon.h"
 #include "Game.h"
@@ -32,7 +32,7 @@ CSimon::CSimon()
 	CSimon::AddAnimation(403);		//3. sit left
 	CSimon::AddAnimation(404);		//4. stand attack
 	CSimon::AddAnimation(405);		//5. sit attack
-	CSimon::AddAnimation(410);		//6. trans
+	CSimon::AddAnimation(399);		//6. trans
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -213,9 +213,9 @@ void CSimon::Render()
 		if(weapons.size()>1)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
-	if (trans_start > 0) {
+	else if (trans_start > 0) {
 		ani = ANI_SIMON_TRANS;
-		if (GetTickCount() - trans_start > 200)
+		if (GetTickCount() - trans_start >TRANSITION_TIME)
 		{
 			trans_start = 0;
 		}

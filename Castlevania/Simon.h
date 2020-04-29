@@ -37,6 +37,7 @@
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100
+#define TRANSITION_TIME		200
 #define JUMP_TIME			0
 
 #define ID_WEAPON_WHIP 0		// main weapon

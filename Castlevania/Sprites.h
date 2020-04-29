@@ -24,13 +24,14 @@ public:
 	CSprite();
 
 	void Draw(float x, float y);
-	void DrawStatic(float x, float y); // các function được thiết kế thêm
 
 	void DrawFlipX(float x, float y); 
 	void DrawCam(float x, float y);
+
 	int getHeight() { return bottom - top; }
 	int getwidth() { return right - left; }
-	void load(std::ifstream& inFile);
+
+	void load(std::ifstream& inFile); // load theo form cho file txt
 	int getID() { return id; }
 };
 
@@ -47,7 +48,7 @@ class CSprites
 
 public:
 	void Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
-	void Add(LPSPRITE lpsprite);
+	void Add(LPSPRITE lpsprite); // load file txt 
 	LPSPRITE Get(int id);
 	void CSprites::Clear();
 

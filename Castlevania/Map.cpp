@@ -1,7 +1,10 @@
 ﻿#include "Map.h"
 #include "fstream"
 
-
+CMap::CMap(int idScene)
+{
+	texture = new CMapTexture(idScene);
+}
 void CMap::LoadMap()
 {
 

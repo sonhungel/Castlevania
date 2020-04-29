@@ -94,6 +94,7 @@ public:
 		float& rdx,
 		float& rdy);
 
+	// không dùng animation_set nên sẽ dùng anmation theo hướng demo 4
 	void AddAnimation(int aniId); // push back ID vào phần vector LPANIMATION
 
 	CGameObject();

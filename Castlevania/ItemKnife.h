@@ -15,7 +15,7 @@ public:
 	CItemKnife()
 	{
 		type_Item = TYPE_ITEM_KNIFE;
-		AddAnimation(702);
+		AddAnimation(701);
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
