@@ -35,18 +35,18 @@ CSprites* CSprites::GetInstance()
 	return __instance;
 }
 
-void CSprite::Draw(float x, float y)
+void CSprite::Draw(float x, float y,int alpha)
 {
 	CGame* game = CGame::GetInstance();
-	game->Draw(x, y, texture, left, top, right, bottom);
+	game->Draw(x, y, texture, left, top, right, bottom,alpha);
 }
-void CSprite::DrawCam(float x, float y)
+void CSprite::DrawCam(float x, float y,int alpha)
 {
 	CGame* game = CGame::GetInstance();
-	game->DrawFlipX(x, y, texture, left, top, right, bottom);
+	game->DrawFlipX(x, y, texture, left, top, right, bottom,alpha);
 }
 
-void CSprite::DrawFlipX(float x, float y) {
+void CSprite::DrawFlipX(float x, float y,int alpha) {
 	LPD3DXSPRITE spriteHandler = CGame::GetInstance()->GetSpriteHandler();
 
 	D3DXMATRIX oldMt;
@@ -65,7 +65,7 @@ void CSprite::DrawFlipX(float x, float y) {
 
 	x -= getwidth();
 
-	this->DrawCam(x , y);
+	this->DrawCam(x , y,alpha);
 
 	spriteHandler->SetTransform(&oldMt);
 }

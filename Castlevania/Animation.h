@@ -34,8 +34,8 @@ public:
 	CAnimation(int defaultTime=100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);
 	// Thêm
-	void RenderTrend(float x, float y, int trend);
-	void Render(float x, float y);
+	void RenderTrend(float x, float y, int trend,int alpha=255);
+	void Render(float x, float y,int alpha=255);
 	int GetCurrentFrame() { return currentFrame; }
 	void ResetFrame() { lastFrameTime = -1; currentFrame = -1; }
 	int GetLastFrame() { return frames.size() - 1; }

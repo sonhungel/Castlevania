@@ -8,7 +8,7 @@
 
 //===================DEFINE===========
 #define WHIPNORMAL_HEIGHT 40
-#define WHIPNORMAL_WIDTH 105
+#define WHIPNORMAL_WIDTH 115
 
 
 #define WHIPNORMAL_EXSIST 1
@@ -33,6 +33,7 @@ public:
 	void setUpLevel();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
+	CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 
 };
 #endif 

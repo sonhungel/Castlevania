@@ -8,7 +8,8 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-#include"tinyxml.h"
+#include"Knife.h"
+#include"MapTexture.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -21,6 +22,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 	See scene1.txt, scene2.txt for detail format specification
 */
 
+
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3
@@ -28,6 +30,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define SCENE_SECTION_OBJECTS	5
 
 #define OBJECT_TYPE_SIMON	0
+#define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
 
 
@@ -101,14 +104,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
-	DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
-	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 4) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-
+	float item= atof(tokens[3].c_str());
 
 
 	CGameObject* obj = NULL;
@@ -116,44 +119,56 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
-		if (player != NULL)
+		if (simon != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
 		obj = new CSimon();
 		obj->SetPosition(x, y);
-		player = (CSimon*)obj;
+		simon = (CSimon*)obj;
 		objects.push_back(obj);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_TORCH: obj = new CTorch(); 
+	case OBJECT_TYPE_TORCH: obj = new CTorch(item); 
 		obj->SetPosition(x, y);
 		objects.push_back(obj);
+	case OBJECT_TYPE_BRICK:
+		if (item == 321)
+		{
+			for (int i = 0; i < 96; i++)
+			{
+				obj = new CBrick(32);
+				obj->SetPosition(i * 32, 360);
+				objects.push_back(obj);
+			}
+		}
+		if (item == 162)
+		{
+			for (int i = 0; i < 40; i++)
+			{
+				obj = new CBrick(32);
+				obj->SetPosition(i * 32, 360);
+				objects.push_back(obj);
+			}
+		}
 		break;
+	//case OBJECT_TYPE_PORTAL:
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
-	// Brick quá dài và đc sắp xếp theo thứ tự liên tục có trình tự
-	for (int i = 0; i < 96; i++)
-	{
-		obj = new CBrick();
-		obj->SetPosition(i * 32, 360);
-		objects.push_back(obj);
-	}
 	
-	// General object setup
-	//obj->SetPosition(x, y);
+	objects.push_back(CKnife::GetInstance());
 
-	//objects.push_back(obj);
 }
 
 
 void CPlayScene::Load()
 {
-	map = new CMap(1);
-	map->LoadMap();
+	//map = new CMap();
+	HUD = new CBoard();
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
 
 	ifstream f;
@@ -206,7 +221,7 @@ void CPlayScene::UnLoad()
 		delete objects[i];
 
 	objects.clear();
-	player = NULL;
+	simon = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
@@ -229,11 +244,11 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	if (simon == NULL) return;
 
 	// Update camera to follow mario
 	float cx, cy;
-	player->GetPosition(cx, cy);
+	simon->GetPosition(cx, cy);
 
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2+220;
@@ -241,11 +256,13 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0; if (cx > 966) cx = 966;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	HUD->Update(dt);
 }
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
+	HUD->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 	
@@ -258,21 +275,21 @@ void CPlayScene::Render()
 
 void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
+	CGame* game = CGame::GetInstance();
 	CSimon* simon = ((CPlayScene*)scene)->GetPlayer();
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_Z:
-		//simon->SetState(STATE_SIMON_IDLE);
-		break;
 	case DIK_DOWN:
 		simon->SetState(STATE_SIMON_UP);
-		break;
-	case DIK_LEFT:
-		simon->SetState(STATE_SIMON_IDLE);
-		break;
-	case DIK_RIGHT:
-		simon->SetState(STATE_SIMON_IDLE);
+	case DIK_Z:
+		if (simon->GetState() == STATE_SIMON_SIT_ATTACK)
+		{
+			if (game->IsKeyDown(DIK_DOWN))
+				simon->SetState(STATE_SIMON_SIT);
+			else
+				simon->SetState(STATE_SIMON_UP);
+		}
 		break;
 	}
 }
@@ -289,16 +306,15 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else if (game->IsKeyDown(DIK_UP))
+		{
 			simon->SetState(STATE_SIMON_ATTACK_KNIFE);
+		}
 		else
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
-
 	case DIK_X:
-		simon->SetState(STATE_SIMON_JUMP);
 		break;
 	case DIK_DOWN:
-		simon->SetState(STATE_SIMON_SIT);
 		break;
 	}
 }
@@ -308,21 +324,28 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = ((CPlayScene*)scene)->GetPlayer();
 	if (game->IsKeyDown(DIK_DOWN))
-		simon->SetState(STATE_SIMON_SIT);
-	else if (game->IsKeyDown(DIK_Z))
 	{
-		if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
-			simon->SetState(STATE_SIMON_UP);
+		if (game->IsKeyDown(DIK_Z))
+			simon->SetState(STATE_SIMON_SIT_ATTACK);
+		else
+			simon->SetState(STATE_SIMON_SIT);
 	}
+	//else if (game->IsKeyDown(DIK_Z))
+	//{
+	//	if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+	//		simon->SetState(STATE_SIMON_UP);
+	//}
+	else if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_DOWN))
+	{
+		simon->SetState(STATE_SIMON_SIT_ATTACK);
+	}
+	else if (game->IsKeyDown(DIK_X))
+		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
 		simon->SetState(STATE_SIMON_WALKING_RIGHT);
 	else if (game->IsKeyDown(DIK_LEFT))
 		simon->SetState(STATE_SIMON_WALKING_LEFT);
-	else if (game->IsKeyDown(DIK_X))
-	{
-		simon->SetState(STATE_SIMON_JUMP);
-	}
-	else
+	else if (!game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_Z))
 		simon->SetState(STATE_SIMON_IDLE);
 }
 #pragma endregion

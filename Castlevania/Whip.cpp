@@ -96,7 +96,7 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	else
 	{
 		left = x;
-		right = x + 138;
+		right = x + 145;
 		top = y;
 		bottom = y + WHIPUPGRADE_HEIGHT;
 

@@ -48,7 +48,6 @@ class CSimon : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD trans_start; // Simon bất tử
-	DWORD attack_start;
 	vector<CWeapon*> weapons;
 
 	static CSimon* __instance;
@@ -62,7 +61,9 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	//  Cần optimize lại, hạn chế sử dụng for
 	void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
-	//void CollisionWithBrick();
+	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listOBrick, float min_tx0, float min_ty0, int nx0, int ny0,float rdx0,float rdy0);
+	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listOBrick, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0);
+
 	CWhip* GetWeapon(int i = 0) { return (CWhip*)(weapons[0]); }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon

@@ -23,10 +23,10 @@ public:
 	CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
 	CSprite();
 
-	void Draw(float x, float y);
+	void Draw(float x, float y,int alpha=255);
 
-	void DrawFlipX(float x, float y); 
-	void DrawCam(float x, float y);
+	void DrawFlipX(float x, float y, int alpha = 255);
+	void DrawCam(float x, float y, int alpha = 255);
 
 	int getHeight() { return bottom - top; }
 	int getwidth() { return right - left; }

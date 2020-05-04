@@ -1,10 +1,10 @@
-#include "Torch.h"
+﻿#include "Torch.h"
 
 CTorch::CTorch(int id,int level) : CGameObject()
 {
 	dt_die = 0;
 	state = STATE_TORCH_EXSIST;
-	if (level == 0)
+	if (level == 0) // ý tưởng về sau dùng class này cho cách object static khác tương tự torch
 	{
 		AddAnimation(501);
 	}
@@ -35,7 +35,7 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		if (item != NULL)		// => c� item 
+		if (item != NULL)		// => có item 
 		{
 			if (GetTickCount() - dt_die > 250) // wait for the fire after stroke torch end
 			{
@@ -56,7 +56,7 @@ void CTorch::Render()
 	else 
 	{
 		if (GetTickCount() - dt_die < FIRE_TIME)
-			animations[1]->Render(x, y);
+			animations[1]->Render(x, y); // animation fire after torch was stroke
 	}
 	if (state == STATE_TORCH_ITEM_EXSIST)
 	{

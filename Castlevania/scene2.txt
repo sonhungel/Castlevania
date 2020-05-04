@@ -27,7 +27,7 @@
 10402	1190	131	1230	193	0
 10403	1230	131	1280	193	0
 #=======================BRICK===================
-9999	135	260	167	292	0
+9999	217	261	249	293	0
 #===================TORCH======================
 11000	13	246	45	310	0
 11001	45	246	72	310	0
@@ -95,18 +95,13 @@
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = SIMON , 1 = Brick , 2 = Torch 
+# type: 0 = SIMON , 1 = Brick , 2 = Torch
 # SIMON
 0	0	20	0
 # BRICK
-1	0	360	321
-# TORCH
+1	0	360	162
+
 # type 	x	y	type item
-# type 1: item whipUpgrade, 2: item knife, 3: item heart
-2	190	300	2
-2	416	300	2
-2	640	300	2
-2	864	300	2
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

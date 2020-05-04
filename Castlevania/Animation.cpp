@@ -16,7 +16,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
-void CAnimation::RenderTrend(float x, float y, int trend)
+void CAnimation::RenderTrend(float x, float y, int trend,int alpha)
 {
 	DWORD now = GetTickCount();
 	if (currentFrame == -1)
@@ -37,11 +37,11 @@ void CAnimation::RenderTrend(float x, float y, int trend)
 
 	}
 	if (trend < 0)
-		frames[currentFrame]->GetSprite()->Draw(x, y);
+		frames[currentFrame]->GetSprite()->Draw(x, y,alpha);
 	else
-		frames[currentFrame]->GetSprite()->DrawFlipX(x, y);
+		frames[currentFrame]->GetSprite()->DrawFlipX(x, y,alpha);
 }
-void CAnimation::Render(float x, float y)
+void CAnimation::Render(float x, float y,int alpha)
 {
 	DWORD now = GetTickCount();
 	if (currentFrame == -1)
@@ -57,12 +57,12 @@ void CAnimation::Render(float x, float y)
 			currentFrame++;
 			lastFrameTime = now;
 			if (currentFrame == frames.size()) currentFrame = 0;
-			DebugOut(L"now: %d, lastFrameTime: %d, t: %d\n", now, lastFrameTime, t);
+			//DebugOut(L"now: %d, lastFrameTime: %d, t: %d\n", now, lastFrameTime, t);
 		}
 
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	frames[currentFrame]->GetSprite()->Draw(x, y,alpha);
 }
 
 CAnimations* CAnimations::__instance = NULL;

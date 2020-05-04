@@ -6,6 +6,7 @@
 #include"Scene.h"
 #include"Textures.h"
 #include"Map.h"
+#include"Board.h"
 
 #include"Simon.h"
 #include"Brick.h"
@@ -16,8 +17,9 @@
 class CPlayScene:public CScene
 {
 protected:
-	CSimon* player;		
-	CMap* map;
+	CSimon* simon;		
+	//CMap* map;
+	CBoard* HUD;
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -34,7 +36,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 
-	CSimon* GetPlayer() { return player; }
+	CSimon* GetPlayer() { return simon; }
 
 	//friend class CPlayScenceKeyHandler;
 };

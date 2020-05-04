@@ -11,14 +11,21 @@ using namespace std;
 
 class CMap
 {
-
+	
 private:
+	int _idScene;
+	int _column;
+	int _row;
 	CMapTexture *texture;
 	int TileMap[200][200];
+	static CMap* __instance;
 public:
-	CMap(int idScene);
+	static CMap* GetInstance();
+
+	CMap(int idScene=1);
 	int getTile(int x, int y);
 	void LoadMap();
 	void DrawMap();
+	void SetMap(int id);
 };
 #endif 

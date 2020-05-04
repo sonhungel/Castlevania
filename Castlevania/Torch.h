@@ -20,9 +20,10 @@
 #define STATE_TORCH_ITEM_EXSIST		2
 #define STATE_TORCH_ITEM_NOT_EXSIST 3
 
-#define ID_ITEM_HEART				1
-#define ID_ITEM_WHIPUPGRADE			2
-#define ID_ITEM_KNIFE				3
+
+#define ID_ITEM_WHIPUPGRADE			1
+#define ID_ITEM_KNIFE				2
+#define ID_ITEM_HEART				3
 
 #define FIRE_TIME			300
 

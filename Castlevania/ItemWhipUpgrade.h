@@ -9,7 +9,7 @@
 //==========DEFINE================
 
 #define WHIPUPGRADE_WIDTH 38
-#define WHIPUPGRADE_HEIGHT 38
+#define WHIPUPGRADE_HEIGHT 35
 class CItemWhipUpgrade :public CItem
 {
 public:

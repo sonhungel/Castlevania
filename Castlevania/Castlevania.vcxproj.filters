@@ -19,9 +19,6 @@
     <Filter Include="GameObject">
       <UniqueIdentifier>{5c2212c4-985d-446b-8dde-54e67fa11b89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager Textures">
-      <UniqueIdentifier>{e012f30b-282d-4fda-bcef-af5ea3b07779}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Map">
       <UniqueIdentifier>{c09509ec-bafd-42fc-87b2-0c98f73fb5bd}</UniqueIdentifier>
     </Filter>
@@ -49,25 +46,31 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{0c9a9dfb-1c85-4d0b-a695-599323e21ce3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XML">
-      <UniqueIdentifier>{b4be041d-ce2f-4663-afc2-020b395b5fa3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Weapon\Weapon Base">
       <UniqueIdentifier>{e77ee8a7-4511-4afe-8cbc-f02c1c0791ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures &amp; Sprites">
+      <UniqueIdentifier>{e012f30b-282d-4fda-bcef-af5ea3b07779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Simon">
+      <UniqueIdentifier>{6204bb18-963a-418b-bf8f-16d981cede80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{fda0bc50-7095-4fbb-a265-c5b5a71a901c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Define">
+      <UniqueIdentifier>{eb7eed12-2d38-43a9-b796-600ddcef9b63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Simon.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Textures.h">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClInclude>
     <ClInclude Include="Sprites.h">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
@@ -79,7 +82,7 @@
       <Filter>KeyEventHandler</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>GameObject\Portal</Filter>
@@ -117,17 +120,20 @@
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="tinystr.h">
-      <Filter>XML</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml.h">
-      <Filter>XML</Filter>
-    </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>GameObject\Weapon\Weapon Base</Filter>
     </ClInclude>
     <ClInclude Include="MapTexture.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>GameObject\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Define</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,14 +143,11 @@
     <ClCompile Include="Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Simon.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Textures.cpp">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClCompile>
     <ClCompile Include="Sprites.cpp">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
@@ -153,7 +156,7 @@
       <Filter>GameObject\StaticObject</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Manager Textures</Filter>
+      <Filter>Textures &amp; Sprites</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>GameObject\Portal</Filter>
@@ -191,28 +194,17 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="tinystr.cpp">
-      <Filter>XML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml.cpp">
-      <Filter>XML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxmlerror.cpp">
-      <Filter>XML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxmlparser.cpp">
-      <Filter>XML</Filter>
-    </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>GameObject\Weapon\Weapon Base</Filter>
     </ClCompile>
     <ClCompile Include="MapTexture.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="XML_file\Scene 1.xml">
-      <Filter>XML</Filter>
-    </Xml>
+    <ClCompile Include="Simon.cpp">
+      <Filter>GameObject\Simon</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

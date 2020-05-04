@@ -22,7 +22,6 @@ CSimon::CSimon()
 	weapons.push_back(whip);
 	
 	untouchable = 0;
-	attack_start = 0;
 	trans_start = 0;
 	_heartCount = 5;
 
@@ -55,28 +54,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		vector<LPGAMEOBJECT> listTorch;
 		vector<LPGAMEOBJECT> listBrick;
-		vector<LPGAMEOBJECT> listObject;
-		vector<LPGAMEOBJECT> listItem;
 
 		// lọc object tương ứng vào từng list để thuận tiện cho việc xử lý va chạm cũng như update
-		for (int i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<CTorch*>(coObjects->at(i)))
-			{
-				CTorch* torch = dynamic_cast<CTorch*>(coObjects->at(i));
-				listTorch.push_back(torch);
-			}
-			else if (dynamic_cast<CBrick*>(coObjects->at(i)))
-			{
-				CBrick* brick = dynamic_cast<CBrick*>(coObjects->at(i));
-				listBrick.push_back(brick);
-			}
-			if (dynamic_cast<CItem*>(coObjects->at(i)))
-			{
-				CItem* item = dynamic_cast<CItem*>(coObjects->at(i));
-				listItem.push_back(item);
-			}
-		}
+		
 
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
@@ -84,8 +64,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			weapons[0]->SetPosition(x, y);
 			weapons[0]->SetTrend(nx);
 			weapons[0]->CollisionWithObject(dt, listTorch);
-			attack_start = GetTickCount();
 		}
+
+
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -94,7 +75,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		// turn off collision when die 
 		if (state != STATE_SIMON_DIE)
-			CalcPotentialCollisions(&listBrick, coEvents);
+			CalcPotentialCollisions(coObjects, coEvents);
 
 		// reset untouchable timer if untouchable time has passed
 		if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
@@ -109,70 +90,35 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			x += dx;
 			y += dy;
 		}
-		else
+		else // Xử lý collision for simon
 		{
 			float min_tx, min_ty, nx = 0, ny;
 			float rdx = 0;
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-			// block 
-			x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			y += min_ty * dy + ny * 0.4f;
-
-			if (nx != 0)
-				vx = 0;
-			if (ny != 0)
-				vy = 0;
-		}
-
-		coEvents.clear();
-
-		// turn off collision when die 
-		if (state != STATE_SIMON_DIE)
-			CalcPotentialCollisions(&listTorch, coEvents); // 
-
-		// reset untouchable timer if untouchable time has passed
-		if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
-		{
-			untouchable_start = 0;
-			untouchable = 0;
-		}
-		// collision occured, proceed normally
-		if (coEvents.size() > 0)
-		{
-			float min_tx, min_ty, nx = 0, ny;
-			float rdx = 0;
-			float rdy = 0;
-
-			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-			x += dx;
-
-			// Collision logic with item
 
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				LPCOLLISIONEVENT temp = coEventsResult[i];
-				if (dynamic_cast<CTorch*>(temp->obj)) // if e->obj is torch 
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				if (dynamic_cast<CBrick*>(e->obj))
 				{
-					CTorch* torch = dynamic_cast<CTorch*>(temp->obj);
-					if (torch->GetState() == STATE_TORCH_EXSIST)
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+					listBrick.push_back(brick);
+					CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
+					listBrick.clear();
+				}
+				if (dynamic_cast<CTorch*>(e->obj))
+				{
+					if (untouchable == 0)
 					{
-
-					}
-					else
-					{
-						if (dynamic_cast<CItem*>(torch->GetItem()))	// check item					
-						{
-							CItem* item = dynamic_cast<CItem*>(torch->GetItem());
-							listItem.push_back(item);
-							torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST); // item  eated
-						}
+						CTorch* torch = dynamic_cast<CTorch*>(e->obj);
+						listTorch.push_back(torch);
+						CollisionWithTorch(dt, listTorch, min_tx, min_ty, nx, ny, rdx, rdy);
 					}
 				}
 			}
-			CollisionWithItem(dt, listItem);
+			
 		}
 
 		// clean up collision events
@@ -201,6 +147,7 @@ void CSimon::Render()
 	else if (state == STATE_SIMON_STAND_ATTACK)
 	{
 		ani = ANI_SIMON_STANDING_ATTACKING;
+		weapons[0]->GetAnimation()->SetFrame(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame());
 		weapons[0]->Render();
 	}
 	else if(state== STATE_SIMON_SIT_ATTACK)
@@ -231,9 +178,10 @@ void CSimon::Render()
 			ani = ANI_SIMON_WALKING;
 		}
 	}
-	
-	
-	animations[ani]->RenderTrend(x, y, nx);
+
+	int alpha = 255;
+	if (untouchable) alpha = 128;
+	animations[ani]->RenderTrend(x, y, nx,alpha);
 
 	RenderBoundingBox();
 }
@@ -241,72 +189,68 @@ void CSimon::Render()
 
 void CSimon::SetState(int state)
 {
-	CGameObject::SetState(state);
-
-	switch (state)
+	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame()>0)
 	{
-	case STATE_SIMON_WALKING_RIGHT:
-		vx = SIMON_WALKING_SPEED;
-		nx = 1;
-		break;
-	case STATE_SIMON_WALKING_LEFT:
-		vx = -SIMON_WALKING_SPEED;
-		nx = -1;
-		break;
-	case STATE_SIMON_SIT:
-		//vx = 0;
-		break;
-	case STATE_SIMON_JUMP:
-		if (vy == 0) {
-			vy = -SIMON_JUMP_SPEED_Y;
-			//vx = 0;
-		}
-		break;
-	case STATE_SIMON_UP:
-		y -= 20;
-	case STATE_SIMON_IDLE:
-		vx = 0;
-		break;
-	case STATE_SIMON_STAND_ATTACK:
-		if (attack_start != 0)
-		{
-			if (GetTickCount() - attack_start >= ATTACK_TIME)
-				attack_start = 0;
-		}
-		else
-		{
-			attack_start = GetTickCount();
-			vx = 0;
-		}
-		break;
 
-	case STATE_SIMON_SIT_ATTACK:
-		if (attack_start != 0)
+	}
+	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
+	{
+
+	}
+	else if(trans_start>0)
+	{
+
+	}
+	else
+	{
+
+
+		CGameObject::SetState(state);
+		switch (state)
 		{
-			if (GetTickCount() - attack_start >= ATTACK_TIME)
-				attack_start = 0;
-		}
-		else 
-		{
-			attack_start = GetTickCount();
+		case STATE_SIMON_WALKING_RIGHT:
+			vx = SIMON_WALKING_SPEED;
+			nx = 1;
+			break;
+		case STATE_SIMON_WALKING_LEFT:
+			vx = -SIMON_WALKING_SPEED;
+			nx = -1;
+			break;
+		case STATE_SIMON_SIT:
 			vx = 0;
-		}
-		break;
-	case STATE_SIMON_ATTACK_KNIFE:
-		vx = 0;
-		if (weapons.size() > 1)
-		{
-			CKnife* knife = CKnife::GetInstance();
-			if (knife->GetState() == STATE_KNIFE_HIDE)
-			{
-				knife->SetState(STATE_KNIFE_APPEAR);
-				knife->SetPosition(x, y);
-				knife->SetTrend(nx);
+			break;
+		case STATE_SIMON_JUMP:
+			if (vy == 0) {
+				vy = -SIMON_JUMP_SPEED_Y;
+				vx = 0;
 			}
-		}
-	
-		break;
+			break;
+		case STATE_SIMON_UP:
+			y -= 20;
+		case STATE_SIMON_IDLE:
+			vx = 0;
+			break;
+		case STATE_SIMON_STAND_ATTACK:
+			vx = 0;
+			break;
+		case STATE_SIMON_SIT_ATTACK:
+			vx = 0;
+			break;
+		case STATE_SIMON_ATTACK_KNIFE:
+			vx = 0;
+			if (weapons.size() > 1)
+			{
+				CKnife* knife = CKnife::GetInstance();
+				if (knife->GetState() == STATE_KNIFE_HIDE)
+				{
+					knife->SetState(STATE_KNIFE_APPEAR);
+					knife->SetPosition(x, y);
+					knife->SetTrend(nx);
+				}
+			}
+			break;
 
+		}
 	}
 	
 }
@@ -337,6 +281,90 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			}
 		}
 	}
+}
+
+void CSimon::CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float min_tx0, float min_ty0, int nx0, int ny0, 
+																										float rdx0, float rdy0)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	// turn off collision when die 
+	if (state != STATE_SIMON_DIE)
+		CalcPotentialCollisions(&listBrick, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0;
+	float rdy = 0;
+
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+	// block 
+	if (min_tx <= min_tx0)
+		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+	if (min_ty <= min_ty0)
+		y += min_ty * dy + ny * 0.4f;
+
+	if (nx != 0)
+		vx = 0;
+	if (ny != 0)
+		vy = 0;
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	
+}
+
+void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	// turn off collision when die 
+
+	CalcPotentialCollisions(&listTorch, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0, rdy = 0;
+
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny,rdx,rdy);
+
+	//// block 
+	if (min_tx <= min_tx0)
+		x += dx;
+	if (min_ty <= min_ty0)
+		y += dy;
+	if (nx != 0) vx = 0;
+	if (ny != 0) vy = 0;
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	vector<LPGAMEOBJECT> listItem;
+	for (UINT i = 0; i < coEventsResult.size(); i++)
+	{
+		LPCOLLISIONEVENT temp = coEventsResult[i];
+		if (dynamic_cast<CTorch*>(temp->obj)) // if e->obj is torch 
+		{
+			CTorch* torch = dynamic_cast<CTorch*>(temp->obj);
+			if (torch->GetState() == STATE_TORCH_EXSIST)
+			{
+
+			}
+			else
+			{
+				if (dynamic_cast<CItem*>(torch->GetItem()))	// check item					
+				{
+					CItem* item = dynamic_cast<CItem*>(torch->GetItem());
+					listItem.push_back(item);
+					torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST);
+				}
+			}
+		}
+	}
+	CollisionWithItem(dt, listItem);
 }
 
 

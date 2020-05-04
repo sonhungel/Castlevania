@@ -1,22 +1,90 @@
 ﻿#include "Map.h"
 #include "fstream"
+#include"Game.h"
+
+CMap* CMap::__instance = NULL;
+
+CMap* CMap::GetInstance()
+{
+	if (__instance == NULL) __instance = new CMap();
+	return __instance;
+}
 
 CMap::CMap(int idScene)
 {
 	texture = new CMapTexture(idScene);
+	_idScene = idScene; 
+	_row = 6;
+	switch (idScene)
+	{
+	case 1:
+		_column = 24;
+		break;
+	case 21:
+		_column = 8;
+	case 22:
+		_column = 16;
+	case 3:
+		_column = 24;
+	case 4:
+		_column = 24;
+	case 5:
+		_column = 88;
+		break;
+	default:
+		break;
+	}
+	LoadMap();
 }
 void CMap::LoadMap()
 {
-
-	ifstream inFile("map/map.txt");
+	ifstream inFile;
+	switch (_idScene)
+	{
+	case 1:
+		inFile.open("map/map.txt");
+		break;
+	case 21:
+		inFile.open("map/map21.txt");
+	case 22:
+		inFile.open("map/map22.txt");
+	case 3:
+		inFile.open("map/map3.txt");
+	case 4:
+		inFile.open("map/map21.txt");
+	case 5:
+		break;
+	default:
+		break;
+	}
 
 	// If the file opened correctly then call load methods
 
-	for (int i = 0; i < 5; i++)
-		for (int j = 0; j < 24; j++)
+	for (int i = 0; i < _row; i++)
+	{
+		for (int j = 0; j < _column; j++)
 		{
 			inFile >> TileMap[i][j];
 		}
+	}
+}
+void CMap::SetMap(int idScene)
+{
+	_idScene = idScene;
+	switch (idScene)
+	{
+	case 0:
+		_column = 24;
+		_row = 6;
+		break;
+	case 1:
+		_column = 88;
+		_row = 12;
+		break;
+	default:
+		break;
+	}
+	LoadMap();
 }
 int CMap::getTile(int x, int y)
 {
@@ -26,14 +94,19 @@ int CMap::getTile(int x, int y)
 
 void CMap::DrawMap()
 {
-	for (int i = 0; i < 5; i++)
+	CGame* game = CGame::GetInstance();
+	CSprites* sprites = CSprites::GetInstance();
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
+	
+	for (int i = (int)(cam_y) / 64; i < (int)(cam_y + 560) / 64 + 3; i++)
 	{
+		for (int j = (int)(cam_x) / 64; j < (int)(cam_x + 560) / 64 + 3; j++)
 		{
-			for (int j = 0; j < 24; j++) 
-			{
-				
-				CSprites::GetInstance()->Get(getTile(i, j))->Draw(64 * j, 64 * i +40);
-			}
+			if (!(i < 0 || j >= _column))
+				sprites->Get(getTile(i, j))->Draw(64 * j, 64 * i + 40);
 		}
 	}
+	
+
 }
