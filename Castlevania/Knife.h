@@ -21,7 +21,7 @@
 #define STATE_KNIFE_APPEAR 1
 #define STATE_KNIFE_HIDE 0
 
-#define KNIFE_TIME 1000
+#define KNIFE_TIME 900
 
 class CKnife :public CWeapon
 {

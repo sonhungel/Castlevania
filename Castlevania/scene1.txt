@@ -99,7 +99,7 @@
 # SIMON
 0	0	20	0
 # BRICK
-1	0	360	321
+1	0	360	1
 # TORCH
 # type 	x	y	type item
 # type 1: item whipUpgrade, 2: item knife, 3: item heart
@@ -109,6 +109,6 @@
 2	864	300	2
 
 # --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-#50	115	98	0	148	150	1
+# type	x	y	scene_id
+50	250	300	2
 

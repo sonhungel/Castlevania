@@ -1,13 +1,12 @@
 #include "Portal.h"
 
 
-CPortal::CPortal(float l, float t, float r, float b, int scene_id )
+CPortal::CPortal(float left, float top,int scene_id ):CGameObject()
 {
 	this->scene_id = scene_id;
-	x = l; 
-	y = t;
-	width = r - l + 1;
-	height = b - t + 1;
+	x = left; 
+	y = top;
+
 }
 
 void CPortal::Render()
@@ -15,10 +14,10 @@ void CPortal::Render()
 	RenderBoundingBox();
 }
 
-void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)
+void CPortal::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	l = x;
-	t = y;
-	r = x + width;
-	b = y + height;
+	left = x;
+	top = y;
+	right = x + PORTAL_WIDTH;
+	bottom = y + PORTAL_HEIGHT;
 }

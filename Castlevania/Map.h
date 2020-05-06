@@ -17,7 +17,7 @@ private:
 	int _column;
 	int _row;
 	CMapTexture *texture;
-	int TileMap[200][200];
+	int TileMap[100][100];
 	static CMap* __instance;
 public:
 	static CMap* GetInstance();
@@ -27,5 +27,6 @@ public:
 	void LoadMap();
 	void DrawMap();
 	void SetMap(int id);
+	int GetColumn() { return _column; }
 };
 #endif 

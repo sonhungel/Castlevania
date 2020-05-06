@@ -12,7 +12,12 @@
 #include"Brick.h"
 #include"Torch.h"
 
-
+#define ID_SCENE_MAP_1	1
+#define ID_SCENE_MAP_2	2
+#define ID_SCENE_MAP_3	3
+#define ID_SCENE_MAP_4	4
+#define ID_SCENE_MAP_5	5
+#define ID_SCENE_MAP_6	6
 
 class CPlayScene:public CScene
 {
@@ -28,6 +33,8 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	// Bỏ qua animation_set
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_MAP(string line);
+
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 

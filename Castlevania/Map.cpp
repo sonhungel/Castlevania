@@ -20,15 +20,15 @@ CMap::CMap(int idScene)
 	case 1:
 		_column = 24;
 		break;
-	case 21:
+	case 2:
 		_column = 8;
-	case 22:
-		_column = 16;
 	case 3:
-		_column = 24;
+		_column = 16;
 	case 4:
 		_column = 24;
 	case 5:
+		_column = 24;
+	case 6:
 		_column = 88;
 		break;
 	default:
@@ -42,17 +42,21 @@ void CMap::LoadMap()
 	switch (_idScene)
 	{
 	case 1:
-		inFile.open("map/map.txt");
+		inFile.open("map/map1.txt");
 		break;
-	case 21:
-		inFile.open("map/map21.txt");
-	case 22:
-		inFile.open("map/map22.txt");
+	case 2:
+		inFile.open("map/map2.txt");
+		break;
 	case 3:
 		inFile.open("map/map3.txt");
+		break;
 	case 4:
-		inFile.open("map/map21.txt");
+		inFile.open("map/map45.txt");
+		break;
 	case 5:
+		inFile.open("map/map45.txt");
+		break;
+	case 6:
 		break;
 	default:
 		break;
@@ -104,7 +108,7 @@ void CMap::DrawMap()
 		for (int j = (int)(cam_x) / 64; j < (int)(cam_x + 560) / 64 + 3; j++)
 		{
 			if (!(i < 0 || j >= _column))
-				sprites->Get(getTile(i, j))->Draw(64 * j, 64 * i + 40);
+				sprites->Get(getTile(i, j))->Draw(64 * j, 64 * i ,255);
 		}
 	}
 	

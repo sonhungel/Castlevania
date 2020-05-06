@@ -9,9 +9,8 @@ class CBrick : public CGameObject
 {
 	int _width;	// vì scene đỏ và xanh dương có sprite rất bé so với thiết kế, nên brick cũng phải giảm nhỏ bounding box
 public:
-	CBrick(int scene) :CGameObject()
+	CBrick() :CGameObject()
 	{
-		_width = scene;
 		AddAnimation(499);
 	}
 	virtual void Render();

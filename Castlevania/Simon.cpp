@@ -7,6 +7,7 @@
 #include"Whip.h"
 #include"Brick.h"
 #include"Knife.h"
+#include"Portal.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -45,27 +46,26 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
 
+		if (CGame::GetInstance()->GetIDCurrentScene() == 1)
+		{
+			if (x < 0)
+				x = 0;
+			if (x > 1370)
+				x = 1370;
+		}
+
 		// Simple fall down
 		vy += SIMON_GRAVITY * dt;
-		if (x < 0)
-			x = 0;
-		if (x > 1370)
-			x = 1370;
 
 		vector<LPGAMEOBJECT> listTorch;
 		vector<LPGAMEOBJECT> listBrick;
-
-		// lọc object tương ứng vào từng list để thuận tiện cho việc xử lý va chạm cũng như update
-		
-
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
 			//weapon 0 is whip
 			weapons[0]->SetPosition(x, y);
 			weapons[0]->SetTrend(nx);
-			weapons[0]->CollisionWithObject(dt, listTorch);
+			weapons[0]->CollisionWithObject(dt, *coObjects);
 		}
-
 
 
 		vector<LPCOLLISIONEVENT> coEvents;
@@ -74,7 +74,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		coEvents.clear();
 
 		// turn off collision when die 
-		if (state != STATE_SIMON_DIE)
+		//if (state != STATE_SIMON_DIE)
 			CalcPotentialCollisions(coObjects, coEvents);
 
 		// reset untouchable timer if untouchable time has passed
@@ -97,19 +97,30 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		//
+		// Collision logic with objects
+		//
 
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick*>(e->obj))
+				if (dynamic_cast<CPortal*>(e->obj))
+				{
+					CPortal* portal = dynamic_cast<CPortal*>(e->obj);
+					DebugOut(L"[INFO] Collision with portal\n");
+					//CPortal* p = dynamic_cast<CPortal*>(e->obj);
+					CGame::GetInstance()->SwitchScene(portal->GetSceneId());
+				}
+				else if (dynamic_cast<CBrick*>(e->obj))
 				{
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 					listBrick.push_back(brick);
 					CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
 					listBrick.clear();
 				}
-				if (dynamic_cast<CTorch*>(e->obj))
+				else if (dynamic_cast<CTorch*>(e->obj))
 				{
+				//	DebugOut(L"[INFO] Collision with Torch\n");
 					if (untouchable == 0)
 					{
 						CTorch* torch = dynamic_cast<CTorch*>(e->obj);
@@ -117,10 +128,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						CollisionWithTorch(dt, listTorch, min_tx, min_ty, nx, ny, rdx, rdy);
 					}
 				}
+
 			}
 			
 		}
-
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
@@ -152,6 +163,7 @@ void CSimon::Render()
 	}
 	else if(state== STATE_SIMON_SIT_ATTACK)
 	{
+		weapons[0]->GetAnimation()->SetFrame(animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame());
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		weapons[0]->Render();
 	}
@@ -191,20 +203,15 @@ void CSimon::SetState(int state)
 {
 	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame()>0)
 	{
-
 	}
 	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
 	{
-
 	}
 	else if(trans_start>0)
 	{
-
 	}
 	else
 	{
-
-
 		CGameObject::SetState(state);
 		switch (state)
 		{
@@ -343,29 +350,27 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	vector<LPGAMEOBJECT> listItem;
-	for (UINT i = 0; i < coEventsResult.size(); i++)
+	for (UINT i = 0; i < listTorch.size(); i++)
 	{
-		LPCOLLISIONEVENT temp = coEventsResult[i];
-		if (dynamic_cast<CTorch*>(temp->obj)) // if e->obj is torch 
+		CTorch* torch = dynamic_cast<CTorch*>(listTorch.at(i));	// Check torch is true??
+		if (torch->GetState() == STATE_TORCH_EXSIST)
 		{
-			CTorch* torch = dynamic_cast<CTorch*>(temp->obj);
-			if (torch->GetState() == STATE_TORCH_EXSIST)
+			//torch->SetState(STATE_TORCH_NOT_EXSIST);
+		}
+		else
+		{
+			if (dynamic_cast<CItem*>(torch->GetItem()))	// check item					
 			{
-
-			}
-			else
-			{
-				if (dynamic_cast<CItem*>(torch->GetItem()))	// check item					
-				{
-					CItem* item = dynamic_cast<CItem*>(torch->GetItem());
-					listItem.push_back(item);
-					torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST);
-				}
+				CItem* item = dynamic_cast<CItem*>(torch->GetItem());
+				listItem.push_back(item);
+				torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST);	// item was eated
 			}
 		}
 	}
 	CollisionWithItem(dt, listItem);
 }
+
+
 
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)

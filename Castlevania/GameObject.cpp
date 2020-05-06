@@ -44,9 +44,6 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 	float rdx = this->dx - sdx;
 	float rdy = this->dy - sdy;
 
-	//float dx = this->dx - sdx;
-	//float dy = this->dy - sdy;
-
 	GetBoundingBox(ml, mt, mr, mb);
 
 	CGame::SweptAABB(

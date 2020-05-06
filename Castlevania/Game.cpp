@@ -35,6 +35,9 @@ void CGame::Init(HWND hWnd)
 	d3dpp.BackBufferHeight = r.bottom + 1;
 	d3dpp.BackBufferWidth = r.right + 1;
 
+	//screen_height = r.bottom + 1;
+	//screen_width = r.right + 1;
+
 	d3d->CreateDevice(
 		D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
@@ -63,8 +66,6 @@ void CGame::Init(HWND hWnd)
 void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
 {
 
-	//D3DXVECTOR3 p(floor(x), floor(y), 0); // https://docs.microsoft.com/vi-vn/windows/desktop/direct3d9/directly-mapping-texels-to-pixels
-	// Try removing floor() to see blurry Mario
 	D3DXVECTOR3 p(floor(x - cam_x), floor(y - cam_y), 0);
 	RECT r;
 	r.left = left;
@@ -76,8 +77,6 @@ void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top
 
 void CGame::DrawFlipX(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
 {
-	//D3DXVECTOR3 p(floor(x), floor(y), 0); // https://docs.microsoft.com/vi-vn/windows/desktop/direct3d9/directly-mapping-texels-to-pixels
-	// Try removing floor() to see blurry Mario
 	D3DXVECTOR3 p(floor(x + cam_x), floor(y + cam_y), 0);
 	RECT r;
 	r.left = left;
@@ -91,6 +90,12 @@ int CGame::IsKeyDown(int KeyCode)
 {
 	return (keyStates[KeyCode] & 0x80) > 0;
 }
+
+#define MAX_GAME_LINE 1024
+
+#define GAME_FILE_SECTION_UNKNOWN -1
+#define GAME_FILE_SECTION_SETTINGS 1
+#define GAME_FILE_SECTION_SCENES 2
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -232,11 +237,7 @@ void CGame::ProcessKeyboard()
 			keyHandler->OnKeyUp(KeyCode);
 	}
 }
-#define MAX_GAME_LINE 1024
 
-#define GAME_FILE_SECTION_UNKNOWN -1
-#define GAME_FILE_SECTION_SETTINGS 1
-#define GAME_FILE_SECTION_SCENES 2
 
 void CGame::Load(LPCWSTR gameFile)
 {
@@ -356,8 +357,8 @@ void CGame::SweptAABB(
 
 	if (dx == 0)
 	{
-		tx_entry = -99999999999;
-		tx_exit = 99999999999;
+		tx_entry = -999999.0f;
+		tx_exit = 999999.0f;
 	}
 	else
 	{
@@ -367,8 +368,8 @@ void CGame::SweptAABB(
 
 	if (dy == 0)
 	{
-		ty_entry = -99999999999;
-		ty_exit = 99999999999;
+		ty_entry = -99999.0f;
+		ty_exit = 99999.0f;
 	}
 	else
 	{

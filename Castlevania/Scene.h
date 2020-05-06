@@ -23,6 +23,7 @@ public:
 	CScene(int id, LPCWSTR filepath);
 
 	CKeyEventHandler* GetKeyEventHandler() { return key_handler; }
+
 	virtual void Load() = 0;
 	virtual void UnLoad() = 0;
 	virtual void Update(DWORD dt) = 0;

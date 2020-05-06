@@ -23,11 +23,13 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 */
 
 
+
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_OBJECTS	5
+#define SCENE_SECTION_MAP	6
 
 #define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
@@ -111,8 +113,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-	float item= atof(tokens[3].c_str());
-
+	
 
 	CGameObject* obj = NULL;
 
@@ -127,47 +128,70 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CSimon();
 		obj->SetPosition(x, y);
 		simon = (CSimon*)obj;
-		objects.push_back(obj);
+		//objects.push_back(obj);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_TORCH: obj = new CTorch(item); 
+	case OBJECT_TYPE_TORCH: 
+	{
+		float item = atof(tokens[3].c_str());
+		obj = new CTorch(item);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		objects.push_back(obj); 
+	}
+		break;
 	case OBJECT_TYPE_BRICK:
-		if (item == 321)
+	{
+		float map = atof(tokens[3].c_str());
+		if (map == 1)
 		{
 			for (int i = 0; i < 96; i++)
 			{
-				obj = new CBrick(32);
+				obj = new CBrick();
 				obj->SetPosition(i * 32, 360);
 				objects.push_back(obj);
 			}
 		}
-		if (item == 162)
+		if (map == 2)
 		{
-			for (int i = 0; i < 40; i++)
+			for (int i = 0; i < 20; i++)
 			{
-				obj = new CBrick(32);
+				obj = new CBrick();
 				obj->SetPosition(i * 32, 360);
 				objects.push_back(obj);
 			}
 		}
+	}
 		break;
-	//case OBJECT_TYPE_PORTAL:
-
+	case OBJECT_TYPE_PORTAL:
+	{
+		int scene_id = atoi(tokens[3].c_str());
+		obj = new CPortal(x, y,  scene_id);
+		objects.push_back(obj);
+	}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 	
 	objects.push_back(CKnife::GetInstance());
+}
 
+void CPlayScene::_ParseSection_MAP(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 5) return; // skip invalid lines
+
+	int IDMap = atoi(tokens[0].c_str());
+
+	//map->SetMap(IDMap);
 }
 
 
 void CPlayScene::Load()
 {
-	//map = new CMap();
+	//map = new CMap(CGame::GetInstance()->GetIdScene());
 	HUD = new CBoard();
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
 
@@ -195,6 +219,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line == "[MAP]")
+		{
+			section = SCENE_SECTION_MAP; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -206,6 +234,7 @@ void CPlayScene::Load()
 		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_MAP:_ParseSection_MAP(line); break;
 		}
 	}
 
@@ -246,6 +275,7 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (simon == NULL) return;
 
+	simon->Update(dt, &coObjects);
 	// Update camera to follow mario
 	float cx, cy;
 	simon->GetPosition(cx, cy);
@@ -254,7 +284,7 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2+220;
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cx < 0) cx = 0; if (cx > 966) cx = 966;
+	//if (cx < 0) cx = 0; if (cx > 966) cx = 966;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	HUD->Update(dt);
 }
@@ -265,6 +295,7 @@ void CPlayScene::Render()
 	HUD->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	simon->Render();
 	
 }
 

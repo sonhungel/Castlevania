@@ -99,11 +99,10 @@
 # SIMON
 0	0	20	0
 # BRICK
-1	0	360	162
+1	0	360	2
 
 # type 	x	y	type item
 
 # --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-#50	115	98	0	148	150	1
-
+# type	x	y	scene_id
+50	300	300	1
