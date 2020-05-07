@@ -23,15 +23,10 @@ class CPlayScene:public CScene
 {
 protected:
 	CSimon* simon;		
-	//CMap* map;
+	CMap* map;
 	CBoard* HUD;
-
+	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
-
-	void _ParseSection_TEXTURES(string line);
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
-	// Bỏ qua animation_set
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);
 

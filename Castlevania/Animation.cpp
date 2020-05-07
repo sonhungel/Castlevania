@@ -75,11 +75,14 @@ CAnimations* CAnimations::GetInstance()
 
 void CAnimations::Add(int id, LPANIMATION ani)
 {
+	DebugOut(L"Add animation\n");
 	animations[id] = ani;
 }
 
 LPANIMATION CAnimations::Get(int id)
 {
+	//if (animations[id] == NULL)
+		//DebugOut(L"[ERROR] loiiiiiii\n");
 	LPANIMATION ani = animations[id];
 	if (ani == NULL)
 		DebugOut(L"[ERROR] Failed to find animation id: %d\n", id);

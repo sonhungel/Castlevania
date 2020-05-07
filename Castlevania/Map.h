@@ -16,7 +16,6 @@ private:
 	int _idScene;
 	int _column;
 	int _row;
-	CMapTexture *texture;
 	int TileMap[100][100];
 	static CMap* __instance;
 public:

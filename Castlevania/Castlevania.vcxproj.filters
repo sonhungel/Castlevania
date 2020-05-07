@@ -135,6 +135,9 @@
     <ClInclude Include="Define.h">
       <Filter>Define</Filter>
     </ClInclude>
+    <ClInclude Include="SecondaryWeapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="SecondaryWeapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

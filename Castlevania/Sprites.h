@@ -48,7 +48,6 @@ class CSprites
 
 public:
 	void Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
-	void Add(LPSPRITE lpsprite); // load file txt 
 	LPSPRITE Get(int id);
 	void CSprites::Clear();
 

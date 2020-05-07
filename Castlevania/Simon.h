@@ -48,12 +48,13 @@ class CSimon : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD trans_start; // Simon bất tử
-	vector<CWeapon*> weapons;
+	CWhip* whip;
+	bool subWeapon = false;
 
-	static CSimon* __instance;
+	//static CSimon* __instance;
 	int _heartCount;	// Count the number for the score, not a blood for simon
 public:
-	static CSimon* GetInstance();
+	//static CSimon* GetInstance();
 	CSimon();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -64,7 +65,7 @@ public:
 	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listOBrick, float min_tx0, float min_ty0, int nx0, int ny0,float rdx0,float rdy0);
 	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listOBrick, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0);
 
-	CWhip* GetWeapon(int i = 0) { return (CWhip*)(weapons[0]); }
+	//CWhip* GetWeapon(int i = 0) { return (CWhip*)(weapons[0]); }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 	int GetHeart() { return _heartCount; } // for HUD

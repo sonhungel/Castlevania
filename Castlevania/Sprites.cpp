@@ -91,10 +91,6 @@ void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DT
 	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
 }
 
-void CSprites::Add(LPSPRITE lpsprite)
-{
-	sprites[lpsprite->getID()] = lpsprite;
-}
 
 LPSPRITE CSprites::Get(int id)
 {

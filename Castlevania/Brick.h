@@ -3,15 +3,22 @@
 #define __BRICK_H_
 
 #include "GameObject.h"
+#include"Game.h"
 
 #define BRICK_WIDTH  32
 class CBrick : public CGameObject
 {
-	int _width;	// vì scene đỏ và xanh dương có sprite rất bé so với thiết kế, nên brick cũng phải giảm nhỏ bounding box
 public:
 	CBrick() :CGameObject()
 	{
-		AddAnimation(499);
+		if(CGame::GetInstance()->GetIDCurrentScene()==1)
+			AddAnimation(496);
+		if(CGame::GetInstance()->GetIDCurrentScene()==2|| CGame::GetInstance()->GetIDCurrentScene() == 3)
+			AddAnimation(497);
+		if (CGame::GetInstance()->GetIDCurrentScene() == 4 || CGame::GetInstance()->GetIDCurrentScene() == 5)
+			AddAnimation(498);
+		if (CGame::GetInstance()->GetIDCurrentScene() == 6)
+			AddAnimation(499);
 	}
 	virtual void Render();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

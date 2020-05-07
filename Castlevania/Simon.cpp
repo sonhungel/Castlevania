@@ -9,18 +9,17 @@
 #include"Knife.h"
 #include"Portal.h"
 
-CSimon* CSimon::__instance = NULL;
+//CSimon* CSimon::__instance = NULL;
 
-CSimon* CSimon::GetInstance()
-{
-	if (__instance == NULL) __instance = new CSimon();
-	return __instance;
-}
+//CSimon* CSimon::GetInstance()
+//{
+//	if (__instance == NULL) __instance = new CSimon();
+//	return __instance;
+//}
 
 CSimon::CSimon()
 {
-	CWhip *whip = CWhip::GetInstance();
-	weapons.push_back(whip);
+	whip = new CWhip();
 	
 	untouchable = 0;
 	trans_start = 0;
@@ -61,10 +60,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vector<LPGAMEOBJECT> listBrick;
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
-			//weapon 0 is whip
-			weapons[0]->SetPosition(x, y);
-			weapons[0]->SetTrend(nx);
-			weapons[0]->CollisionWithObject(dt, *coObjects);
+			
+			whip->SetPosition(x, y);
+			whip->SetTrend(nx);
+			whip->CollisionWithObject(dt, *coObjects);
 		}
 
 
@@ -106,10 +105,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CPortal*>(e->obj))
 				{
-					CPortal* portal = dynamic_cast<CPortal*>(e->obj);
+					//CPortal* portal = dynamic_cast<CPortal*>(e->obj);
 					DebugOut(L"[INFO] Collision with portal\n");
 					//CPortal* p = dynamic_cast<CPortal*>(e->obj);
-					CGame::GetInstance()->SwitchScene(portal->GetSceneId());
+					//CGame::GetInstance()->SwitchScene(2);
 				}
 				else if (dynamic_cast<CBrick*>(e->obj))
 				{
@@ -158,18 +157,18 @@ void CSimon::Render()
 	else if (state == STATE_SIMON_STAND_ATTACK)
 	{
 		ani = ANI_SIMON_STANDING_ATTACKING;
-		weapons[0]->GetAnimation()->SetFrame(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame());
-		weapons[0]->Render();
+		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame());
+		whip->Render();
 	}
 	else if(state== STATE_SIMON_SIT_ATTACK)
 	{
-		weapons[0]->GetAnimation()->SetFrame(animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame());
+		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame());
 		ani = ANI_SIMON_SITTING_ATTACKING;
-		weapons[0]->Render();
+		whip->Render();
 	}
 	else if (state == STATE_SIMON_ATTACK_KNIFE)
 	{
-		if(weapons.size()>1)
+		if(subWeapon)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else if (trans_start > 0) {
@@ -245,7 +244,7 @@ void CSimon::SetState(int state)
 			break;
 		case STATE_SIMON_ATTACK_KNIFE:
 			vx = 0;
-			if (weapons.size() > 1)
+			if (subWeapon)
 			{
 				CKnife* knife = CKnife::GetInstance();
 				if (knife->GetState() == STATE_KNIFE_HIDE)
@@ -276,14 +275,14 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)	// item whipUpgrade
 			{
 				trans_start = GetTickCount();
-				CWhip::GetInstance()->setUpLevel();
+				whip->setUpLevel();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)	// item knife
 			{
 				trans_start = GetTickCount();
 				CKnife* knife = CKnife::GetInstance();
-				weapons.push_back(knife);
+				subWeapon = true;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}

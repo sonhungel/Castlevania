@@ -16,7 +16,7 @@
 #define KNIFE_EXSIST	1
 #define KNIFE_NOT_EXSIST	0
 
-#define KNIFE_SPEED 0.1f
+#define KNIFE_SPEED 0.07f
 
 #define STATE_KNIFE_APPEAR 1
 #define STATE_KNIFE_HIDE 0

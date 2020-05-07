@@ -17,7 +17,6 @@ protected:
 	CKeyEventHandler* key_handler;
 	int id;	// scene id
 	LPCWSTR sceneFilePath;
-	//char* sceneFileNameXML;
 	
 public:
 	CScene(int id, LPCWSTR filepath);

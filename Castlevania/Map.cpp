@@ -12,24 +12,34 @@ CMap* CMap::GetInstance()
 
 CMap::CMap(int idScene)
 {
-	texture = new CMapTexture(idScene);
+	//texture = new CMapTexture(idScene);
 	_idScene = idScene; 
-	_row = 6;
+	
 	switch (idScene)
 	{
 	case 1:
-		_column = 24;
+		_column = 48;
+		_row = 9;
 		break;
 	case 2:
-		_column = 8;
+		_column = 17;
+		_row = 11;
+		break;
 	case 3:
-		_column = 16;
+		_column = 34;
+		_row = 12;
+		break;
 	case 4:
-		_column = 24;
+		_column = 50;
+		_row = 12;
+		break;
 	case 5:
-		_column = 24;
+		_column = 48;
+		_row = 12;
+		break;
 	case 6:
-		_column = 88;
+		_column = 48;
+		_row = 11;
 		break;
 	default:
 		break;
@@ -42,21 +52,22 @@ void CMap::LoadMap()
 	switch (_idScene)
 	{
 	case 1:
-		inFile.open("map/map1.txt");
+		inFile.open("map/Map1.txt");
 		break;
 	case 2:
-		inFile.open("map/map2.txt");
+		inFile.open("map/Map2.txt");
 		break;
 	case 3:
-		inFile.open("map/map3.txt");
+		inFile.open("map/Map3.txt");
 		break;
 	case 4:
-		inFile.open("map/map45.txt");
+		inFile.open("map/Map4.txt");
 		break;
 	case 5:
-		inFile.open("map/map45.txt");
+		inFile.open("map/map5.txt");
 		break;
 	case 6:
+		inFile.open("map/Map6.txt");
 		break;
 	default:
 		break;
@@ -77,13 +88,29 @@ void CMap::SetMap(int idScene)
 	_idScene = idScene;
 	switch (idScene)
 	{
-	case 0:
-		_column = 24;
-		_row = 6;
-		break;
 	case 1:
-		_column = 88;
+		_column = 48;
+		_row = 9;
+		break;
+	case 2:
+		_column = 17;
+		_row = 11;
+		break;
+	case 3:
+		_column = 34;
 		_row = 12;
+		break;
+	case 4:
+		_column = 50;
+		_row = 12;
+		break;
+	case 5:
+		_column = 48;
+		_row = 12;
+		break;
+	case 6:
+		_column = 48;
+		_row = 11;
 		break;
 	default:
 		break;
@@ -98,19 +125,46 @@ int CMap::getTile(int x, int y)
 
 void CMap::DrawMap()
 {
-	CGame* game = CGame::GetInstance();
-	CSprites* sprites = CSprites::GetInstance();
-	float cam_x, cam_y;
-	game->GetCamPos(cam_x, cam_y);
-	
-	for (int i = (int)(cam_y) / 64; i < (int)(cam_y + 560) / 64 + 3; i++)
+	int tag = CGame::GetInstance()->GetIDCurrentScene();
+	int index;// hệ số phân định id sprite
+	int align;// hệ số căn chỉnh
+	switch (tag)
 	{
-		for (int j = (int)(cam_x) / 64; j < (int)(cam_x + 560) / 64 + 3; j++)
+	case 1:
+		index = 0;
+		align = 75;
+		break;
+	case 2:
+		index = 1000;
+		align = 10;
+		break;
+	case 3:
+		index = 2000;
+		align = 75;
+		break;
+	case 4:
+		index = 3000;
+		align = 75;
+		break;
+	case 5:
+		index = 4000;
+		align = 75;
+		break;
+	case 6:
+		index = 5000;
+		align = 75;
+		break;
+	default:
+		break;
+	}
+	CSprites* sprites = CSprites::GetInstance();
+
+	for (int i = 0; i < _row; i++)
+	{
+		for (int j = 0; j < _column; j++)
 		{
-			if (!(i < 0 || j >= _column))
-				sprites->Get(getTile(i, j))->Draw(64 * j, 64 * i ,255);
+			sprites->Get(getTile(i, j)+index)->Draw(32 * j, 32 * i + align, 255);
 		}
 	}
 	
-
 }

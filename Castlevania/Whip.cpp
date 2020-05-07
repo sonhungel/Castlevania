@@ -3,13 +3,13 @@
 #include "Torch.h"
 #include "Game.h"
 
-CWhip* CWhip::__instance = NULL;
+//CWhip* CWhip::__instance = NULL;
 
-CWhip* CWhip::GetInstance()
-{
-	if (__instance == NULL) __instance = new CWhip();
-	return __instance;
-}
+//CWhip* CWhip::GetInstance()
+//{
+//	if (__instance == NULL) __instance = new CWhip();
+//	return __instance;
+//}
 
 CWhip::CWhip()
 {
