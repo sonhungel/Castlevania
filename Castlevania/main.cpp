@@ -9,6 +9,7 @@
 #include"KeyEventHandler.h"
 #include"Animation.h"
 #include"Sprites.h"
+#include"fstream"
 
 #include "Simon.h"
 #include"Map.h"
@@ -141,7 +142,7 @@ void LoadResources()
 		if (line == "[ANIMATIONS]") {
 			section = SCENE_SECTION_ANIMATIONS; continue;
 		}
-		//if (line == "[MAP]")
+		//if (line == "[MAP_TEXTURES]")
 		//{
 		//}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }

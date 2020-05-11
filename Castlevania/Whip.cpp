@@ -2,17 +2,19 @@
 #include "Whip.h"
 #include "Torch.h"
 #include "Game.h"
+#include"Effect.h"
 
-//CWhip* CWhip::__instance = NULL;
+CWhip* CWhip::__instance = NULL;
 
-//CWhip* CWhip::GetInstance()
-//{
-//	if (__instance == NULL) __instance = new CWhip();
-//	return __instance;
-//}
+CWhip* CWhip::GetInstance()
+{
+	if (__instance == NULL) __instance = new CWhip();
+	return __instance;
+}
 
 CWhip::CWhip()
 {
+	dt_effect = 0;
 	_level = 1;
 	AddAnimation(600);
 	AddAnimation(601); // level 2
@@ -123,8 +125,10 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
+			
 			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
 			{
+				
 				// get bounding box of the object that whip collision
 				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2); 
 				rect2.left = (int)l2;
@@ -133,6 +137,7 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
+					MakeEffect(listObj.at(i), 800);
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
 
 				}

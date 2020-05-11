@@ -3,6 +3,7 @@
 #define __WEAPON_H_
 #include"GameObject.h"
 #include"Textures.h"
+#include"Effect.h"
 
 
 
@@ -11,12 +12,15 @@
 #define WEAPON_NOT_EXSIST 0
 #define WEAPON_EXSIST 1 
 
+#define ANIMATION_EFFECT_FIRE 800
 
 class CWeapon :public CGameObject
-{
+{protected:
+	DWORD dt_effect;
 public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
+	virtual void MakeEffect(LPGAMEOBJECT obj,int animationID);
 	virtual CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };
 

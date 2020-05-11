@@ -14,7 +14,7 @@
 # type	x	y	extra_settings per object type
 # type: 0 = SIMON , 1 = Brick , 2 = Torch 
 # SIMON
-0	0	20	0
+0	1000	20	0
 # BRICK
 1	0	360	1
 # TORCH
@@ -27,7 +27,10 @@
 
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
-#50	250	300	2
-[MAP]
-# idScene	x	y	row	column
+50	1400	300	2
+[MAP_TEXTURES]
+#idScene	x	y	rowSprite	columnSprite
 1	13	909	4	17
+[MAP]
+# filePath	column	row	index	align
+map/Map1.txt	48	9	0	75

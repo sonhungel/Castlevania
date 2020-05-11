@@ -61,6 +61,12 @@
     <Filter Include="Define">
       <UniqueIdentifier>{eb7eed12-2d38-43a9-b796-600ddcef9b63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\HidenObjects">
+      <UniqueIdentifier>{0e509ae4-1786-4250-b5f5-cd4b75d57492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Effect">
+      <UniqueIdentifier>{9081dc12-9ebc-4a9d-9afd-706ad4b11a7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -123,9 +129,6 @@
     <ClInclude Include="Weapon.h">
       <Filter>GameObject\Weapon\Weapon Base</Filter>
     </ClInclude>
-    <ClInclude Include="MapTexture.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>GameObject\Simon</Filter>
     </ClInclude>
@@ -137,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="SecondaryWeapon.h">
       <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="HidenObject.h">
+      <Filter>GameObject\HidenObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>GameObject\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,9 +209,6 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>GameObject\Weapon\Weapon Base</Filter>
     </ClCompile>
-    <ClCompile Include="MapTexture.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Simon.cpp">
       <Filter>GameObject\Simon</Filter>
     </ClCompile>
@@ -211,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="SecondaryWeapon.cpp">
       <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="HidenObject.cpp">
+      <Filter>GameObject\HidenObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

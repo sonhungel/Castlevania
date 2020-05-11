@@ -9,7 +9,7 @@ CTorch::CTorch(int id,int level) : CGameObject()
 		AddAnimation(501);
 	}
 	
-	AddAnimation(800);	// fire after stroke torch
+	//AddAnimation(800);	// fire after stroke torch
 	switch (id)
 	{
 	case ID_ITEM_HEART:
@@ -37,11 +37,11 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (item != NULL)		// => có item 
 		{
-			if (GetTickCount() - dt_die > 250) // wait for the fire after stroke torch end
-			{
+			//if (GetTickCount() - dt_die > 250) // wait for the fire after stroke torch end
+			//{
 				state = STATE_TORCH_ITEM_EXSIST;
 				item->Update(dt, coObjects);
-			}
+			//}
 		}
 	}
 }
@@ -53,11 +53,11 @@ void CTorch::Render()
 		animations[0]->Render(x, y);
 		
 	}
-	else 
-	{
-		if (GetTickCount() - dt_die < FIRE_TIME)
-			animations[1]->Render(x, y); // animation fire after torch was stroke
-	}
+	//else 
+	//{
+	//	if (GetTickCount() - dt_die < FIRE_TIME)
+	//		animations[1]->Render(x, y); // animation fire after torch was stroke
+	//}
 	if (state == STATE_TORCH_ITEM_EXSIST)
 	{
 		if (item != NULL)

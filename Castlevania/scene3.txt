@@ -10,7 +10,10 @@
 
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
-#50	300	300	1
-[MAP]
+50	300	300	4
+[MAP_TEXTURES]
 # idScene	x	y	row	column
 2001	606	698	4	7
+[MAP]
+# filePath	column	row	index	align
+map/Map3.txt	34	12	2000	75

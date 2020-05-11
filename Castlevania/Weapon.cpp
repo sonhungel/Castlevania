@@ -17,18 +17,15 @@ void CWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CWeapon::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	for (int i = 0; i < listObj.size(); i++)
-	{
-		if (dynamic_cast<CTorch*>(listObj.at(i)))
-		{
-			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
-			{
-				LPCOLLISIONEVENT temp = SweptAABBEx(listObj.at(i));
-				if (temp->t > 0) // => có đụng độ
-				{
-					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
-				}
-			}
-		}
-	}
+
+}
+
+void CWeapon::MakeEffect(LPGAMEOBJECT obj,int animationID)
+{
+	float x, y;
+	obj->GetPosition(x, y);
+	CEffect *effect = new CEffect(x,y,animationID);
+	DebugOut(L"Tao effect\n");
+	effect->Render();
+	
 }

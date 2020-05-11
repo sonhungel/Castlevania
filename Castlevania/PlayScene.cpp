@@ -9,7 +9,6 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include"Knife.h"
-#include"MapTexture.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -29,7 +28,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define SCENE_SECTION_SPRITES 3
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_OBJECTS	5
-#define SCENE_SECTION_MAP	6
+#define SCENE_SECTION_MAP_TEXTURES	6
+#define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
@@ -48,7 +48,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
-	if (tokens.size() < 4) return; // skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
@@ -65,7 +65,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CSimon();
+		obj = CSimon::GetInstance();
 		obj->SetPosition(x, y);
 		simon = (CSimon*)obj;
 		singleToneObjects.push_back(obj);
@@ -117,11 +117,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	singleToneObjects.push_back(CKnife::GetInstance());
 }
 
-void CPlayScene::_ParseSection_MAP(string line)
+void CPlayScene::_ParseSection_MAP_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 5) return; // skip invalid lines
+	if (tokens.size() < 4) return; // skip invalid lines
 
 	int IDMap = atoi(tokens[0].c_str());
 	int x = atoi(tokens[1].c_str());
@@ -130,9 +130,6 @@ void CPlayScene::_ParseSection_MAP(string line)
 	int column = atoi(tokens[4].c_str());
 
 	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(0);
-
-	// Map 1 có idSprites bắt đầu từ 0
-
 
 	int index = IDMap;
 	for (int i = 0; i < row; i++)
@@ -145,11 +142,26 @@ void CPlayScene::_ParseSection_MAP(string line)
 	}
 }
 
+void CPlayScene::_ParseSection_MAP(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 4) return; // skip invalid lines
+	wstring filePath = ToWSTR(tokens[0]);
+	int row = atoi(tokens[2].c_str());
+	int column = atoi(tokens[1].c_str());
+	int index = atoi(tokens[3].c_str());
+	int align = atoi(tokens[4].c_str());
+	map->SetValueInMap(row, column, index, align);
+	map->LoadMap(filePath);
+}
+
 
 void CPlayScene::Load()
 {
-	map = new CMap(CGame::GetInstance()->GetIDCurrentScene());
+	map = CMap::GetInstance();
 	HUD = new CBoard();
+	CSimon::GetInstance()->tagSwitchScene = -1;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
 
 	ifstream f;
@@ -168,6 +180,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line == "[MAP_TEXTURES]")
+		{
+			section = SCENE_SECTION_MAP_TEXTURES; continue;
+		}
 		if (line == "[MAP]")
 		{
 			section = SCENE_SECTION_MAP; continue;
@@ -181,7 +197,8 @@ void CPlayScene::Load()
 		{
 
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-		case SCENE_SECTION_MAP:_ParseSection_MAP(line); break;
+		case SCENE_SECTION_MAP_TEXTURES:_ParseSection_MAP_TEXTURES(line); break;
+		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
 
@@ -232,7 +249,13 @@ void CPlayScene::Update(DWORD dt)
 
 	//if (cx < 0) cx = 0; if (cx > 966) cx = 966;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+
 	HUD->Update(dt);
+
+	if (simon->tagSwitchScene != -1)
+	{
+		CGame::GetInstance()->SwitchScene(simon->tagSwitchScene);
+	}
 }
 
 void CPlayScene::Render()
@@ -243,6 +266,11 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
+}
+
+void CPlayScene::CameraDependMap(float& cx, float& cy)
+{
+	if (cx < 0) cx = 0; if (cx > 966) cx = 966;
 }
 
 

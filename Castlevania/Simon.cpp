@@ -9,13 +9,13 @@
 #include"Knife.h"
 #include"Portal.h"
 
-//CSimon* CSimon::__instance = NULL;
+CSimon* CSimon::__instance = NULL;
 
-//CSimon* CSimon::GetInstance()
-//{
-//	if (__instance == NULL) __instance = new CSimon();
-//	return __instance;
-//}
+CSimon* CSimon::GetInstance()
+{
+	if (__instance == NULL) __instance = new CSimon();
+	return __instance;
+}
 
 CSimon::CSimon()
 {
@@ -32,6 +32,11 @@ CSimon::CSimon()
 	CSimon::AddAnimation(404);		//4. stand attack
 	CSimon::AddAnimation(405);		//5. sit attack
 	CSimon::AddAnimation(399);		//6. trans
+	CSimon::AddAnimation(406);		//7. go up
+	CSimon::AddAnimation(407);		//8. go down
+	CSimon::AddAnimation(408);		//9. hurt
+	CSimon::AddAnimation(409);		//10. idle up
+	CSimon::AddAnimation(410);		//11. idle down
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -58,6 +63,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		vector<LPGAMEOBJECT> listTorch;
 		vector<LPGAMEOBJECT> listBrick;
+		LPGAMEOBJECT portal;
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
 			
@@ -105,10 +111,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CPortal*>(e->obj))
 				{
-					//CPortal* portal = dynamic_cast<CPortal*>(e->obj);
+					CPortal* portal = dynamic_cast<CPortal*>(e->obj);
 					DebugOut(L"[INFO] Collision with portal\n");
-					//CPortal* p = dynamic_cast<CPortal*>(e->obj);
-					//CGame::GetInstance()->SwitchScene(2);
+					tagSwitchScene = portal->GetSceneId();
 				}
 				else if (dynamic_cast<CBrick*>(e->obj))
 				{
@@ -127,9 +132,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						CollisionWithTorch(dt, listTorch, min_tx, min_ty, nx, ny, rdx, rdy);
 					}
 				}
-
 			}
-			
 		}
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -200,14 +203,24 @@ void CSimon::Render()
 
 void CSimon::SetState(int state)
 {
-	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame()>0)
+	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
 	{
 	}
 	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
 	{
 	}
-	else if(trans_start>0)
+	else if (trans_start > 0)
 	{
+	}
+	else if (animations[ANI_SIMON_GO_UP]->GetCurrentFrame() > 0 && isOnStair)
+	{
+	}
+	else if (animations[ANI_SIMON_GO_DOWN]->GetCurrentFrame() > 0 && isOnStair)
+	{
+	}
+	else if (animations[ANI_SIMON_JUMPING]->GetCurrentFrame() > 0)
+	{
+
 	}
 	else
 	{
@@ -228,7 +241,7 @@ void CSimon::SetState(int state)
 		case STATE_SIMON_JUMP:
 			if (vy == 0) {
 				vy = -SIMON_JUMP_SPEED_Y;
-				vx = 0;
+				//vx = 0;
 			}
 			break;
 		case STATE_SIMON_UP:
@@ -252,10 +265,38 @@ void CSimon::SetState(int state)
 					knife->SetState(STATE_KNIFE_APPEAR);
 					knife->SetPosition(x, y);
 					knife->SetTrend(nx);
+					knife->Render();
 				}
 			}
 			break;
-
+		case STATE_SIMON_GO_UP:
+			if (isOnStair)
+				break;
+			if (isCanOnStair != 1)
+			{
+				vx = 0;
+				state = STATE_SIMON_IDLE;
+			}
+			else
+			{
+				isOnStair = true;
+				//if (abs(auto_x - x) > 0.5f)
+					//isAutoGo = true;
+			}
+			break;
+		case STATE_SIMON_GO_DOWN:
+			if (isOnStair)
+				break;
+			if (isCanOnStair != 1)
+			{
+				vx = 0;
+				state = STATE_SIMON_SIT;
+			}
+			else
+			{
+				isOnStair = true;
+			}
+			break;
 		}
 	}
 	
@@ -354,7 +395,6 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 		CTorch* torch = dynamic_cast<CTorch*>(listTorch.at(i));	// Check torch is true??
 		if (torch->GetState() == STATE_TORCH_EXSIST)
 		{
-			//torch->SetState(STATE_TORCH_NOT_EXSIST);
 		}
 		else
 		{
@@ -369,7 +409,31 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 	CollisionWithItem(dt, listItem);
 }
 
+void CSimon::CollisionWithPortal(DWORD dt, LPGAMEOBJECT& portal)
+{
+	RECT rect, rect1;
+	float l, t, r, b;
+	float l1, t1, r1, b1;
 
+	//==============SIMON=================
+	GetBoundingBox(l, t, r, b);
+	rect.left = (int)l;
+	rect.top = (int)t;
+	rect.right = (int)r;
+	rect.bottom = (int)b;
+
+	//===============PORTAL=================
+	portal->GetBoundingBox(l1, t1, r1, b1);
+	rect1.left = (int)l1;
+	rect1.top = (int)t1;
+	rect1.right = (int)r1;
+	rect1.bottom = (int)b1;
+	if (CGame::GetInstance()->isCollision(rect, rect1))
+	{
+		CPortal* p = dynamic_cast<CPortal*>(portal);
+		CGame::GetInstance()->SwitchScene(p->GetSceneId());
+	}
+}
 
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -381,6 +445,68 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	if (state == STATE_SIMON_SIT ||state== STATE_SIMON_SIT_ATTACK)
 	{
 		bottom = this->y + SIMON_HEIGHT_SIT;
+	}
+}
+
+int CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
+{
+	RECT rect1, rect2;
+	float l1, t1, r1, b1;
+	float l2, t2, r2, b2;
+
+	GetBoundingBox(l1, t1, r1, b1);
+	rect1.left = (int)l1;
+	rect1.top = (int)t1;
+	rect1.right = (int)r1;
+	rect1.bottom = (int)b1;
+	for (int i = 0; i < listObj.size(); i++)
+	{
+		if (listObj.at(i)->GetState() == HIDENOBJECT_TYPE_UPSTAIR || listObj.at(i)->GetState() == HIDENOBJECT_TYPE_DOWNSTAIR)
+		{
+			listObj.at(i)->GetBoundingBox(l2, t2, r2, b2);
+			rect2.left = l2;
+			rect2.top = t2;
+			rect2.right = r2;
+			rect2.bottom = b2;
+			if (CGame::GetInstance()->isCollision(rect1, rect2)) //=>> có collsion giữa simon với obj
+			{
+				CHidenObject* hidenObj= dynamic_cast<CHidenObject*>(listObj.at(i));
+				if (hidenObj->getNx() * hidenObj->getNy() > 0)
+				{
+					_stairTrend = 1;
+				}
+				else
+				{
+					_stairTrend = 0;
+				}
+				auto_x = hidenObj->GetAutoX();
+				if (hidenObj->GetState()==HIDENOBJECT_TYPE_UPSTAIR)
+				{
+					isCanOnStair = -1;
+					return -1;
+				}
+				if (hidenObj->GetState() == HIDENOBJECT_TYPE_DOWNSTAIR)
+				{
+					isCanOnStair = 1;
+					return 1;
+				}
+			}
+		}
+	}
+	auto_x = -1;
+	isCanOnStair = 0;
+	return 0;
+}
+
+void CSimon::AutoGo()
+{
+	if (auto_x < x)
+	{
+		nx = -1;
+	}
+	else if (auto_x > x)
+	{
+		nx = 1;
 	}
 }
 

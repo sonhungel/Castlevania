@@ -1,7 +1,7 @@
 [RESOURCE]
 Resources.txt
 [SETTINGS]
-start	2
+start	1
 #scene list
 [SCENES]
 1	scene1.txt

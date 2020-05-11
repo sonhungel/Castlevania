@@ -126,8 +126,10 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HidenObject.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemHeart.h" />
     <ClInclude Include="ItemKnife.h" />
@@ -135,7 +137,6 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Knife.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MapTexture.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
@@ -152,8 +153,10 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HidenObject.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemHeart.cpp" />
     <ClCompile Include="ItemKnife.cpp" />
@@ -161,7 +164,6 @@
     <ClCompile Include="Knife.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapTexture.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scene.cpp" />

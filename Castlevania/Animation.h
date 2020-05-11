@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef __ANIMATION_H_
 #define __ANIMATION_H_
 
@@ -33,12 +33,12 @@ class CAnimation
 public:
 	CAnimation(int defaultTime=100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);
-	// Th�m
+	// Thêm
 	void RenderTrend(float x, float y, int trend,int alpha=255);
 	void Render(float x, float y,int alpha=255);
 	int GetCurrentFrame() { return currentFrame; }
 	void ResetFrame() { lastFrameTime = -1; currentFrame = -1; }
-	int GetLastFrame() { return frames.size() - 1; }
+	int GetLastFrame() { return frames.size() - 1; } // = the amount of frame
 	void SetFrame(int n) { if (n > -1 && n <= GetLastFrame()) currentFrame = n; }
 };
 
@@ -66,7 +66,7 @@ typedef vector<LPANIMATION> CAnimationSet;
 typedef CAnimationSet* LPANIMATION_SET;
 
 /*
-	Manage animation set database // Kh� :)
+	Manage animation set database // Khó fix bug nếu gặp
 */
 class CAnimationSets
 {
