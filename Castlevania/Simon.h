@@ -9,7 +9,7 @@
 #include"HidenObject.h"
 
 #define SIMON_WALKING_SPEED		0.12f
-#define SIMON_JUMP_SPEED_Y		0.5f
+#define SIMON_JUMP_SPEED_Y		0.7f
 #define SIMON_GRAVITY			0.002f
 
 #define STATE_SIMON_IDLE			0
@@ -42,9 +42,9 @@
 #define ANI_SIMON_IDLE_DOWN					11
 
 
-#define SIMON_HEIGHT_STAND			60
-#define SIMON_HEIGHT_SIT			45
-#define SIMON_WIDTH					40
+#define SIMON_HEIGHT_STAND			62
+#define SIMON_HEIGHT_SIT			47
+#define SIMON_WIDTH					33
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100

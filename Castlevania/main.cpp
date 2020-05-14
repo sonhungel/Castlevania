@@ -21,7 +21,7 @@
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255,255,255)
 #define SCREEN_WIDTH 560
-#define SCREEN_HEIGHT 500
+#define SCREEN_HEIGHT 550
 
 #define MAX_FRAME_RATE 120
 
@@ -32,6 +32,7 @@
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3
 #define SCENE_SECTION_ANIMATIONS 4
+#define SCENE_SECTION_MAP_TEXTURES	6
 
 #define MAX_SCENE_LINE 1024
 
@@ -112,7 +113,30 @@ void _ParseSection_ANIMATIONS(string line)
 
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
+void _ParseSection_MAP_TEXTURES(string line)
+{
+	vector<string> tokens = split(line);
 
+	if (tokens.size() < 4) return; // skip invalid lines
+
+	int IDMap = atoi(tokens[0].c_str());
+	int x = atoi(tokens[1].c_str());
+	int y = atoi(tokens[2].c_str());
+	int row = atoi(tokens[3].c_str());
+	int column = atoi(tokens[4].c_str());
+
+	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(0);
+
+	int index = IDMap;
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < column; j++)
+		{
+			CSprites::GetInstance()->Add(index, j * 32 + x, i * 32 + y, j * 32 + 32 + x, i * 32 + 32 + y, tex);
+			index = index + 1;
+		}
+	}
+}
 void LoadResources()
 {
 	//map = new CMap(CGame::GetInstance()->GetIDCurrentScene());
@@ -142,9 +166,10 @@ void LoadResources()
 		if (line == "[ANIMATIONS]") {
 			section = SCENE_SECTION_ANIMATIONS; continue;
 		}
-		//if (line == "[MAP_TEXTURES]")
-		//{
-		//}
+		if (line == "[MAP_TEXTURES]")
+		{
+			section = SCENE_SECTION_MAP_TEXTURES; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -155,6 +180,7 @@ void LoadResources()
 		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		case SCENE_SECTION_MAP_TEXTURES:_ParseSection_MAP_TEXTURES(line); break;
 
 		}
 	}

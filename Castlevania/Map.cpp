@@ -28,11 +28,10 @@ void CMap::LoadMap(wstring filePathTxt)
 	inFile.open(filePathTxt);
 	if (inFile.fail())
 	{
-		DebugOut(L"[ERROR] TileMap::Load_MapData failed\n");
+		DebugOut(L"[ERROR] Map::Load Map failed\n");
 		inFile.close();
 		return;
 	}
-	
 	// If the file opened correctly then call load methods
 
 	for (int i = 0; i < _row; i++)

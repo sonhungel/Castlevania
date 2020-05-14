@@ -28,7 +28,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define SCENE_SECTION_SPRITES 3
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_OBJECTS	5
-#define SCENE_SECTION_MAP_TEXTURES	6
+
 #define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SIMON	0
@@ -81,25 +81,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		float map = atof(tokens[3].c_str());
-		if (map == 1)
-		{
-			for (int i = 0; i < 96; i++)
-			{
-				obj = new CBrick();
-				obj->SetPosition(i * 32, 360);
-				objects.push_back(obj);
-			}
-		}
-		if (map == 2)
-		{
-			for (int i = 0; i < 20; i++)
-			{
-				obj = new CBrick();
-				obj->SetPosition(i * 32, 360);
-				objects.push_back(obj);
-			}
-		}
+		obj = new CBrick();
+		obj->SetPosition(x,y);
+		objects.push_back(obj);
+			
 	}
 		break;
 	case OBJECT_TYPE_PORTAL:
@@ -115,31 +100,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	
 	singleToneObjects.push_back(CKnife::GetInstance());
-}
-
-void CPlayScene::_ParseSection_MAP_TEXTURES(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 4) return; // skip invalid lines
-
-	int IDMap = atoi(tokens[0].c_str());
-	int x = atoi(tokens[1].c_str());
-	int y = atoi(tokens[2].c_str());
-	int row = atoi(tokens[3].c_str());
-	int column = atoi(tokens[4].c_str());
-
-	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(0);
-
-	int index = IDMap;
-	for (int i = 0; i < row; i++)
-	{
-		for (int j = 0; j < column; j++)
-		{
-			CSprites::GetInstance()->Add(index, j * 32 + x, i * 32 + y, j * 32 + 32 + x, i * 32 + 32 + y, tex);
-			index = index + 1;
-		}
-	}
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -180,10 +140,6 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
-		if (line == "[MAP_TEXTURES]")
-		{
-			section = SCENE_SECTION_MAP_TEXTURES; continue;
-		}
 		if (line == "[MAP]")
 		{
 			section = SCENE_SECTION_MAP; continue;
@@ -197,7 +153,6 @@ void CPlayScene::Load()
 		{
 
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-		case SCENE_SECTION_MAP_TEXTURES:_ParseSection_MAP_TEXTURES(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
@@ -209,7 +164,7 @@ void CPlayScene::UnLoad()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
-
+	// Không delete những obj singleton
 	objects.clear();
 	
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);

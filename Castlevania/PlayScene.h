@@ -28,7 +28,6 @@ protected:
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
 	void _ParseSection_OBJECTS(string line);
-	void _ParseSection_MAP_TEXTURES(string line);
 	void _ParseSection_MAP(string line);
 
 public:
