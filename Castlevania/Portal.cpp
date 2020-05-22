@@ -1,11 +1,10 @@
 #include "Portal.h"
 
 
-CPortal::CPortal(float left, float top,int scene_id ):CGameObject()
+CPortal::CPortal(int scene_id ):CGameObject()
 {
 	this->scene_id = scene_id;
-	x = left; 
-	y = top;
+
 
 }
 

@@ -24,11 +24,13 @@ class CPlayScene:public CScene
 protected:
 	CSimon* simon;		
 	CMap* map;
+	int _xLeft, _xRight;		// Set cứng cam cho mỗi scene
 	CBoard* HUD;
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);
+	void _ParseSection_CAMERA(string line);
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);
@@ -38,8 +40,6 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void CameraDependMap(float& cx, float& cy);
-
-	CSimon* GetPlayer() { return simon; }
 
 	//friend class CPlayScenceKeyHandler;
 };

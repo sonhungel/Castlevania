@@ -378,6 +378,7 @@ void CGame::SweptAABB(
 	if ((tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
 
 	t_entry = max(tx_entry, ty_entry);
+
 	t_exit = min(tx_exit, ty_exit);
 
 	if (t_entry > t_exit) return;

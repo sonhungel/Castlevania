@@ -9,6 +9,7 @@
 #include"ItemHeart.h"
 #include"ItemWhipUpgrade.h"
 #include"ItemKnife.h"
+#include"Effect.h"
 
 
 //===========DEFINE=======================
@@ -24,17 +25,18 @@
 #define ID_ITEM_WHIPUPGRADE			1
 #define ID_ITEM_KNIFE				2
 #define ID_ITEM_HEART				3
+#define ID_ANIMATION_EFFECT		800
 
-#define FIRE_TIME			300
+#define TIME_EFFECT		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds
 
 class CTorch:public CGameObject
 {
 	DWORD dt_die; // đo thời gian cho animation lửa xuất hiện sau khi đánh stroke torch
 	CItem* item;
-	int level;
+	CEffect* effect;
 	
 public:
-	CTorch(int id = 0,int level=0); // id Item, level là của whip
+	CTorch(int id = 0); // id Item
 	~CTorch()
 	{
 		CGameObject::~CGameObject();

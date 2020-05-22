@@ -11,7 +11,7 @@ class CPortal : public CGameObject
 	int scene_id;	// target scene to switch to 
 
 public:
-	CPortal(float left, float top, int scene_id);
+	CPortal(int scene_id);
 	void Render();
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	int GetSceneId() { return scene_id;  }

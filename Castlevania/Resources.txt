@@ -123,7 +123,7 @@
 # item heart
 702	13002	100
 #===================Fire after torch was stroke===========
-800	13100	100	13101	100	13102	100	13103	100
+800	13100	100	13101	100	13102	100	13103	100	13104	100
 [MAP_TEXTURES]
 #idScene	x	y	rowSprite	columnSprite
 1	13	909	4	17

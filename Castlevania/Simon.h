@@ -8,9 +8,11 @@
 #include"Whip.h"
 #include"HidenObject.h"
 
-#define SIMON_WALKING_SPEED		0.12f
-#define SIMON_JUMP_SPEED_Y		0.7f
+#define SIMON_WALKING_SPEED		0.3f
+#define SIMON_JUMP_SPEED_Y		0.6f
 #define SIMON_GRAVITY			0.002f
+#define SIMON_TREND_RIGHT		1
+#define SIMON_TREND_LEFT		-1
 
 #define STATE_SIMON_IDLE			0
 #define STATE_SIMON_WALKING_RIGHT	100
@@ -34,7 +36,7 @@
 #define ANI_SIMON_SITTING					3
 #define ANI_SIMON_STANDING_ATTACKING 		4
 #define ANI_SIMON_SITTING_ATTACKING			5
-#define ANI_SIMON_TRANS						6	// transition
+#define ANI_SIMON_TRANS						6	
 #define ANI_SIMON_GO_UP 					7
 #define ANI_SIMON_GO_DOWN					8
 #define ANI_SIMON_HURT						9
@@ -48,7 +50,7 @@
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100
-#define TRANSITION_TIME		200
+#define TRANSITION_TIME		400
 #define JUMP_TIME			0
 
 #define ID_WEAPON_WHIP 0		// main weapon
@@ -60,13 +62,17 @@ class CSimon : public CGameObject
 
 	int untouchable;
 	DWORD untouchable_start;
-	DWORD trans_start; // Simon bất tử
+	DWORD trans_start; // Simon nhấp nháy
+
 	CWhip* whip;
 	bool subWeapon = false;
-	int _heartCount;	// Count the number for the score, not a blood for simon
-	int isCanOnStair;
-	bool isOnStair;
-	int _stairTrend;
+
+	int DirectionMoveOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
+	bool isBeingOnStair;
+	int typeStairSimonTouchFirst;	// Phân loại stair simon va chạm trước	1: stairAbove 2 stairBelow 0:Unknow
+	bool isAutoGo;
+	int _stairTrend;	// -1 = left, 1 = right
+
 	int auto_x;
 public:
 	static CSimon* GetInstance();
@@ -80,19 +86,21 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	
 	void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
-	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float min_tx0, float min_ty0, int nx0, int ny0,float rdx0,float rdy0);
-	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0);
-	void CollisionWithPortal(DWORD dt, LPGAMEOBJECT& portal);
 
-	//CWhip* GetWeapon(int i = 0) { return (CWhip*)(weapons[0]); }
+	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float min_tx0, float min_ty0, int nx0, int ny0,
+																		float rdx0,float rdy0);
+
+	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float min_tx0, float min_ty0, int nx0, int ny0, 
+																		float rdx0, float rdy0);
+
+	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj, float min_tx0, float min_ty0, int nx0, int ny0,
+																			float rdx0, float rdy0);
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
-	int GetHeart() { return _heartCount; } // for HUD
 
-	int IsCanOnStair(vector<LPGAMEOBJECT>& listObj);
-	bool GetIsOnStair() { return isOnStair; } // Get bool value isonstair
+	bool IsOnStair() { return isBeingOnStair; } // Get bool value isonstair
 	int GetStairTrend() { return _stairTrend; }
-	int GetNx() { return nx; }
-	void AutoGo();	// set trend for go stair
+	void AutoGo();	// set trend for simon to move on stair
 };
 #endif

@@ -1,15 +1,10 @@
 ﻿#include "Torch.h"
 
-CTorch::CTorch(int id,int level) : CGameObject()
+CTorch::CTorch(int id) : CGameObject()
 {
 	dt_die = 0;
 	state = STATE_TORCH_EXSIST;
-	if (level == 0) // ý tưởng về sau dùng class này cho cách object static khác tương tự torch
-	{
-		AddAnimation(501);
-	}
-	
-	//AddAnimation(800);	// fire after stroke torch
+	effect = new CEffect(ID_ANIMATION_EFFECT);
 	switch (id)
 	{
 	case ID_ITEM_HEART:
@@ -31,17 +26,25 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (dt_die == 0)
 	{
 		if (state == STATE_TORCH_NOT_EXSIST)
+		{
+			if (effect != NULL)
+			{
+				effect->SetPosition(this->x, this->y);
+			}
 			dt_die = GetTickCount();
+		}
 	}
 	else
 	{
 		if (item != NULL)		// => có item 
 		{
-			//if (GetTickCount() - dt_die > 250) // wait for the fire after stroke torch end
-			//{
+			if (GetTickCount() - dt_die > TIME_EFFECT) // 100 is time default
+			{
+				effect = NULL;
+				//delete effect;	// delete sẽ gây ra lỗi
 				state = STATE_TORCH_ITEM_EXSIST;
 				item->Update(dt, coObjects);
-			//}
+			}
 		}
 	}
 }
@@ -53,11 +56,10 @@ void CTorch::Render()
 		animations[0]->Render(x, y);
 		
 	}
-	//else 
-	//{
-	//	if (GetTickCount() - dt_die < FIRE_TIME)
-	//		animations[1]->Render(x, y); // animation fire after torch was stroke
-	//}
+	else if(effect!=NULL)
+	{
+			effect->Render();
+	}
 	if (state == STATE_TORCH_ITEM_EXSIST)
 	{
 		if (item != NULL)

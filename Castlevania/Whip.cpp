@@ -137,7 +137,6 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
-					MakeEffect(listObj.at(i), 800);
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
 
 				}

@@ -1,20 +1,12 @@
 #include "Effect.h"
 #include"Utils.h"
 
-void CEffect::Update()
-{
-	
-	if (animations[0]->GetCurrentFrame() == animations[0]->GetLastFrame())
-	{
-		isDone = true;
-		DebugOut(L"Xoa effect\n");
-	}
-}
+
 
 void CEffect::Render()
 {
-	animations[0]->Render(x,y);
-	DebugOut(L"Render effect \n");
+	animations[0]->Render(x, y);
+	//DebugOut(L"Render effect \n");
 	RenderBoundingBox();
 }
 

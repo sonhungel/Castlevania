@@ -9,6 +9,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include"Knife.h"
+#include"Effect.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -24,16 +25,14 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 
 
 #define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_OBJECTS	5
-
+#define SCENE_SECTION_CAMERA	6
 #define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
+#define OBJECT_TYPE_STAIR	3
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -66,6 +65,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = CSimon::GetInstance();
+		for (int i = 3; i < tokens.size(); i += 1)
+		{
+			int animation_id = atoi(tokens[i].c_str());
+			obj->AddAnimation(animation_id);
+		}
 		obj->SetPosition(x, y);
 		simon = (CSimon*)obj;
 		singleToneObjects.push_back(obj);
@@ -73,8 +77,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_TORCH: 
 	{
-		float item = atof(tokens[3].c_str());
+		float item = atoi(tokens[3].c_str());
 		obj = new CTorch(item);
+		for (int i = 4; i < tokens.size(); i += 1)
+		{
+			int animation_id = atoi(tokens[i].c_str());
+			obj->AddAnimation(animation_id);
+		}
 		obj->SetPosition(x, y);
 		objects.push_back(obj); 
 	}
@@ -82,6 +91,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK:
 	{
 		obj = new CBrick();
+		for (int i = 3; i < tokens.size(); i += 1)
+		{
+			int animation_id = atoi(tokens[i].c_str());
+			obj->AddAnimation(animation_id);
+		}
 		obj->SetPosition(x,y);
 		objects.push_back(obj);
 			
@@ -90,15 +104,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PORTAL:
 	{
 		int scene_id = atoi(tokens[3].c_str());
-		obj = new CPortal(x, y,  scene_id);
+		obj = new CPortal( scene_id);
+		obj->SetPosition(x, y);
 		objects.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_STAIR:
+	{
+		int state = atof(tokens[3].c_str());
+		int nx = atoi(tokens[4].c_str());
+		int ny = atoi(tokens[5].c_str());
+		obj = new CHidenObject(x, y, state, nx, ny);
+		objects.push_back(obj); 
 	}
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
-	
+	//CEffect* effect = new CEffect(240,300,800);
+	//objects.push_back(effect);
 	singleToneObjects.push_back(CKnife::GetInstance());
 }
 
@@ -116,9 +141,18 @@ void CPlayScene::_ParseSection_MAP(string line)
 	map->LoadMap(filePath);
 }
 
+void CPlayScene::_ParseSection_CAMERA(string line)
+{
+	vector<string> tokens = split(line);
+	if (tokens.size() < 2)return;	// skip invalid lines
+	_xLeft = atoi(tokens[0].c_str());
+	_xRight = atoi(tokens[1].c_str());
+}
+
 
 void CPlayScene::Load()
 {
+	_xLeft = _xRight = -1;
 	map = CMap::GetInstance();
 	HUD = new CBoard();
 	CSimon::GetInstance()->tagSwitchScene = -1;
@@ -140,6 +174,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line == "[CAMERA]")
+		{
+			section = SCENE_SECTION_CAMERA; continue;
+		}
 		if (line == "[MAP]")
 		{
 			section = SCENE_SECTION_MAP; continue;
@@ -153,6 +191,7 @@ void CPlayScene::Load()
 		{
 
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_CAMERA:_ParseSection_CAMERA(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
@@ -202,7 +241,8 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2+220;
 	cy -= game->GetScreenHeight() / 2;
 
-	//if (cx < 0) cx = 0; if (cx > 966) cx = 966;
+	if (cx < _xLeft) cx = _xLeft; if (cx >_xRight ) cx = _xRight;
+	// K có scene ngầm dưới lòng đất nên k cần xây dựng limit cam Y
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
 	HUD->Update(dt);
@@ -215,7 +255,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -236,12 +276,13 @@ void CPlayScene::CameraDependMap(float& cx, float& cy)
 void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
 	CGame* game = CGame::GetInstance();
-	CSimon* simon = ((CPlayScene*)scene)->GetPlayer();
+	CSimon* simon = CSimon::GetInstance();
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		simon->SetState(STATE_SIMON_UP);
+		if(!simon->IsOnStair())
+			simon->SetState(STATE_SIMON_UP);
 	case DIK_Z:
 		if (simon->GetState() == STATE_SIMON_SIT_ATTACK)
 		{
@@ -257,11 +298,26 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 
 void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 {
-	CSimon* simon = ((CPlayScene*)scene)->GetPlayer();
+	CSimon* simon = CSimon::GetInstance();
 	CGame* game = CGame::GetInstance();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
+	case DIK_2:
+		game->SwitchScene(2);
+		break;
+	case DIK_3:
+		game->SwitchScene(3);
+		break;
+	case DIK_4:
+		game->SwitchScene(4);
+		break;
+	case DIK_5:
+		game->SwitchScene(5);
+		break;
+	case DIK_6:
+		game->SwitchScene(6);
+		break;
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
@@ -274,6 +330,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_X:
 		break;
+	case DIK_UP:
+		simon->SetState(STATE_SIMON_GO_UP);
+		break;
 	case DIK_DOWN:
 		break;
 	}
@@ -282,19 +341,18 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 void CPlaySceneKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
-	CSimon* simon = ((CPlayScene*)scene)->GetPlayer();
+	CSimon* simon = CSimon::GetInstance();
 	if (game->IsKeyDown(DIK_DOWN))
 	{
+		if (game->IsKeyDown(DIK_LEFT))
+			simon->SetTrend(SIMON_TREND_LEFT);
+		if (game->IsKeyDown(DIK_RIGHT))
+			simon->SetTrend(SIMON_TREND_RIGHT);
 		if (game->IsKeyDown(DIK_Z))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else
 			simon->SetState(STATE_SIMON_SIT);
 	}
-	//else if (game->IsKeyDown(DIK_Z))
-	//{
-	//	if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
-	//		simon->SetState(STATE_SIMON_UP);
-	//}
 	else if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_DOWN))
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
@@ -302,10 +360,36 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_X))
 		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
+	{
 		simon->SetState(STATE_SIMON_WALKING_RIGHT);
+	}
 	else if (game->IsKeyDown(DIK_LEFT))
+	{
 		simon->SetState(STATE_SIMON_WALKING_LEFT);
+	}
+	else if (game->IsKeyDown(DIK_UP))
+	{
+		simon->SetState(STATE_SIMON_GO_UP);
+	}
+	else if (game->IsKeyDown(DIK_DOWN))
+	{
+		simon->SetState(STATE_SIMON_GO_DOWN);
+	}
 	else if (!game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_Z))
-		simon->SetState(STATE_SIMON_IDLE);
+	{
+		if (simon->IsOnStair())
+		{
+			if ((simon->GetStairTrend() == -1 && simon->GetTrend() == 1) || (simon->GetStairTrend() == 1 && simon->GetTrend() == -1))
+			{
+				simon->SetState(STATE_SIMON_IDLE_UP);
+			}
+			else
+			{
+				simon->SetState(STATE_SIMON_IDLE_DOWN);
+			}
+		}
+		else
+			simon->SetState(STATE_SIMON_IDLE);
+	}
 }
 #pragma endregion

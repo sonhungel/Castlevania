@@ -20,12 +20,3 @@ void CWeapon::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 }
 
-void CWeapon::MakeEffect(LPGAMEOBJECT obj,int animationID)
-{
-	float x, y;
-	obj->GetPosition(x, y);
-	CEffect *effect = new CEffect(x,y,animationID);
-	DebugOut(L"Tao effect\n");
-	effect->Render();
-	
-}
