@@ -5,18 +5,19 @@
 #define HIDENOBJECT_TYPE_STAIR_BELOW  2
 #define HIDENOBJECT_TYPE_FLIP_DIRECTION 3
 
-#define HIDENOBJECT_WIDTH	50
-#define HIDENOBJECT_HEIGHT	10
-
 
 class CHidenObject :public CGameObject
 {
 private:
+	int width;
+	int height;
 	int _autoX;	// vị trí để simon bắt đầu auto move
-	int ny;
+	int ny;// kết hợp nx để xác định hướng của thang
 public:
-	CHidenObject(float _x = 0, float _y = 0, int state = 0, int trendX = 0, int trendY = 0) 
+	CHidenObject(float _x = 0, float _y = 0,int w=0,int h=0, int state = 0, int trendX = 0, int trendY = 0) 
 	{
+		this->width = w;
+		this->height = h;
 		this->x = _x;
 		this->y = _y;
 
@@ -37,8 +38,8 @@ public:
 			else
 				_autoX = x + 40;											
 		}
-		//else
-		//	_autoX = x + 40;
+		else
+			_autoX = x + 40;
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();

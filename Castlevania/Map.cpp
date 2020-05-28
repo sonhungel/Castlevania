@@ -62,5 +62,4 @@ void CMap::DrawMap()
 			
 		}
 	}
-	
 }

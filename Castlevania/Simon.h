@@ -8,7 +8,7 @@
 #include"Whip.h"
 #include"HidenObject.h"
 
-#define SIMON_WALKING_SPEED		0.3f
+#define SIMON_WALKING_SPEED		0.35f
 #define SIMON_JUMP_SPEED_Y		0.6f
 #define SIMON_GRAVITY			0.002f
 #define SIMON_TREND_RIGHT		1
@@ -42,6 +42,7 @@
 #define ANI_SIMON_HURT						9
 #define ANI_SIMON_IDLE_UP					10
 #define ANI_SIMON_IDLE_DOWN					11
+#define ANI_SIMON_DIE						12
 
 
 #define SIMON_HEIGHT_STAND			62
@@ -67,9 +68,9 @@ class CSimon : public CGameObject
 	CWhip* whip;
 	bool subWeapon = false;
 
-	int DirectionMoveOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
+	// Các biến sử dụng cho logic thang
+	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
 	bool isBeingOnStair;
-	int typeStairSimonTouchFirst;	// Phân loại stair simon va chạm trước	1: stairAbove 2 stairBelow 0:Unknow
 	bool isAutoGo;
 	int _stairTrend;	// -1 = left, 1 = right
 
@@ -94,12 +95,13 @@ public:
 																		float rdx0, float rdy0);
 
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj, float min_tx0, float min_ty0, int nx0, int ny0,
-																			float rdx0, float rdy0);
+																			float rdx0, float rdy0);// dùng cho kết thúc thang
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 
-	bool IsOnStair() { return isBeingOnStair; } // Get bool value isonstair
+	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang
+	bool IsBeingOnStair() { return isBeingOnStair; } // Get bool value isonstair
 	int GetStairTrend() { return _stairTrend; }
 	void AutoGo();	// set trend for simon to move on stair
 };

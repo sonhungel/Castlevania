@@ -4,8 +4,8 @@ void CHidenObject::GetBoundingBox(float& left, float& top, float& right, float& 
 {
 	left = x;
 	top = y;
-	right = x + HIDENOBJECT_WIDTH;
-	bottom = y + HIDENOBJECT_HEIGHT;
+	right = x + width;
+	bottom = y + height;
 }
 
 void CHidenObject::Render()

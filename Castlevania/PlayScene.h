@@ -12,12 +12,6 @@
 #include"Brick.h"
 #include"Torch.h"
 
-#define ID_SCENE_MAP_1	1
-#define ID_SCENE_MAP_2	2
-#define ID_SCENE_MAP_3	3
-#define ID_SCENE_MAP_4	4
-#define ID_SCENE_MAP_5	5
-#define ID_SCENE_MAP_6	6
 
 class CPlayScene:public CScene
 {
@@ -39,7 +33,6 @@ public:
 	virtual void UnLoad();
 	virtual void Update(DWORD dt);
 	virtual void Render();
-	virtual void CameraDependMap(float& cx, float& cy);
 
 	//friend class CPlayScenceKeyHandler;
 };

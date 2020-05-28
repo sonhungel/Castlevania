@@ -52,7 +52,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-	
+	int a = 0;
 
 	CGameObject* obj = NULL;
 
@@ -61,14 +61,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SIMON:
 		if (simon != NULL)
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			DebugOut(L"[ERROR] SIMON object was created before!\n");
 			return;
 		}
 		obj = CSimon::GetInstance();
+		
 		for (int i = 3; i < tokens.size(); i += 1)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
+			DebugOut(L"[SIMON] Added animation id: %d,%d\n", animation_id, a++);
 		}
 		obj->SetPosition(x, y);
 		simon = (CSimon*)obj;
@@ -95,6 +97,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
+			
 		}
 		obj->SetPosition(x,y);
 		objects.push_back(obj);
@@ -111,10 +114,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_STAIR:
 	{
-		int state = atof(tokens[3].c_str());
-		int nx = atoi(tokens[4].c_str());
-		int ny = atoi(tokens[5].c_str());
-		obj = new CHidenObject(x, y, state, nx, ny);
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		int state = atoi(tokens[5].c_str());
+		int nx = atoi(tokens[6].c_str());
+		int ny = atoi(tokens[7].c_str());
+		obj = new CHidenObject(x, y, width,height,state, nx, ny);
 		objects.push_back(obj); 
 	}
 		break;
@@ -255,20 +260,13 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
 }
-
-void CPlayScene::CameraDependMap(float& cx, float& cy)
-{
-	if (cx < 0) cx = 0; if (cx > 966) cx = 966;
-}
-
-
 
 
 #pragma region KeyHandler
@@ -281,8 +279,9 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		if(!simon->IsOnStair())
+		if(!simon->IsBeingOnStair())
 			simon->SetState(STATE_SIMON_UP);
+		break;
 	case DIK_Z:
 		if (simon->GetState() == STATE_SIMON_SIT_ATTACK)
 		{
@@ -318,6 +317,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_6:
 		game->SwitchScene(6);
 		break;
+
+	case DIK_X:
+		break;
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
@@ -328,12 +330,11 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		else
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
-	case DIK_X:
+	case DIK_DOWN:
+		simon->SetState(STATE_SIMON_GO_DOWN);
 		break;
 	case DIK_UP:
 		simon->SetState(STATE_SIMON_GO_UP);
-		break;
-	case DIK_DOWN:
 		break;
 	}
 }
@@ -342,18 +343,12 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
-	if (game->IsKeyDown(DIK_DOWN))
+
+	if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_UP))
 	{
-		if (game->IsKeyDown(DIK_LEFT))
-			simon->SetTrend(SIMON_TREND_LEFT);
-		if (game->IsKeyDown(DIK_RIGHT))
-			simon->SetTrend(SIMON_TREND_RIGHT);
-		if (game->IsKeyDown(DIK_Z))
-			simon->SetState(STATE_SIMON_SIT_ATTACK);
-		else
-			simon->SetState(STATE_SIMON_SIT);
+		simon->SetState(STATE_SIMON_ATTACK_KNIFE);
 	}
-	else if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_DOWN))
+	if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z))
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
 	}
@@ -362,10 +357,12 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{
 		simon->SetState(STATE_SIMON_WALKING_RIGHT);
+		simon->SetTrend(SIMON_TREND_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
 		simon->SetState(STATE_SIMON_WALKING_LEFT);
+		simon->SetTrend(SIMON_TREND_LEFT);
 	}
 	else if (game->IsKeyDown(DIK_UP))
 	{
@@ -377,7 +374,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	}
 	else if (!game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_Z))
 	{
-		if (simon->IsOnStair())
+		if (simon->IsBeingOnStair())
 		{
 			if ((simon->GetStairTrend() == -1 && simon->GetTrend() == 1) || (simon->GetStairTrend() == 1 && simon->GetTrend() == -1))
 			{
@@ -391,5 +388,6 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 		else
 			simon->SetState(STATE_SIMON_IDLE);
 	}
+	
 }
 #pragma endregion

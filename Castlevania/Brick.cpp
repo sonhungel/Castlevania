@@ -2,8 +2,10 @@
 
 void CBrick::Render()
 {
-	animations[0]->Render(x, y);
-	RenderBoundingBox();
+	if(animations.size()>0)
+		animations[0]->Render(x, y);
+	//else
+		//RenderBoundingBox();
 }
 
 void CBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
