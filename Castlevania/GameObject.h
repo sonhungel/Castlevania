@@ -65,6 +65,9 @@ public:
 
 	DWORD dt;
 
+	int blood;
+	int type;
+
 	vector<LPANIMATION> animations;
 	LPANIMATION animation;
 
@@ -97,7 +100,7 @@ public:
 	// không dùng animation_set nên sẽ dùng anmation theo hướng demo 4
 	void AddAnimation(int aniId); // push back ID vào phần vector LPANIMATION
 
-	CGameObject();
+	CGameObject(float _x = 0, float _y = 0,int _type=0);
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;// bounding box mỗi object mỗi khác, tùy thuộc vào từng trạng thái
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -107,7 +110,8 @@ public:
 	int GetID() { return id; }
 	void SetID(int id) { this->id = id; }
 
-
+	int GetBlood() { return blood; }
+	virtual void Hurt() { blood -= 2; }
 	~CGameObject();
 };
 

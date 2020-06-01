@@ -5,7 +5,7 @@
 #include "GameObject.h"
 
 #define PORTAL_WIDTH 20
-#define PORTAL_HEIGHT 60
+#define PORTAL_HEIGHT 20
 class CPortal : public CGameObject
 {
 	int scene_id;	// target scene to switch to 

@@ -139,7 +139,6 @@ void _ParseSection_MAP_TEXTURES(string line)
 }
 void LoadResources()
 {
-	//map = new CMap(CGame::GetInstance()->GetIDCurrentScene());
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", ResourceFilePath);
 
 	ifstream f;

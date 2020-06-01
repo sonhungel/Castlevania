@@ -64,6 +64,7 @@ public:
 	void ProcessKeyboard();
 
 	// demo5
+	int tagSwitchScene; // chỉ sử dụng khi switch scene và trở về trừ -1 khi đã load xong scene mới
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	int GetIDCurrentScene() { return current_scene; }
@@ -81,11 +82,11 @@ public:
 		float dx,			// 
 		float dy,			// 
 		float sl,			// static left
-		float st,
-		float sr,
-		float sb,
-		float& t, // tỷ số t entry
-		float& nx, //chiều
+		float st,			// static top
+		float sr,			// static right
+		float sb,			// static bottom
+		float& t,			// tỷ số t entry
+		float& nx,			//chiều
 		float& ny);
 
 	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }

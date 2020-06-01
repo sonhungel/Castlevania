@@ -23,10 +23,12 @@ protected:
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_SETUP(string line);
 	void _ParseSection_MAP(string line);
 	void _ParseSection_CAMERA(string line);
 
 public:
+
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();

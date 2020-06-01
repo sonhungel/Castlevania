@@ -34,7 +34,7 @@ public:
 		else if (state == HIDENOBJECT_TYPE_STAIR_ABOVE)
 		{
 			if (nx < 0)
-				_autoX = x - 30;
+				_autoX = x - 10;
 			else
 				_autoX = x + 40;											
 		}

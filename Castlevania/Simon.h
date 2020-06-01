@@ -8,11 +8,14 @@
 #include"Whip.h"
 #include"HidenObject.h"
 
-#define SIMON_WALKING_SPEED		0.35f
+#define SIMON_WALKING_SPEED		0.15f
 #define SIMON_JUMP_SPEED_Y		0.6f
 #define SIMON_GRAVITY			0.002f
 #define SIMON_TREND_RIGHT		1
 #define SIMON_TREND_LEFT		-1
+#define SIMON_PER_STEP	16
+
+#define MAX_BLOOD	16
 
 #define STATE_SIMON_IDLE			0
 #define STATE_SIMON_WALKING_RIGHT	100
@@ -75,11 +78,19 @@ class CSimon : public CGameObject
 	int _stairTrend;	// -1 = left, 1 = right
 
 	int auto_x;
+
+	int _score;
+	int _heart;
+	int _live;
+	
 public:
 	static CSimon* GetInstance();
 	CSimon();
 
-	int tagSwitchScene; // chỉ sử dụng khi switch scene và trở về trừ -1 khi đã load xong scene mới
+	// Biến liên quan đến scene
+
+	//int _SceneBefore;
+	//int _NextScene;
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -101,8 +112,15 @@ public:
 	int GetTrend() { return nx; } // for the weapon
 
 	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang
+	void SetBeingOnStair(int onStair) { this->isBeingOnStair = onStair; }
+	void SetStairTren(int stairTrend) { this->_stairTrend = stairTrend; }
 	bool IsBeingOnStair() { return isBeingOnStair; } // Get bool value isonstair
 	int GetStairTrend() { return _stairTrend; }
 	void AutoGo();	// set trend for simon to move on stair
+
+	// function for score, bla bla.....
+	int GetScore() { return _score; }
+	int GetHeart() { return _heart; }
+	int GetLive() { return _live; }
 };
 #endif

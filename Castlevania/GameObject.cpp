@@ -8,11 +8,14 @@
 #include "GameObject.h"
 #include "Sprites.h"
 
-CGameObject::CGameObject()
+CGameObject::CGameObject(float _x, float _y, int _type)
 {
-	x = y = 0;
+	x = _x;
+	y = _y;
 	vx = vy = 0;
 	nx = 1;
+	this->type = _type;
+	blood = 1;
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

@@ -28,21 +28,11 @@ CSimon::CSimon()
 	isAutoGo = false;
 	_stairTrend = -1;
 	auto_x = -1;
-	/*
-	CSimon::AddAnimation(400);		//0. idle left 
-	CSimon::AddAnimation(401);		//1. walk left
-	CSimon::AddAnimation(402);		//2. jump left
-	CSimon::AddAnimation(403);		//3. sit left
-	CSimon::AddAnimation(404);		//4. stand attack
-	CSimon::AddAnimation(405);		//5. sit attack
-	CSimon::AddAnimation(399);		//6. trans
-	CSimon::AddAnimation(406);		//7. go up
-	CSimon::AddAnimation(407);		//8. go down
-	CSimon::AddAnimation(408);		//9. hurt
-	CSimon::AddAnimation(409);		//10. idle up
-	CSimon::AddAnimation(410);		//11. idle down
-	411 // 12. DIE
-	*/
+
+	this->blood = MAX_BLOOD;
+	_heart = 0;
+	_score = 0;
+	_live = 5;
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -81,6 +71,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CHidenObject* hidenObj = dynamic_cast<CHidenObject*>(coObjects->at(i));
 				listHideObject.push_back(hidenObj);
 			}
+			//if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			//{
+			//	CBrick* brick = dynamic_cast<CBrick*>(coObjects->at(i));
+			//	listBrick.push_back(brick);
+			//}
 		}
 		// xử lý phần stair
 		if (isBeingOnStair)
@@ -144,9 +139,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
 		coEvents.clear();
+		coEventsResult.clear();
 
 		// turn off collision when die 
-		if (state != STATE_SIMON_DIE)
+		//if (state != STATE_SIMON_DIE)
 			CalcPotentialCollisions(coObjects, coEvents);
 
 		// reset untouchable timer if untouchable time has passed
@@ -165,11 +161,21 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else// Xử lý collision for simon
 		{
+			
 			float min_tx, min_ty, nx = 0, ny=0;
-			float rdx = 0;
-			float rdy = 0;
+			float rdx = 1;
+			float rdy = 1;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			// Khi đang trên thang thì va chạm sẽ k được xét tới nên sẽ k - lại số đơn vị tương tự cho phù hợp
+			if (isBeingOnStair == true)
+			{
+				if (nx != 0) x -= nx * 0.3f;
+				if (ny != 0) y -= ny * 0.3f;
+				x += dx;
+				y += dy;
+			}
 		//
 		// Collision logic with objects
 		//
@@ -181,23 +187,24 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					CPortal* portal = dynamic_cast<CPortal*>(e->obj);
 					DebugOut(L"[INFO] Collision with portal\n");
-					tagSwitchScene = portal->GetSceneId();
+					CGame::GetInstance()->tagSwitchScene = portal->GetSceneId();
 				}
 				else if (dynamic_cast<CBrick*>(e->obj))
 				{
+					//DebugOut(L"passed brick\n");
 					if (isBeingOnStair==false)
 					{
+						//DebugOut(L"Set va cham brick\n");
 						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 						listBrick.push_back(brick);
-
 						CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
 						listBrick.clear();
 					}
-					else
-					{
-						x += dx;
-						y += dy;
-					}
+					//else
+					//{
+					//	x += dx;
+					//	y += dy;
+					//}
 				}
 				else if (dynamic_cast<CTorch*>(e->obj))
 				{
@@ -221,8 +228,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+		//for (UINT i = 0; i < coEventsResult.size(); i++) delete coEventsResult[i];
 	}
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
+	//if (isBeingOnStair)
+	//	DebugOut(L"Dang tren thang\n");
 }
 
 void CSimon::Render()
@@ -241,7 +251,8 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_IDLE)
 	{
-		ani = ANI_SIMON_IDLE;
+		if(isBeingOnStair==false)
+			ani = ANI_SIMON_IDLE;
 	}
 	else if (state == STATE_SIMON_SIT)
 	{
@@ -249,10 +260,13 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_JUMP)
 	{
-		if (vy < 0)
-			ani = ANI_SIMON_JUMPING;
-		else
-			ani = ANI_SIMON_IDLE;
+		if (isBeingOnStair == false)
+		{
+			if (vy < 0)
+				ani = ANI_SIMON_JUMPING;
+			else
+				ani = ANI_SIMON_IDLE;
+		}
 	}
 	else if (state == STATE_SIMON_STAND_ATTACK)
 	{
@@ -476,7 +490,7 @@ void CSimon::CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float
 	if (min_tx <= min_tx0)
 		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 	if (min_ty <= min_ty0)
-		y += min_ty * dy + ny * 0.2f;
+		y += min_ty * dy + ny * 0.4f;
 
 	if (nx != 0)
 		vx = 0;
@@ -565,6 +579,8 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 			{
 				isBeingOnStair = false;
 				DebugOut(L"Ket thuc thang\n");
+				//y += 50;
+				//vy = 1.0f;
 				state = ANI_SIMON_IDLE;
 			}
 			//IsCanOnStair(listHidenObj);
@@ -632,7 +648,6 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 			rect1.bottom = (int)b1;
 			if (CGame::GetInstance()->isCollision(rect, rect1)) // đụng độ
 			{
-				//DebugOut(L"Bat dau thang\n");
 				CHidenObject* hidenObj = dynamic_cast<CHidenObject*>(listObj.at(i));
 				// xác định hướng của stair
 				if (hidenObj->getNx() * hidenObj->getNy() > 0)

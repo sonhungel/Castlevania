@@ -25,6 +25,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 
 
 #define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_SETUP_STATE	4
 #define SCENE_SECTION_OBJECTS	5
 #define SCENE_SECTION_CAMERA	6
 #define SCENE_SECTION_MAP	7
@@ -52,7 +53,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-	int a = 0;
 
 	CGameObject* obj = NULL;
 
@@ -70,7 +70,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
-			DebugOut(L"[SIMON] Added animation id: %d,%d\n", animation_id, a++);
 		}
 		obj->SetPosition(x, y);
 		simon = (CSimon*)obj;
@@ -92,12 +91,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		obj = new CBrick();
-		for (int i = 3; i < tokens.size(); i += 1)
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		obj = new CBrick(width,height);
+		for (int i = 5; i < tokens.size(); i += 1)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
-			
 		}
 		obj->SetPosition(x,y);
 		objects.push_back(obj);
@@ -119,6 +119,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int state = atoi(tokens[5].c_str());
 		int nx = atoi(tokens[6].c_str());
 		int ny = atoi(tokens[7].c_str());
+		//int auto_x = atoi(tokens[8].c_str());
 		obj = new CHidenObject(x, y, width,height,state, nx, ny);
 		objects.push_back(obj); 
 	}
@@ -130,6 +131,28 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//CEffect* effect = new CEffect(240,300,800);
 	//objects.push_back(effect);
 	singleToneObjects.push_back(CKnife::GetInstance());
+}
+
+void CPlayScene::_ParseSection_SETUP(string line)
+{
+	vector<string> tokens = split(line);
+
+
+	if (tokens.size() < 2) return; // skip invalid lines - an object set must have at least id, x, y
+
+	int object_type = atoi(tokens[0].c_str());
+	float isBeingOnStair = atoi(tokens[1].c_str());
+	float stairTrend = atoi(tokens[2].c_str());
+
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_SIMON:
+		CSimon::GetInstance()->SetBeingOnStair(isBeingOnStair);
+		CSimon::GetInstance()->SetStairTren(stairTrend);
+		break;
+	}
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -159,8 +182,8 @@ void CPlayScene::Load()
 {
 	_xLeft = _xRight = -1;
 	map = CMap::GetInstance();
-	HUD = new CBoard();
-	CSimon::GetInstance()->tagSwitchScene = -1;
+	HUD = CBoard::GetInstance();
+	CGame::GetInstance()->tagSwitchScene = -1;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
 
 	ifstream f;
@@ -179,6 +202,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line=="[SETUP]")
+		{
+			section = SCENE_SECTION_SETUP_STATE; continue;
+		}
 		if (line == "[CAMERA]")
 		{
 			section = SCENE_SECTION_CAMERA; continue;
@@ -196,6 +223,7 @@ void CPlayScene::Load()
 		{
 
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_SETUP_STATE:_ParseSection_SETUP(line); break;
 		case SCENE_SECTION_CAMERA:_ParseSection_CAMERA(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
@@ -252,9 +280,9 @@ void CPlayScene::Update(DWORD dt)
 
 	HUD->Update(dt);
 
-	if (simon->tagSwitchScene != -1)
+	if (game->tagSwitchScene != -1)
 	{
-		CGame::GetInstance()->SwitchScene(simon->tagSwitchScene);
+		CGame::GetInstance()->SwitchScene(game->tagSwitchScene);
 	}
 }
 

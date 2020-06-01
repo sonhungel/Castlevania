@@ -125,6 +125,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Code.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Game.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Code.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
