@@ -35,6 +35,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_STAIR	3
 
+#define	SETUP_TYPE_SIMON_NEXT_MAP	0
+#define	SETUP_TYPE_SIMON_BACK_MAP	1
+
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -136,21 +139,36 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 void CPlayScene::_ParseSection_SETUP(string line)
 {
 	vector<string> tokens = split(line);
-
+	CGame* game = CGame::GetInstance();
 
 	if (tokens.size() < 2) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
-	float isBeingOnStair = atoi(tokens[1].c_str());
-	float stairTrend = atoi(tokens[2].c_str());
+	int isBeingOnStair = atoi(tokens[1].c_str());
+	int stairTrend = atoi(tokens[2].c_str());
+	int nx = atoi(tokens[3].c_str());
+	float x = atof(tokens[4].c_str());
+	float y = atof(tokens[5].c_str());
 
 	CGameObject* obj = NULL;
 
-	switch (object_type)
+	switch (object_type)// có BUG LOGIC, cần fix sớm
 	{
-	case OBJECT_TYPE_SIMON:
+	case SETUP_TYPE_SIMON_NEXT_MAP:
 		CSimon::GetInstance()->SetBeingOnStair(isBeingOnStair);
-		CSimon::GetInstance()->SetStairTren(stairTrend);
+		CSimon::GetInstance()->SetStairTrend(stairTrend);
+		CSimon::GetInstance()->SetTrend(nx);
+		CSimon::GetInstance()->SetPosition(x, y);
+		break;
+	case SETUP_TYPE_SIMON_BACK_MAP:
+		if (game->tagGoBackScene)
+		{
+			CSimon::GetInstance()->SetBeingOnStair(isBeingOnStair);
+			CSimon::GetInstance()->SetStairTrend(stairTrend);
+			CSimon::GetInstance()->SetTrend(nx);
+			CSimon::GetInstance()->SetPosition(x, y);
+			game->tagGoBackScene = false;
+		}
 		break;
 	}
 }
@@ -331,19 +349,24 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_2:
-		game->SwitchScene(2);
+		game->tagSwitchScene = 2;
+		//game->scene_next = 2;
 		break;
 	case DIK_3:
-		game->SwitchScene(3);
+		game->tagSwitchScene = 3;
+		//game->scene_next = 3;
 		break;
 	case DIK_4:
-		game->SwitchScene(4);
+		game->tagSwitchScene = 4;
+		//game->scene_next = 4;
 		break;
 	case DIK_5:
-		game->SwitchScene(5);
+		game->tagSwitchScene = 5;
+		//game->scene_next = 5;
 		break;
 	case DIK_6:
-		game->SwitchScene(6);
+		game->tagSwitchScene = 6;
+		//game->scene_next = 6;
 		break;
 
 	case DIK_X:
@@ -360,9 +383,17 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_DOWN:
 		simon->SetState(STATE_SIMON_GO_DOWN);
+		//if (simon->IsCanGo3DirectionOnStair())
+		//{
+			simon->isGoDown = true;
+		//}
 		break;
 	case DIK_UP:
 		simon->SetState(STATE_SIMON_GO_UP);
+		//if (simon->IsCanGo3DirectionOnStair())
+		//{
+			simon->isGoUp = true;
+		//}
 		break;
 	}
 }
@@ -384,12 +415,14 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{
-		simon->SetState(STATE_SIMON_WALKING_RIGHT);
+		if(simon->GetState()!=STATE_SIMON_SIT)
+			simon->SetState(STATE_SIMON_WALKING_RIGHT);
 		simon->SetTrend(SIMON_TREND_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		simon->SetState(STATE_SIMON_WALKING_LEFT);
+		if (simon->GetState() != STATE_SIMON_SIT)
+			simon->SetState(STATE_SIMON_WALKING_LEFT);
 		simon->SetTrend(SIMON_TREND_LEFT);
 	}
 	else if (game->IsKeyDown(DIK_UP))

@@ -3,7 +3,7 @@
 # type: 0 = SIMON , 1 = Brick , 2 = Torch
 # SIMON	
 # type	x	y
-0	300	20
+0	739	406
 # BRICK
 # type 	x	y	width	height	animation_id
 1	0	13	32	128
@@ -42,6 +42,7 @@
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	0	200	4
+50	715	475	2
 
 
 #============= stair ================
@@ -51,8 +52,9 @@
 3	917	228	50	10	1	-1	1
 [SETUP]
 #==============simon=============
-# type 	beingOnstair	stairTrend
-0	0	-1
+#type 	0 is next map, type 1 is back map before
+# type0	beingOnstair	stairTrend	nx
+0	1	-1	1	739	406
 [CAMERA]
 # XLeft	XRight
 0	513

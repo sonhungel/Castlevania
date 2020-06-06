@@ -8,12 +8,13 @@
 #include"Whip.h"
 #include"HidenObject.h"
 
-#define SIMON_WALKING_SPEED		0.15f
+#define SIMON_WALKING_SPEED		0.3f
 #define SIMON_JUMP_SPEED_Y		0.6f
 #define SIMON_GRAVITY			0.002f
 #define SIMON_TREND_RIGHT		1
 #define SIMON_TREND_LEFT		-1
-#define SIMON_PER_STEP	16
+#define SIMON_PER_STEP	8
+#define SIMON_SPEED_ON_STAIR	1.23f
 
 #define MAX_BLOOD	16
 
@@ -56,6 +57,7 @@
 #define ATTACK_TIME			100
 #define TRANSITION_TIME		400
 #define JUMP_TIME			0
+#define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
 #define ID_WEAPON_WHIP 0		// main weapon
 #define ID_WEAPON_SECONDARY 1
@@ -67,17 +69,26 @@ class CSimon : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD trans_start; // Simon nhấp nháy
+	DWORD stair_start;
 
 	CWhip* whip;
 	bool subWeapon = false;
 
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
+	//bool isHave3Direction; // dùng cho hidenObj đặc biệt
+	
 	bool isBeingOnStair;
 	bool isAutoGo;
 	int _stairTrend;	// -1 = left, 1 = right
 
-	int auto_x;
+	float new_x;
+	float new_y;
+
+	//=====scene=========
+	int idScene_current;
+	int idScene_next;
+	//
 
 	int _score;
 	int _heart;
@@ -87,10 +98,13 @@ public:
 	static CSimon* GetInstance();
 	CSimon();
 
+	int auto_x;
+
+	bool isGoUp; // set simon ở vị trí thang đặc biệt
+	bool isGoDown;
+
 	// Biến liên quan đến scene
 
-	//int _SceneBefore;
-	//int _NextScene;
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -112,11 +126,17 @@ public:
 	int GetTrend() { return nx; } // for the weapon
 
 	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang
-	void SetBeingOnStair(int onStair) { this->isBeingOnStair = onStair; }
-	void SetStairTren(int stairTrend) { this->_stairTrend = stairTrend; }
-	bool IsBeingOnStair() { return isBeingOnStair; } // Get bool value isonstair
+
+	//bool IsCanGo3DirectionOnStair() { return isHave3Direction; }
+
+	void SetBeingOnStair(bool onStair) { this->isBeingOnStair = onStair; }
+	void SetStairTrend(int stairTrend) { this->_stairTrend = stairTrend; }
+	void SetIsCanOnStair(int _isCanOnStair) { this->isCanOnStair = _isCanOnStair; }
+	void SetAutoGo(bool _autoGo) { this->isAutoGo = _autoGo; }
+
+	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }
-	void AutoGo();	// set trend for simon to move on stair
+	void CalculateAutoGo();	// xác định lại hướng simon cần di chuyển để phù hợp cho vị trí auto go
 
 	// function for score, bla bla.....
 	int GetScore() { return _score; }

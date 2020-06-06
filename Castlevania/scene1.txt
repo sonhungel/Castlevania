@@ -82,7 +82,7 @@
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend
-0	0	1
+0	0	1	1	10	20
 [CAMERA]
 # XLeft	XRight
 0	966

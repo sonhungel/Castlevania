@@ -65,6 +65,8 @@ public:
 
 	// demo5
 	int tagSwitchScene; // chỉ sử dụng khi switch scene và trở về trừ -1 khi đã load xong scene mới
+	bool tagGoBackScene;	// sử dụng khi từ scene 3 về 2 và scene 5 về 4
+
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	int GetIDCurrentScene() { return current_scene; }

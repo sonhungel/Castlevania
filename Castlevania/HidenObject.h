@@ -3,7 +3,7 @@
 
 #define HIDENOBJECT_TYPE_STAIR_ABOVE	1
 #define HIDENOBJECT_TYPE_STAIR_BELOW  2
-#define HIDENOBJECT_TYPE_FLIP_DIRECTION 3
+#define HIDENOBJECT_TYPE_SPECIAL	 3
 
 
 class CHidenObject :public CGameObject
@@ -38,8 +38,10 @@ public:
 			else
 				_autoX = x + 40;											
 		}
-		else
-			_autoX = x + 40;
+		else if (state == HIDENOBJECT_TYPE_SPECIAL)
+		{
+			_autoX = x + 5;
+		}
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();
