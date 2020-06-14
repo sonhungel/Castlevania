@@ -7,6 +7,7 @@
 #include"Textures.h"
 #include"Map.h"
 #include"Board.h"
+#include"Grid.h"
 
 #include"Simon.h"
 #include"Brick.h"
@@ -19,9 +20,14 @@ protected:
 	CSimon* simon;		
 	CMap* map;
 	int _xLeft, _xRight;		// Set cứng cam cho mỗi scene
+
 	CBoard* HUD;
+	CGrid* grid;
+
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> coObjects;
+
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_SETUP(string line);
 	void _ParseSection_MAP(string line);

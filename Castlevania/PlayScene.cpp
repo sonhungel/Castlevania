@@ -3,12 +3,14 @@
 #include <fstream>
 #include "PlayScene.h"
 #include"Game.h"
+#include"Define.h"
 
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
 #include"Knife.h"
+#include"Axe.h"
 #include"Effect.h"
 
 
@@ -122,7 +124,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int state = atoi(tokens[5].c_str());
 		int nx = atoi(tokens[6].c_str());
 		int ny = atoi(tokens[7].c_str());
-		//int auto_x = atoi(tokens[8].c_str());
 		obj = new CHidenObject(x, y, width,height,state, nx, ny);
 		objects.push_back(obj); 
 	}
@@ -131,9 +132,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
-	//CEffect* effect = new CEffect(240,300,800);
-	//objects.push_back(effect);
-	singleToneObjects.push_back(CKnife::GetInstance());
+	
 }
 
 void CPlayScene::_ParseSection_SETUP(string line)
@@ -152,7 +151,7 @@ void CPlayScene::_ParseSection_SETUP(string line)
 
 	CGameObject* obj = NULL;
 
-	switch (object_type)// có BUG LOGIC, cần fix sớm
+	switch (object_type)
 	{
 	case SETUP_TYPE_SIMON_NEXT_MAP:
 		CSimon::GetInstance()->SetBeingOnStair(isBeingOnStair);
@@ -201,7 +200,11 @@ void CPlayScene::Load()
 	_xLeft = _xRight = -1;
 	map = CMap::GetInstance();
 	HUD = CBoard::GetInstance();
+
+	
+
 	CGame::GetInstance()->tagSwitchScene = -1;
+
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
 
 	ifstream f;
@@ -247,6 +250,11 @@ void CPlayScene::Load()
 		}
 	}
 
+	grid = new CGrid(objects);
+
+	singleToneObjects.push_back(CKnife::GetInstance());
+	singleToneObjects.push_back(CAxe::GetInstance());
+
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
@@ -254,49 +262,72 @@ void CPlayScene::UnLoad()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
-	// Không delete những obj singleton
+	
 	objects.clear();
+
+	coObjects.clear();
+
+	singleToneObjects.clear();
+
+	delete grid;
+	grid = NULL;
 	
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that SIMON is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
+
 	// ==> update simon riêng
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+
+	coObjects.clear();
+	CGame* game = CGame::GetInstance();
+	float cx, cy;
+
+	
+	//cy -= game->GetScreenHeight() / 2;
+
+	//vector<LPGAMEOBJECT> coObjects;
+
+	//for (size_t i = 1; i < objects.size(); i++)
+	//{
+	//	coObjects.push_back(objects[i]);
+	//}
+
+	grid->ResetOnCamera(objects);
+
+	game->GetCamPos(cx, cy);
+
+	grid->GetListObject(coObjects,cx,cy);	// Lấy những obj ở trong cam
+
+	for (size_t i = 0; i < coObjects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
+	//simon->Update(dt, &coObjects);
+
+	//CKnife::GetInstance()->Update(dt, &coObjects);
+	//CAxe::GetInstance()->Update(dt, &coObjects);
+
 	for (size_t i = 0; i < singleToneObjects.size(); i++)
 	{
 		singleToneObjects[i]->Update(dt, &coObjects);
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (simon == NULL) return;
+	//if (simon == NULL) return;
 
-	// Update camera to follow mario
-	float cx, cy;
 	simon->GetPosition(cx, cy);
 
-	CGame* game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2+220;
-	cy -= game->GetScreenHeight() / 2;
+	cx -= SCREEN_WIDTH / 2 - 40;
+	cy = 0;
 
 	if (cx < _xLeft) cx = _xLeft; if (cx >_xRight ) cx = _xRight;
 	// K có scene ngầm dưới lòng đất nên k cần xây dựng limit cam Y
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
-	HUD->Update(dt);
+	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	HUD->Update(dt,&coObjects);// HUD chứa tất cả các subweapon
 
 	if (game->tagSwitchScene != -1)
 	{
@@ -306,10 +337,16 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 	HUD->Render();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	for (int i = 0; i < coObjects.size(); i++)
+		coObjects[i]->Render();
+
+	//simon->Render();
+
+	//CKnife::GetInstance()->Render();
+	//CAxe::GetInstance()->Render();
+
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
 }
@@ -371,29 +408,26 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 
 	case DIK_X:
 		break;
+	case DIK_A:
+		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
+		break;
 	case DIK_Z:
+		
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else if (game->IsKeyDown(DIK_UP))
 		{
-			simon->SetState(STATE_SIMON_ATTACK_KNIFE);
 		}
 		else
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
 	case DIK_DOWN:
 		simon->SetState(STATE_SIMON_GO_DOWN);
-		//if (simon->IsCanGo3DirectionOnStair())
-		//{
 			simon->isGoDown = true;
-		//}
 		break;
 	case DIK_UP:
 		simon->SetState(STATE_SIMON_GO_UP);
-		//if (simon->IsCanGo3DirectionOnStair())
-		//{
 			simon->isGoUp = true;
-		//}
 		break;
 	}
 }
@@ -405,7 +439,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 
 	if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_UP))
 	{
-		simon->SetState(STATE_SIMON_ATTACK_KNIFE);
+		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 	}
 	if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z))
 	{
@@ -446,7 +480,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 				simon->SetState(STATE_SIMON_IDLE_DOWN);
 			}
 		}
-		else
+		else 
 			simon->SetState(STATE_SIMON_IDLE);
 	}
 	

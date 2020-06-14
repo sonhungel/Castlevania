@@ -66,7 +66,9 @@ public:
 	DWORD dt;
 
 	int blood;
-	int type;
+	//int type;
+
+	bool isOnCamera;
 
 	vector<LPANIMATION> animations;
 	LPANIMATION animation;

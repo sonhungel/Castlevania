@@ -9,6 +9,7 @@
 #include"ItemHeart.h"
 #include"ItemWhipUpgrade.h"
 #include"ItemKnife.h"
+#include"ItemAxe.h"
 #include"Effect.h"
 
 
@@ -21,10 +22,6 @@
 #define STATE_TORCH_ITEM_EXSIST		2
 #define STATE_TORCH_ITEM_NOT_EXSIST 3
 
-
-#define ID_ITEM_WHIPUPGRADE			1
-#define ID_ITEM_KNIFE				2
-#define ID_ITEM_HEART				3
 #define ID_ANIMATION_EFFECT		800
 
 #define TIME_EFFECT		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds

@@ -14,11 +14,10 @@ CWhip* CWhip::GetInstance()
 
 CWhip::CWhip()
 {
-	dt_effect = 0;
 	_level = 1;
-	AddAnimation(600);
-	AddAnimation(601); // level 2
-	AddAnimation(602);	// level 3
+	AddAnimation(WHIP_LEVEL_1_ID);
+	AddAnimation(WHIP_LEVEL_2_ID); // level 2
+	AddAnimation(WHIP_LEVEL_3_ID);	// level 3
 	animation = animations[ANI_WHIP_LEVEL_1]; // whip level 1
 }
 
@@ -138,7 +137,6 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
-
 				}
 			}
 		}

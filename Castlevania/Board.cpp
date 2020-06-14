@@ -9,8 +9,13 @@ CBoard* CBoard::GetInstance()
 	return __instance;
 }
 
-void CBoard::Update(DWORD dt)
+void CBoard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	//for (int i = 0; i < listWeapon.size(); i++)
+	//{
+		//CKnife::GetInstance()->Update(dt, coObjects);
+		//listWeapon.at(i)->Update(dt,coObjects);
+	//}
 	if (isStop)
 	{
 		return;
@@ -26,6 +31,10 @@ void CBoard::Render()
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
+	//for (int i = 0; i < listWeapon.size(); i++)
+	//{
+	//	listWeapon[i]->Render();
+	//}
 	float cx, cy;
 	game->GetCamPos(cx, cy);
 	CSprites* sprites = CSprites::GetInstance();

@@ -16,6 +16,8 @@ private:
 public:
 	CHidenObject(float _x = 0, float _y = 0,int w=0,int h=0, int state = 0, int trendX = 0, int trendY = 0) 
 	{
+		this->blood = 1;
+
 		this->width = w;
 		this->height = h;
 		this->x = _x;

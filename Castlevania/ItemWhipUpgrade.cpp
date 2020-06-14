@@ -2,7 +2,7 @@
 
 void CItemWhipUpgrade::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (STATE_ITEM_EXSIST)
+	if (state==STATE_ITEM_EXSIST)
 	{
 		left = x;
 		top = y;

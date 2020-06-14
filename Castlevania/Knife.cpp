@@ -11,16 +11,15 @@ CKnife* CKnife::GetInstance()
 
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CGameObject::Update(dt);
 	if (state == STATE_KNIFE_APPEAR)
 	{
 		if (start_attack == 0)
 			start_attack = GetTickCount();
 		if (nx > 0)
-			this->x += dt * vx;
-		
+			this->x += dx;
 		else
-			this->x -= dt * vx;
-		
+			this->x -= dx;
 		CollisionWithObject(dt, *coObjects);
 		if (GetTickCount() - start_attack > KNIFE_TIME)
 		{
@@ -39,7 +38,6 @@ void CKnife::Render()
 		//DebugOut(L"Knife rendered\n");
 		//RenderBoundingBox();
 	}
-		
 }
 
 void CKnife::SetPosition(float x, float y)

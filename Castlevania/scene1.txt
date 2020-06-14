@@ -71,10 +71,10 @@
 # TORCH
 # type 	x	y	type item	animation_id
 # type 1: item whipUpgrade, 2: item knife, 3: item heart
-2	190	300	2	501
-2	416	300	2	501
-2	640	300	2	501
-2	864	300	2	501
+2	190	300	5	501
+2	416	300	5	501
+2	640	300	5	501
+2	864	300	5	501
 
 # --- SCENE PORTAL ----
 # type	x	y	scene_id

@@ -10,6 +10,7 @@
 #include"Animation.h"
 #include"Sprites.h"
 #include"fstream"
+#include"Define.h"
 
 #include "Simon.h"
 #include"Map.h"
@@ -20,8 +21,6 @@
 #define MAIN_WINDOW_TITLE L"Castlevania 1986"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255,255,255)
-#define SCREEN_WIDTH 525
-#define SCREEN_HEIGHT 496	// 496
 
 #define MAX_FRAME_RATE 120
 

@@ -67,6 +67,12 @@
     <Filter Include="GameObject\Effect">
       <UniqueIdentifier>{9081dc12-9ebc-4a9d-9afd-706ad4b11a7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{cb381475-fc76-4b64-8f83-17afde2e4dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Item\Item Base">
+      <UniqueIdentifier>{c8670dc7-2799-43c3-933e-00d6b8c3646a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -120,9 +126,6 @@
     <ClInclude Include="Knife.h">
       <Filter>GameObject\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -138,9 +141,6 @@
     <ClInclude Include="Define.h">
       <Filter>Define</Filter>
     </ClInclude>
-    <ClInclude Include="SecondaryWeapon.h">
-      <Filter>GameObject\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="HidenObject.h">
       <Filter>GameObject\HidenObjects</Filter>
     </ClInclude>
@@ -149,6 +149,45 @@
     </ClInclude>
     <ClInclude Include="Code.h">
       <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemAxe.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObject\Item\Item Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSmallHeart.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBoomerang.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemII.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemIII.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemClock.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemCross.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemVase.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBallBoss.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHollyWater.h">
+      <Filter>GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +242,6 @@
     <ClCompile Include="Knife.cpp">
       <Filter>GameObject\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -218,9 +254,6 @@
     <ClCompile Include="Board.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
-    <ClCompile Include="SecondaryWeapon.cpp">
-      <Filter>GameObject\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="HidenObject.cpp">
       <Filter>GameObject\HidenObjects</Filter>
     </ClCompile>
@@ -229,6 +262,45 @@
     </ClCompile>
     <ClCompile Include="Code.cpp">
       <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Axe.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemAxe.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObject\Item\Item Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSmallHeart.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBoomerang.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemII.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemIII.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemClock.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemCross.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemVase.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHollyWater.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBallBoss.cpp">
+      <Filter>GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Axe.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Code.h" />
@@ -130,10 +131,21 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="HidenObject.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemAxe.h" />
+    <ClInclude Include="ItemBallBoss.h" />
+    <ClInclude Include="ItemBoomerang.h" />
+    <ClInclude Include="ItemClock.h" />
+    <ClInclude Include="ItemCross.h" />
     <ClInclude Include="ItemHeart.h" />
+    <ClInclude Include="ItemHollyWater.h" />
+    <ClInclude Include="ItemII.h" />
+    <ClInclude Include="ItemIII.h" />
     <ClInclude Include="ItemKnife.h" />
+    <ClInclude Include="ItemSmallHeart.h" />
+    <ClInclude Include="ItemVase.h" />
     <ClInclude Include="ItemWhipUpgrade.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Knife.h" />
@@ -141,7 +153,6 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SecondaryWeapon.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
@@ -152,16 +163,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Axe.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HidenObject.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemAxe.cpp" />
+    <ClCompile Include="ItemBallBoss.cpp" />
+    <ClCompile Include="ItemBoomerang.cpp" />
+    <ClCompile Include="ItemClock.cpp" />
+    <ClCompile Include="ItemCross.cpp" />
     <ClCompile Include="ItemHeart.cpp" />
+    <ClCompile Include="ItemHollyWater.cpp" />
+    <ClCompile Include="ItemII.cpp" />
+    <ClCompile Include="ItemIII.cpp" />
     <ClCompile Include="ItemKnife.cpp" />
+    <ClCompile Include="ItemSmallHeart.cpp" />
+    <ClCompile Include="ItemVase.cpp" />
     <ClCompile Include="ItemWhipUpgrade.cpp" />
     <ClCompile Include="Knife.cpp" />
     <ClCompile Include="main.cpp" />
@@ -169,7 +192,6 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SecondaryWeapon.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />

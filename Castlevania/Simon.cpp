@@ -7,6 +7,7 @@
 #include"Whip.h"
 #include"Brick.h"
 #include"Knife.h"
+#include"Axe.h"
 #include"Portal.h"
 
 CSimon* CSimon::__instance = NULL;
@@ -24,6 +25,7 @@ CSimon::CSimon()
 	untouchable = 0;
 	trans_start = 0;
 	stair_start = 0;
+	subWeapon = -1;
 
 	isBeingOnStair = false;
 	isCanOnStair = 0;
@@ -128,6 +130,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				listHideObject.push_back(hidenObj);
 			}
 		}
+
+
 		// xử lý phần stair
 		if (isBeingOnStair)
 		{
@@ -181,6 +185,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			IsCanOnStair(listHideObject); // dùng để bắt đầu thang, còn việc phát hiện va chạm AABB là để kết thúc thang
 		listHideObject.clear();
 
+
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
 			
@@ -188,7 +193,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			whip->SetTrend(nx);
 			whip->CollisionWithObject(dt, *coObjects);
 		}
-
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -291,7 +295,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 		//for (UINT i = 0; i < coEventsResult.size(); i++) delete coEventsResult[i];
 	}
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
 	//if (isBeingOnStair)
 	//	DebugOut(L"Dang tren thang\n");
 	//if(isHave3Direction)
@@ -337,9 +341,9 @@ void CSimon::Render()
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		whip->Render();
 	}
-	else if (state == STATE_SIMON_ATTACK_KNIFE)
+	else if (state == STATE_SIMON_ATTACK_SUBWEAPON)
 	{
-		if (subWeapon==true)
+		//if (subWeapon!=-1)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else if (trans_start > 0) {
@@ -437,17 +441,36 @@ void CSimon::SetState(int state)
 		case STATE_SIMON_SIT_ATTACK:
 			vx = 0;
 			break;
-		case STATE_SIMON_ATTACK_KNIFE:
+		case STATE_SIMON_ATTACK_SUBWEAPON:
 			vx = 0;
-			if (subWeapon)
+			if (subWeapon!=-1)
 			{
-				CKnife* knife = CKnife::GetInstance();
-				if (knife->GetState() == STATE_KNIFE_HIDE)
+				switch (subWeapon)
 				{
-					knife->SetState(STATE_KNIFE_APPEAR);
-					knife->SetPosition(x, y);
-					knife->SetTrend(nx);
-					knife->Render();
+				case ID_WEAPON_KNIFE:
+				{
+					CKnife* knife = CKnife::GetInstance();
+					if (knife->GetState() == STATE_KNIFE_HIDE)
+					{
+						knife->SetState(STATE_KNIFE_APPEAR);
+						knife->SetPosition(this->x, this->y);
+						knife->SetTrend(nx);
+					}
+				}
+					break;
+				case ID_WEAPON_AXE:
+				{
+					CAxe* axe = CAxe::GetInstance();
+					if (axe->GetState() == AXE_STATE_HIDE)
+					{
+						axe->SetTrend(nx);
+						axe->SetPosition(this->x, this->y);
+						axe->SetState(AXE_STATE_APPEAR);
+						//axe->Render();
+					}
+				}
+				break;
+
 				}
 			}
 			break;
@@ -520,8 +543,14 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)	// item knife
 			{
 				trans_start = GetTickCount();
-				CKnife* knife = CKnife::GetInstance();
-				subWeapon = true;
+				//CKnife* knife = CKnife::GetInstance();
+				subWeapon = ID_WEAPON_KNIFE;
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			if (listObj.at(i)->getType() == TYPE_ITEM_AXE)
+			{
+				trans_start = GetTickCount();
+				subWeapon = ID_WEAPON_AXE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}
@@ -546,11 +575,6 @@ void CSimon::CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float
 
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-	//	if (rdy != 0 && rdy == dy)
-		//x += ny * abs(rdy);
-	
-	// xử lý va chạm với birck theo chiều y để tránh bug logic
-	// block 
 	if (min_tx <= min_tx0)
 		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 	if (min_ty <= min_ty0)

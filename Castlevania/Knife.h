@@ -16,12 +16,13 @@
 #define KNIFE_EXSIST	1
 #define KNIFE_NOT_EXSIST	0
 
-#define KNIFE_SPEED 0.007f
+#define KNIFE_SPEED 0.5f
 
 #define STATE_KNIFE_APPEAR 1
 #define STATE_KNIFE_HIDE 0
 
 #define KNIFE_TIME 900
+#define KNIFE_ANI_ID	701
 
 class CKnife :public CWeapon
 {
@@ -33,7 +34,7 @@ public:
 	CKnife()
 	{
 		vx = KNIFE_SPEED;
-		AddAnimation(701);
+		AddAnimation(KNIFE_ANI_ID);
 		start_attack = 0;
 		state = STATE_KNIFE_HIDE;
 	}

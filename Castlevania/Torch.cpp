@@ -1,24 +1,31 @@
 ﻿#include "Torch.h"
+#include"ItemSmallHeart.h"
 
 CTorch::CTorch(int id) : CGameObject()
 {
 	dt_die = 0;
+	this->blood = 1;
 	state = STATE_TORCH_EXSIST;
 	effect = new CEffect(ID_ANIMATION_EFFECT);
 	switch (id)
 	{
-	case ID_ITEM_HEART:
-		item = new CItemHeart();
+	case TYPE_ITEM_HEART:
+		item = new CItemHeart(x,y);
 		break;
-	case ID_ITEM_WHIPUPGRADE:
-		item = new CItemWhipUpgrade();
+	case TYPE_ITEM_WHIPUPGRADE:
+		item = new CItemWhipUpgrade(x,y);
 		break;
-	case ID_ITEM_KNIFE:
-		item = new CItemKnife();
-	case 0:
+	case TYPE_ITEM_KNIFE:
+		item = new CItemKnife(x,y);
+		break;
+	case TYPE_ITEM_AXE:
+		item = new CItemAxe(x,y);
+		break;
+	case TYPE_ITEM_SMALLHEART:
+		item = new CItemSmallHeart(x, y);
+	case TYPE_ITEM_UNKNOW:
 		break;
 	}
-
 }
 
 void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -40,8 +47,9 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (GetTickCount() - dt_die > TIME_EFFECT) // 100 is time default
 			{
+				delete effect;
 				effect = NULL;
-				//delete effect;	// delete sẽ gây ra lỗi
+
 				state = STATE_TORCH_ITEM_EXSIST;
 				item->Update(dt, coObjects);
 			}

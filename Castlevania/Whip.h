@@ -18,6 +18,10 @@
 #define ANI_WHIP_LEVEL_2	1
 #define ANI_WHIP_LEVEL_3	2
 
+#define WHIP_LEVEL_1_ID	600
+#define WHIP_LEVEL_2_ID	601
+#define WHIP_LEVEL_3_ID	602
+
 
 class CWhip :public CWeapon
 {

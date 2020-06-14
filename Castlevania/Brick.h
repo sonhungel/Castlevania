@@ -14,6 +14,7 @@ private:
 public:
 	CBrick(int _width,int _height) :CGameObject()
 	{
+		this->blood = 1;
 		this->width = _width;
 		this->height = _height;
 	}

@@ -8,15 +8,17 @@
 
 //==========DEFINE================
 
+#define ITEM_WHIPUPGRADE_ANI_ID 700
+
 #define WHIPUPGRADE_WIDTH 38
 #define WHIPUPGRADE_HEIGHT 35
 class CItemWhipUpgrade :public CItem
 {
 public:
-	CItemWhipUpgrade()
+	CItemWhipUpgrade(float _x = 0, float _y = 0):CItem(_x,_y)
 	{
 		type_Item = TYPE_ITEM_WHIPUPGRADE;
-		AddAnimation(700);
+		AddAnimation(ITEM_WHIPUPGRADE_ANI_ID);
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

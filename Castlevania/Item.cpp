@@ -14,6 +14,14 @@ void CItem::Render()
 
 void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!time_exsist)
+		time_exsist = GetTickCount();
+	else
+	{
+		if (GetTickCount() - time_exsist >= TIME_ITEM_EXSIST)
+			state = STATE_ITEM_NOT_EXSIST;
+	}
+
 	CGameObject::Update(dt);
 	this->vy += GRAVITY_ITEM * dt;
 
@@ -23,7 +31,12 @@ void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	if (coEvents.size() > 0)
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
 	{
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;

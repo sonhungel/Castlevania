@@ -27,7 +27,7 @@
 #define STATE_SIMON_SIT_ATTACK		600
 #define STATE_SIMON_DIE				700
 #define STATE_SIMON_UP				800
-#define STATE_SIMON_ATTACK_KNIFE	900
+#define STATE_SIMON_ATTACK_SUBWEAPON 900
 #define STATE_SIMON_GO_UP			1000
 #define STATE_SIMON_GO_DOWN			1001
 #define STATE_SIMON_IDLE_UP			1002
@@ -59,8 +59,8 @@
 #define JUMP_TIME			0
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
-#define ID_WEAPON_WHIP 0		// main weapon
-#define ID_WEAPON_SECONDARY 1
+#define ID_WEAPON_KNIFE	0
+#define ID_WEAPON_AXE 1
 
 class CSimon : public CGameObject
 {
@@ -72,7 +72,6 @@ class CSimon : public CGameObject
 	DWORD stair_start;
 
 	CWhip* whip;
-	bool subWeapon = false;
 
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
@@ -102,6 +101,7 @@ public:
 
 	bool isGoUp; // set simon ở vị trí thang đặc biệt
 	bool isGoDown;
+	int subWeapon;
 
 	// Biến liên quan đến scene
 

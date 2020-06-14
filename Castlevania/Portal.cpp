@@ -5,7 +5,7 @@ CPortal::CPortal(int scene_id ):CGameObject()
 {
 	this->scene_id = scene_id;
 
-
+	this->blood = 1;
 }
 
 void CPortal::Render()

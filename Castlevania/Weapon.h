@@ -14,9 +14,11 @@
 
 #define ANIMATION_EFFECT_FIRE 800
 
+class CWeapon;
+typedef CWeapon* LPWEAPON;
+
 class CWeapon :public CGameObject
 {protected:
-	DWORD dt_effect;
 public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
