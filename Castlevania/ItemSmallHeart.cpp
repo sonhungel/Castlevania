@@ -1,4 +1,5 @@
 #include "ItemSmallHeart.h"
+#include"Utils.h"
 
 void CItemSmallHeart::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -21,7 +22,6 @@ void CItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			state = STATE_ITEM_NOT_EXSIST;
 	}
 	CGameObject::Update(dt);
-	vy += SMALLHEAR_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -36,8 +36,7 @@ void CItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		vx = 0;
-		vy = 0;
+		vx = vy = 0;
 	}
 
 	// clean up collision events
@@ -48,4 +47,5 @@ void CItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		vx = -vx;
 	}
+	DebugOut(L"Vi tri smallheart : %d, %d\n",(int)this->x,(int)this->y);
 }

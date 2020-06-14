@@ -108,20 +108,11 @@
     <ClInclude Include="PlayScene.h">
       <Filter>Scenes Manager</Filter>
     </ClInclude>
-    <ClInclude Include="ItemHeart.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject\Base GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ItemWhipUpgrade.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Whip.h">
       <Filter>GameObject\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemKnife.h">
-      <Filter>GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="Knife.h">
       <Filter>GameObject\Weapon</Filter>
@@ -156,37 +147,16 @@
     <ClInclude Include="Axe.h">
       <Filter>GameObject\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="ItemAxe.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>GameObject\Item\Item Base</Filter>
     </ClInclude>
     <ClInclude Include="ItemSmallHeart.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemBoomerang.h">
+    <ClInclude Include="ItemNormal.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemII.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemIII.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemClock.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemCross.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemVase.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemBallBoss.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemHollyWater.h">
+    <ClInclude Include="ItemMoney.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
@@ -224,20 +194,8 @@
     <ClCompile Include="PlayScene.cpp">
       <Filter>Scenes Manager</Filter>
     </ClCompile>
-    <ClCompile Include="ItemHeart.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject\Base GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemWhipUpgrade.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Whip.cpp">
-      <Filter>GameObject\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemKnife.cpp">
-      <Filter>GameObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="Knife.cpp">
       <Filter>GameObject\Weapon</Filter>
@@ -257,9 +215,6 @@
     <ClCompile Include="HidenObject.cpp">
       <Filter>GameObject\HidenObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>GameObject\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Code.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
@@ -269,37 +224,22 @@
     <ClCompile Include="Axe.cpp">
       <Filter>GameObject\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="ItemAxe.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>GameObject\Item\Item Base</Filter>
     </ClCompile>
     <ClCompile Include="ItemSmallHeart.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemBoomerang.cpp">
+    <ClCompile Include="Effect.cpp">
+      <Filter>GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemNormal.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemII.cpp">
-      <Filter>GameObject\Item</Filter>
+    <ClCompile Include="Whip.cpp">
+      <Filter>GameObject\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="ItemIII.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemClock.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemCross.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemVase.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemHollyWater.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemBallBoss.cpp">
+    <ClCompile Include="ItemMoney.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>

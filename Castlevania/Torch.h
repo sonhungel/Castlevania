@@ -6,10 +6,7 @@
 #include"Simon.h"
 #include"Textures.h"
 #include"Item.h"
-#include"ItemHeart.h"
-#include"ItemWhipUpgrade.h"
-#include"ItemKnife.h"
-#include"ItemAxe.h"
+#include"ItemNormal.h"
 #include"Effect.h"
 
 
@@ -22,18 +19,23 @@
 #define STATE_TORCH_ITEM_EXSIST		2
 #define STATE_TORCH_ITEM_NOT_EXSIST 3
 
-#define ID_ANIMATION_EFFECT		800
 
-#define TIME_EFFECT		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds
+#define TIME_EFFECT_DEATH		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds
+#define TIME_EFFECT_HIT		200
 
 class CTorch:public CGameObject
 {
-	DWORD dt_die; // đo thời gian cho animation lửa xuất hiện sau khi đánh stroke torch
+	DWORD dt_die; // đo thời gian cho animation lửa xuất hiện sau khi đánh 
+	DWORD dt_strock;
 	CItem* item;
-	CEffect* effect;
+
+	CEffect* effectDie;
+	CEffect* effectHit;
 	
 public:
-	CTorch(int id = 0); // id Item
+	bool isStrock;
+
+	CTorch(int type,int ani_id,float _x, float _y); // type item, ani_id item
 	~CTorch()
 	{
 		CGameObject::~CGameObject();

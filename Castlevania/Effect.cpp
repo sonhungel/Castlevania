@@ -5,9 +5,11 @@
 
 void CEffect::Render()
 {
-	animations[0]->Render(x, y);
-	//DebugOut(L"Render effect \n");
-	RenderBoundingBox();
+	if (animations.size() > 0)
+	{
+		animations[0]->Render(x, y);
+		RenderBoundingBox();
+	}
 }
 
 void CEffect::GetBoundingBox(float& left, float& top, float& right, float& bottom)

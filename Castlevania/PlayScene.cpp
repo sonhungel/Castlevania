@@ -83,14 +83,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_TORCH: 
 	{
-		float item = atoi(tokens[3].c_str());
-		obj = new CTorch(item);
-		for (int i = 4; i < tokens.size(); i += 1)
-		{
-			int animation_id = atoi(tokens[i].c_str());
-			obj->AddAnimation(animation_id);
-		}
-		obj->SetPosition(x, y);
+		float item = atoi(tokens[4].c_str());
+		float ani_item = atoi(tokens[5].c_str());
+
+		obj = new CTorch(item,ani_item,x,y);
+
+		int animation_id = atoi(tokens[3].c_str());
+		obj->AddAnimation(animation_id);
+		
 		objects.push_back(obj); 
 	}
 		break;

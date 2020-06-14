@@ -188,7 +188,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
 		{
-			
+			//whip->Update(dt, coObjects);
 			whip->SetPosition(x, y);
 			whip->SetTrend(nx);
 			whip->CollisionWithObject(dt, *coObjects);

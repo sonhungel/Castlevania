@@ -13,24 +13,23 @@
 #define STATE_ITEM_EXSIST		1
 
 #define TYPE_ITEM_UNKNOW		0
-#define TYPE_ITEM_KNIFE			1
-#define TYPE_ITEM_WHIPUPGRADE	2
-#define TYPE_ITEM_HEART			3
-#define TYPE_ITEM_AXE			4
-#define TYPE_ITEM_SMALLHEART	5
-#define TYPE_ITEM_RED_MONEY		6
-#define TYPE_ITEM_YELLOW_MONEY	7
-#define TYPE_ITEM_PURPLE_MONEY	8
-#define TYPE_ITEM_BLUE_MONEY	9
-#define TYPE_ITEM_CLOCK			10
-#define TYPE_ITEM_CROSS			11
-#define TYPE_ITEM_II			12
-#define TYPE_ITEM_III			13
-#define TYPE_ITEM_HOLLYWATER	14
-#define TYPE_ITEM_BALL_BOSS		15
-#define TYPE_ITEM_BOMMERANG		16
-#define TYPE_ITEM_VASE			17
-#define TYPE_ITEM_HIDEN_MONEY	18
+#define TYPE_ITEM_KNIFE			1	// 701
+#define TYPE_ITEM_WHIPUPGRADE	2	// 700
+#define TYPE_ITEM_HEART			3	// 702
+#define TYPE_ITEM_AXE			4	// 703
+#define TYPE_ITEM_SMALLHEART	5	// 704	// đặc biệt vì có di chuyển zic zac
+#define TYPE_ITEM_RED_MONEY		6	// 705	// có effect
+#define TYPE_ITEM_YELLOW_MONEY	7	// 706	// có effect
+#define TYPE_ITEM_PURPLE_MONEY	8	// 707	// có effect
+#define TYPE_ITEM_CLOCK			10	// 709
+#define TYPE_ITEM_CROSS			11	// 710
+#define TYPE_ITEM_II			12	// 711
+#define TYPE_ITEM_III			13	// 712
+#define TYPE_ITEM_HOLLYWATER	14	// 713
+#define TYPE_ITEM_BALL_BOSS		15	// 714
+#define TYPE_ITEM_BOMMERANG		16	// 715
+#define TYPE_ITEM_VASE			17	// 716
+#define TYPE_ITEM_HIDEN_MONEY	18	// 717	// có effect
 
 #define GRAVITY_ITEM		  0.002f
 

@@ -72,7 +72,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		LPGAMEOBJECT object = coObjects->at(i);
 		listObject.push_back(object);
 	}
-	animations[_level - 1]->ResetFrame();
+	//animations[_level - 1]->ResetFrame();
 	CollisionWithObject(dt, listObject);
 }
 
@@ -99,7 +99,7 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		left = x;
 		right = x + 145;
 		top = y;
-		bottom = y + WHIPUPGRADE_HEIGHT;
+		bottom = y + 35;
 
 	}
 }
@@ -124,10 +124,9 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
-			
+			CTorch* torch = dynamic_cast<CTorch*>(listObj.at(i));
 			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
 			{
-				
 				// get bounding box of the object that whip collision
 				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2); 
 				rect2.left = (int)l2;
@@ -136,6 +135,7 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
+					torch->isStrock = true;
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
 				}
 			}
