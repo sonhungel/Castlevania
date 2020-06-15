@@ -74,8 +74,8 @@ CAnimations* CAnimations::GetInstance()
 
 void CAnimations::Add(int id, LPANIMATION ani)
 {
-	DebugOut(L"Add animation\n");
 	animations[id] = ani;
+	DebugOut(L"Added animation\n");
 }
 
 LPANIMATION CAnimations::Get(int id)

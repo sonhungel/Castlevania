@@ -8,7 +8,7 @@ class CItemNormal :public CItem
 public:
 	CItemNormal(float _x, float _y, int _type, int _ani) :CItem(_x, _y)
 	{
-		type_Item = _type;
+		type = _type;
 		AddAnimation(_ani);
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

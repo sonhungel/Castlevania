@@ -34,16 +34,43 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>& ListObj, float cam_x, float cam_
 			{
 				for (UINT i = 0; i < cells[row][column].size(); i++)
 				{
-					if (cells[row][column].at(i)->blood > 0)	// Loại trừ các obj đã destroy
-					{
-						if (cells[row][column].at(i)->isOnCamera == false)	// bỏ qua nếu obj đã xuất hiện trên cam
-							// tránh trường hợp 1 cell grid có 2 obj xuất hiện
-							// xóa đk để hiểu rõ
+					//if (cells[row][column].at(i) != NULL)
+					//{
+						if (cells[row][column].at(i)->blood > 0)	// Loại trừ các obj đã destroy
 						{
-							ListObj.push_back(cells[row][column].at(i));
-							cells[row][column].at(i)->isOnCamera = true;
+							if (cells[row][column].at(i)->isOnCamera == false)	// bỏ qua nếu obj đã xuất hiện trên cam
+								// tránh trường hợp 1 cell grid có 2 obj xuất hiện
+								// xóa đk để hiểu rõ
+							{
+								ListObj.push_back(cells[row][column].at(i));
+								cells[row][column].at(i)->isOnCamera = true;
+							}
 						}
-					}
+						/*
+						if (cells[row][column].at(i)->blood <= 0)
+						{
+							delete cells[row][column].at(i);
+							DebugOut(L"Xoa cell : %d, %d\n", row, column);
+							cells[row][column].at(i) = NULL;
+							if (cells[row][column].at(i) == NULL)
+								DebugOut(L"Da Xoa cell : %d, %d\n", row, column);
+							//return;
+						}*/
+					//}
+					//else if (cells[row][column].at(i) == NULL)
+					//{ }
+					/*
+						if (cells[row][column].at(i)->blood <= 0)
+						{
+							delete cells[row][column].at(i);
+							DebugOut(L"Xoa cell : %d, %d\n",row,column);
+							cells[row][column].at(i) = NULL;
+							if(cells[row][column].at(i) == NULL)
+								DebugOut(L"Da Xoa cell : %d, %d\n", row, column);
+							return;
+						}
+						return;
+					*/
 				}
 			}
 		}

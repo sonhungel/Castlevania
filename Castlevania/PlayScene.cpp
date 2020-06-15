@@ -412,7 +412,6 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 		break;
 	case DIK_Z:
-		
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else if (game->IsKeyDown(DIK_UP))

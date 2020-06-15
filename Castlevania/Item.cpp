@@ -14,7 +14,7 @@ void CItem::Render()
 
 void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (!time_exsist)
+	if (time_exsist==0)
 		time_exsist = GetTickCount();
 	else
 	{
@@ -45,7 +45,7 @@ void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// block 
-		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+		//x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0)

@@ -6,6 +6,7 @@
 #include"GameObject.h"
 #include"Simon.h"
 #include"Textures.h"
+#include"Define.h"
 
 //===========DEFINE================
 
@@ -43,19 +44,17 @@ class CItem:public CGameObject
 {
 protected:
 	DWORD time_exsist;
-	int type_Item; // định dang item
 public:
 	CItem(float _x = 0, float _y = 0) :CGameObject()
 	{
 		this->x = _x;
 		this->y = _y;
 		state = STATE_ITEM_EXSIST;
-		type_Item = TYPE_ITEM_UNKNOW;
+		type = eType::UNKNOW;
 		time_exsist = 0;
 	}
-	void Render();
+	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	virtual int getType() { return type_Item; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 #endif

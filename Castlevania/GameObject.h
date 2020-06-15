@@ -66,7 +66,7 @@ public:
 	DWORD dt;
 
 	int blood;
-	//int type;
+	int type;
 
 	bool isOnCamera;
 
@@ -83,7 +83,7 @@ public:
 
 	int GetState() { return this->state; }
 
-	virtual int getType() { return -1; };
+	virtual int getType() { return type; };
 
 	void RenderBoundingBox();
 

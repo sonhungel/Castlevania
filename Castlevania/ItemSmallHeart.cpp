@@ -47,5 +47,5 @@ void CItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		vx = -vx;
 	}
-	DebugOut(L"Vi tri smallheart : %d, %d\n",(int)this->x,(int)this->y);
+	//DebugOut(L"Vi tri smallheart : %d, %d\n",(int)this->x,(int)this->y);
 }

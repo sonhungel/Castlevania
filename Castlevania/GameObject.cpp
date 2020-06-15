@@ -14,7 +14,7 @@ CGameObject::CGameObject(float _x, float _y, int _type)
 	y = _y;
 	vx = vy = 0;
 	nx = 1;
-	//this->type = _type;
+	this->type = _type;
 	blood = 1;
 }
 

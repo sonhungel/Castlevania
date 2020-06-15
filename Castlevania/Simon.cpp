@@ -9,6 +9,7 @@
 #include"Knife.h"
 #include"Axe.h"
 #include"Portal.h"
+#include"ItemMoney.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -528,30 +529,47 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (listObj.at(i)->GetState() == STATE_ITEM_EXSIST)
 		{
-			if (listObj.at(i)->getType() == TYPE_ITEM_HEART) // item heart
+			if (listObj.at(i)->getType() == eType::ITEM_HEARTBIG) // item heart Big
 			{
+				_heart += 10;
 				trans_start = GetTickCount();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 				
 			}
-			if (listObj.at(i)->getType() == TYPE_ITEM_WHIPUPGRADE)	// item whipUpgrade
+			if (listObj.at(i)->getType() == eType::ITEM_WHIPUPGRADE)	// item whipUpgrade
 			{
 				trans_start = GetTickCount();
 				whip->setUpLevel();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			if (listObj.at(i)->getType() == TYPE_ITEM_KNIFE)	// item knife
+			if (listObj.at(i)->getType() == eType::ITEM_KNIFE)	// item knife
 			{
 				trans_start = GetTickCount();
 				//CKnife* knife = CKnife::GetInstance();
 				subWeapon = ID_WEAPON_KNIFE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			if (listObj.at(i)->getType() == TYPE_ITEM_AXE)
+			if (listObj.at(i)->getType() == eType::ITEM_AXE)
 			{
 				trans_start = GetTickCount();
 				subWeapon = ID_WEAPON_AXE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			if (listObj.at(i)->getType() == eType::ITEM_SMALLHEART)
+			{
+				trans_start = GetTickCount();
+				//subWeapon = ID_WEAPON_AXE;
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			if (listObj.at(i)->getType() == eType::ITEM_RED_MONEY||
+				listObj.at(i)->getType() == eType::ITEM_YELLOW_MONEY||
+				listObj.at(i)->getType() == eType::ITEM_PURPLE_MONEY)
+			{
+				CItemMoney* item = dynamic_cast<CItemMoney*>(listObj.at(i));
+				item->isEated = true;
+				trans_start = GetTickCount();
+				//subWeapon = ID_WEAPON_AXE;
+				//listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}
 	}

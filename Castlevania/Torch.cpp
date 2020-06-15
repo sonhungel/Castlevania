@@ -1,6 +1,7 @@
 ﻿#include "Torch.h"
 #include"ItemSmallHeart.h"
 #include"ItemNormal.h"
+#include"ItemMoney.h"
 
 CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 {
@@ -18,8 +19,13 @@ CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 	effectDie = new CEffect(DEATH_EFFECT_ANI_ID, this->x, this->y);
 	effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
-	if (type == TYPE_ITEM_SMALLHEART)
+	if (type == eType::ITEM_SMALLHEART)
 		item = new CItemSmallHeart(x, y);
+	else if (type == eType::ITEM_RED_MONEY ||
+		type == eType::ITEM_YELLOW_MONEY ||
+		type == eType::ITEM_PURPLE_MONEY ||
+		type == eType::ITEM_HIDEN_MONEY)
+		item = new CItemMoney(x,y,type,ani_id);
 	else
 		item = new CItemNormal(x, y, type, ani_id); //
 }
@@ -42,11 +48,12 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				delete effectDie;
 				effectDie = NULL;
-
 				state = STATE_TORCH_ITEM_EXSIST;
 			}
 		}
 	}
+	if (item->state == STATE_ITEM_NOT_EXSIST)
+		blood--;
 	if (dt_strock == 0)
 	{
 		if (isStrock == true)
@@ -59,6 +66,8 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (GetTickCount() - dt_strock > TIME_EFFECT_HIT) // 100 is time default
 			{
 				isStrock = false;
+				delete effectHit;
+				effectHit = NULL;
 			}
 		}
 	}

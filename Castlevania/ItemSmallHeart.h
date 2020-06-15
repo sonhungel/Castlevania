@@ -18,7 +18,7 @@ public:
 	CItemSmallHeart(float _x , float _y ) :CItem(_x, _y)
 	{
 		AddAnimation(ITEM_SMALLHEART_ANI_ID);
-		type_Item = TYPE_ITEM_SMALLHEART;
+		type = eType::ITEM_SMALLHEART;
 		vx = SMALLHEART_SPEED_X;
 		vy = SMALLHEART_SPEED_Y;
 		x_left = _x - 15;
