@@ -159,6 +159,12 @@
     <ClInclude Include="ItemMoney.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="HollyWater.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -241,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="ItemMoney.cpp">
       <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="HollyWater.cpp">
+      <Filter>GameObject\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

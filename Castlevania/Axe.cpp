@@ -2,6 +2,7 @@
 #include"Torch.h"
 #include"Brick.h"
 #include"Game.h"
+#include"Define.h"
 
 CAxe* CAxe::__instance = NULL;
 
@@ -14,6 +15,7 @@ CAxe* CAxe::GetInstance()
 
 CAxe::CAxe()
 {
+	type = eType::WEAPON_AXE;
 	AddAnimation(AXE_ANI_ID);
 	state = AXE_STATE_HIDE;
 	start_attack = 0;
@@ -34,7 +36,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		x += vx * dt;
 		vy += GRAVITY * dt;
-		//y += vy * dt;
+		y += vy * dt;
 		DebugOut(L"AXE appear\n");
 	}
 }

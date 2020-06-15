@@ -64,20 +64,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
-		if (simon != NULL)
-		{
-			DebugOut(L"[ERROR] SIMON object was created before!\n");
-			return;
-		}
+		//if (simon != NULL)
+		//{
+		//	DebugOut(L"[ERROR] SIMON object was created before!\n");
+		//	return;
+		//}
 		obj = CSimon::GetInstance();
 		
 		for (int i = 3; i < tokens.size(); i += 1)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
+			DebugOut(L"[INFO] added animation for SIMON: %d\n",animation_id);
 		}
 		obj->SetPosition(x, y);
-		simon = (CSimon*)obj;
+		//simon = (CSimon*)obj;
 		singleToneObjects.push_back(obj);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -318,7 +319,7 @@ void CPlayScene::Update(DWORD dt)
 
 	//if (simon == NULL) return;
 
-	simon->GetPosition(cx, cy);
+	CSimon::GetInstance()->GetPosition(cx, cy);
 
 	cx -= SCREEN_WIDTH / 2 - 40;
 	cy = 0;
@@ -414,10 +415,35 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN))
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
-		else if (game->IsKeyDown(DIK_UP))
+		else if (simon->IsBeingOnStair())
 		{
+			if (simon->GetStairTrend() == 1)
+			{
+				if (simon->GetTrend() == 1)
+				{
+					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
+				}
+				else if (simon->GetTrend() == -1)
+				{
+					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
+				}
+			}
+			else if (simon->GetStairTrend() == -1)
+			{
+				if (simon->GetTrend() == 1)
+				{
+					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
+				}
+				else if (simon->GetTrend() == -1)
+				{
+					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
+				}
+			}
 		}
-		else
+		//else if (game->IsKeyDown(DIK_UP))
+		//{
+		//}
+		else if(simon->IsBeingOnStair()==false)
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
 	case DIK_DOWN:

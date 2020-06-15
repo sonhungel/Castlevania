@@ -125,6 +125,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Axe.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Boomerang.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Code.h" />
     <ClInclude Include="Define.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HidenObject.h" />
+    <ClInclude Include="HollyWater.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemMoney.h" />
     <ClInclude Include="ItemNormal.h" />
@@ -155,6 +157,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -162,6 +165,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HidenObject.cpp" />
+    <ClCompile Include="HollyWater.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemMoney.cpp" />
     <ClCompile Include="ItemNormal.cpp" />

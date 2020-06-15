@@ -31,6 +31,8 @@
 #define STATE_SIMON_ATTACK_SUBWEAPON 900
 #define STATE_SIMON_GO_UP			1000
 #define STATE_SIMON_GO_DOWN			1001
+#define STATE_SIMON_GO_UP_ATTACK	1010
+#define STATE_SIMON_GO_DOWN_ATTACK	1011
 #define STATE_SIMON_IDLE_UP			1002
 #define STATE_SIMON_IDLE_DOWN		1003
 #define STATE_SIMON_HURT			1100
@@ -48,11 +50,14 @@
 #define ANI_SIMON_IDLE_UP					10
 #define ANI_SIMON_IDLE_DOWN					11
 #define ANI_SIMON_DIE						12
+#define ANI_SIMON_GO_UP_ATTACK				13
+#define ANI_SIMON_GO_DOWN_ATTACK			14
 
 
 #define SIMON_HEIGHT_STAND			62
 #define SIMON_HEIGHT_SIT			47
 #define SIMON_WIDTH					33
+
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100
@@ -132,8 +137,8 @@ public:
 
 	void SetBeingOnStair(bool onStair) { this->isBeingOnStair = onStair; }
 	void SetStairTrend(int stairTrend) { this->_stairTrend = stairTrend; }
-	void SetIsCanOnStair(int _isCanOnStair) { this->isCanOnStair = _isCanOnStair; }
-	void SetAutoGo(bool _autoGo) { this->isAutoGo = _autoGo; }
+	//void SetIsCanOnStair(int _isCanOnStair) { this->isCanOnStair = _isCanOnStair; }
+	//void SetAutoGo(bool _autoGo) { this->isAutoGo = _autoGo; }
 
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }

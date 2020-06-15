@@ -14,7 +14,7 @@
 # type	x	y	animation_id
 # type: 0 = SIMON , 1 = Brick , 2 = Torch 
 # SIMON
-0	10	20	400	401	402	403	404	405	399	406	407	408	409	410	411
+0	10	20	400	401	402	403	404	405	399	406	407	408	409	410	411	412	413
 # BRICK
 # type 	x	y	width	height	animation_id
 1	-32	176	32	32

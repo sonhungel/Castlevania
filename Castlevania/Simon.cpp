@@ -187,7 +187,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		listHideObject.clear();
 
 
-		if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_STAND_ATTACK)
+		if (state == STATE_SIMON_SIT_ATTACK || 
+			state == STATE_SIMON_STAND_ATTACK||
+			state==STATE_SIMON_GO_DOWN_ATTACK||
+			state==STATE_SIMON_GO_UP_ATTACK)
 		{
 			//whip->Update(dt, coObjects);
 			whip->SetPosition(x, y);
@@ -342,6 +345,27 @@ void CSimon::Render()
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		whip->Render();
 	}
+	else if (state == STATE_SIMON_GO_DOWN_ATTACK)
+	{
+		if (isBeingOnStair)
+		{
+			ani = ANI_SIMON_GO_DOWN_ATTACK;
+			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame());
+			whip->Render();
+			
+		}
+	}
+	else if (state == STATE_SIMON_GO_UP_ATTACK)
+	{
+		if (isBeingOnStair)
+		{
+			ani = ANI_SIMON_GO_UP_ATTACK;
+			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame());
+			whip->Render();
+
+		}
+	}
+
 	else if (state == STATE_SIMON_ATTACK_SUBWEAPON)
 	{
 		//if (subWeapon!=-1)
@@ -369,8 +393,9 @@ void CSimon::Render()
 		else
 			ani = ANI_SIMON_SITTING;
 	}
-	else if (state = STATE_SIMON_GO_UP && (isCanOnStair == 1 || isBeingOnStair))
+	else if (state = STATE_SIMON_GO_UP && isBeingOnStair)
 	{
+		//if(isCanOnStair == 1 )
 		ani = ANI_SIMON_GO_UP;
 	}
 	else {
@@ -398,6 +423,10 @@ void CSimon::SetState(int state)
 	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
 	{}
 	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
+	{}
+	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
+	{}
+	else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
 	{}
 	else if (trans_start > 0)
 	{}
@@ -441,6 +470,14 @@ void CSimon::SetState(int state)
 			break;
 		case STATE_SIMON_SIT_ATTACK:
 			vx = 0;
+			break;
+		case STATE_SIMON_GO_UP_ATTACK:
+			vx = 0;
+			vy = 0;
+			break;
+		case STATE_SIMON_GO_DOWN_ATTACK:
+			vx = 0;
+			vy = 0;
 			break;
 		case STATE_SIMON_ATTACK_SUBWEAPON:
 			vx = 0;

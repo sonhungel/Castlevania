@@ -3,6 +3,7 @@
 #include "Torch.h"
 #include "Game.h"
 #include"Effect.h"
+#include"Define.h"
 
 CWhip* CWhip::__instance = NULL;
 
@@ -14,6 +15,7 @@ CWhip* CWhip::GetInstance()
 
 CWhip::CWhip()
 {
+	type = eType::WEAPON_WHIP;
 	_level = 1;
 	AddAnimation(WHIP_LEVEL_1_ID);
 	AddAnimation(WHIP_LEVEL_2_ID); // level 2

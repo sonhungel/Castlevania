@@ -5,6 +5,7 @@
 
 CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 {
+	this->type == eType::TORCH;
 	this->x = _x;
 	this->y = _y;
 

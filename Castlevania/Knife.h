@@ -7,6 +7,7 @@
 #include "Textures.h"
 #include "Weapon.h"
 #include"Torch.h"
+#include"Define.h"
 
 //============DEFINE=================
 
@@ -33,6 +34,7 @@ public:
 	static CKnife* GetInstance();
 	CKnife()
 	{
+		type = eType::WEAPON_KNIFE;
 		vx = KNIFE_SPEED;
 		AddAnimation(KNIFE_ANI_ID);
 		start_attack = 0;

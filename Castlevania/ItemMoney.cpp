@@ -74,7 +74,7 @@ void CItemMoney::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y -= 0.1f * dt;
 		}
 	}
-	DebugOut(L"Vi tri item money : %d, %d\n", (int)this->x, (int)this->y);
+	//DebugOut(L"Vi tri item money : %d, %d\n", (int)this->x, (int)this->y);
 }
 
 void CItemMoney::Render()

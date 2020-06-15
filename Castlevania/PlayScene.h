@@ -17,7 +17,7 @@
 class CPlayScene:public CScene
 {
 protected:
-	CSimon* simon;		
+	//CSimon* simon;		
 	CMap* map;
 	int _xLeft, _xRight;		// Set cứng cam cho mỗi scene
 
