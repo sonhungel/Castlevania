@@ -65,9 +65,6 @@
 #define JUMP_TIME			0
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
-#define ID_WEAPON_KNIFE	0
-#define ID_WEAPON_AXE 1
-
 class CSimon : public CGameObject
 {
 	static CSimon* __instance;

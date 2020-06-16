@@ -21,6 +21,7 @@ class CWeapon :public CGameObject
 {protected:
 public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Render() = 0;
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 	virtual CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };

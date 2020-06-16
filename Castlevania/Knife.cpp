@@ -11,9 +11,10 @@ CKnife* CKnife::GetInstance()
 
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt);
+	
 	if (state == STATE_KNIFE_APPEAR)
 	{
+		CGameObject::Update(dt);
 		if (start_attack == 0)
 			start_attack = GetTickCount();
 		if (nx > 0)
@@ -35,7 +36,7 @@ void CKnife::Render()
 	if (state == STATE_KNIFE_APPEAR)
 	{
 		animations[0]->RenderTrend(x, y, nx);
-		//DebugOut(L"Knife rendered\n");
+		DebugOut(L"Knife rendered\n");
 		//RenderBoundingBox();
 	}
 }

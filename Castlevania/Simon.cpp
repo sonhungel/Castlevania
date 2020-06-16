@@ -26,7 +26,7 @@ CSimon::CSimon()
 	untouchable = 0;
 	trans_start = 0;
 	stair_start = 0;
-	subWeapon = -1;
+	subWeapon = eType::WEAPON_AXE;
 
 	isBeingOnStair = false;
 	isCanOnStair = 0;
@@ -129,6 +129,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CHidenObject* hidenObj = dynamic_cast<CHidenObject*>(coObjects->at(i));
 				listHideObject.push_back(hidenObj);
+			}
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				CBrick* brick = dynamic_cast<CBrick*>(coObjects->at(i));
+				listBrick.push_back(brick);
 			}
 		}
 
@@ -264,8 +269,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (isBeingOnStair==false)
 					{
 						//DebugOut(L"Set va cham brick\n");
-						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-						listBrick.push_back(brick);
+						//CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+						//listBrick.push_back(brick);
 						CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
 						listBrick.clear();
 					}
@@ -485,7 +490,7 @@ void CSimon::SetState(int state)
 			{
 				switch (subWeapon)
 				{
-				case ID_WEAPON_KNIFE:
+				case eType::WEAPON_KNIFE:
 				{
 					CKnife* knife = CKnife::GetInstance();
 					if (knife->GetState() == STATE_KNIFE_HIDE)
@@ -496,15 +501,14 @@ void CSimon::SetState(int state)
 					}
 				}
 					break;
-				case ID_WEAPON_AXE:
+				case eType::WEAPON_AXE:
 				{
 					CAxe* axe = CAxe::GetInstance();
-					if (axe->GetState() == AXE_STATE_HIDE)
+					if (axe->GetState() == STATE_AXE_HIDE)
 					{
 						axe->SetTrend(nx);
 						axe->SetPosition(this->x, this->y);
-						axe->SetState(AXE_STATE_APPEAR);
-						//axe->Render();
+						axe->SetState(STATE_AXE_APPEAR);
 					}
 				}
 				break;
@@ -583,13 +587,13 @@ void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			{
 				trans_start = GetTickCount();
 				//CKnife* knife = CKnife::GetInstance();
-				subWeapon = ID_WEAPON_KNIFE;
+				subWeapon = eType::WEAPON_KNIFE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			if (listObj.at(i)->getType() == eType::ITEM_AXE)
 			{
 				trans_start = GetTickCount();
-				subWeapon = ID_WEAPON_AXE;
+				subWeapon = eType::WEAPON_AXE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			if (listObj.at(i)->getType() == eType::ITEM_SMALLHEART)
@@ -812,7 +816,7 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 			rect1.bottom = (int)b1;
 			if (CGame::GetInstance()->isCollision(rect, rect1)) // đụng độ
 			{
-				DebugOut(L"Va cham doi tuong thang binh thuong\n");
+				//DebugOut(L"Va cham doi tuong thang binh thuong\n");
 				CHidenObject* hidenObj = dynamic_cast<CHidenObject*>(listObj.at(i));
 				// xác định hướng của stair
 				if (hidenObj->getNx() * hidenObj->getNy() > 0)

@@ -10,8 +10,8 @@
 #define AXE_SPEED_X	0.4f
 #define AXE_SPEED_Y	0.5f
 
-#define AXE_STATE_HIDE	0
-#define AXE_STATE_APPEAR	1
+#define STATE_AXE_HIDE	0
+#define STATE_AXE_APPEAR	1
 
 #define GRAVITY	0.002f
 
@@ -33,5 +33,6 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 	void SetState(int st);
+	CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };
 

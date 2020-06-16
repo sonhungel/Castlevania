@@ -17,28 +17,34 @@ CAxe::CAxe()
 {
 	type = eType::WEAPON_AXE;
 	AddAnimation(AXE_ANI_ID);
-	state = AXE_STATE_HIDE;
+	state = STATE_AXE_HIDE;
 	start_attack = 0;
 }
 
 void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt);
-	if (state == AXE_STATE_APPEAR)
+	if (this->state == STATE_AXE_APPEAR)
 	{
+		CGameObject::Update(dt);
 		if (start_attack == 0)
 			start_attack = GetTickCount();
-		if (GetTickCount() - start_attack > AXE_TIME)
-		{
-			state = AXE_STATE_HIDE;
-			start_attack = 0;
-			animations[0]->ResetFrame();
-		}
+
 		x += vx * dt;
 		vy += GRAVITY * dt;
 		y += vy * dt;
-		DebugOut(L"AXE appear\n");
+
+		CollisionWithObject(dt, *coObjects);
+
+		if (GetTickCount() - start_attack > AXE_TIME)
+		{
+			state = STATE_AXE_HIDE;
+			start_attack = 0;
+			animations[0]->ResetFrame();
+		}
+		//DebugOut(L"AXE appear\n");
 	}
+	//DebugOut(L"Vi tri AXE : %d, %d\n", (int)this->x, (int)this->y);
+	//DebugOut(L"AXE is running update\n");
 }
 
 void CAxe::SetPosition(float simon_x, float simon_y)
@@ -56,12 +62,14 @@ void CAxe::SetPosition(float simon_x, float simon_y)
 
 void CAxe::Render()
 {
-	if (state == AXE_STATE_APPEAR)
+	if (state == STATE_AXE_APPEAR)
 	{
-		animations[0]->Render(x, y, nx);
-		//DebugOut(L"Knife rendered\n");
+		//animations[0]->Render(x, y, nx);
+		animations[0]->RenderTrend(x, y, nx);
+		//DebugOut(L"AXE rendered\n");
 		RenderBoundingBox();
 	}
+	//DebugOut(L"AXE is running Render\n");
 }
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -74,7 +82,7 @@ void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (AXE_STATE_HIDE)
+	if (state==STATE_AXE_HIDE)
 		return;
 	RECT rect1, rect2;
 
@@ -103,7 +111,7 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					vx = vy = 0;
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
-					this->state = AXE_STATE_HIDE;
+					this->state = STATE_AXE_HIDE;
 					start_attack = 0;
 				}
 			}
@@ -118,7 +126,7 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 			{
 				vx = vy = 0;
-				this->state = AXE_STATE_HIDE;
+				this->state = STATE_AXE_HIDE;
 				start_attack = 0;
 			}
 		}
@@ -127,8 +135,8 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 void CAxe::SetState(int st)
 {
-	this->state == st;
-	if (st == AXE_STATE_APPEAR)
+	this->state = st;
+	if (st == STATE_AXE_APPEAR)
 	{
 		vx = nx * AXE_SPEED_X;
 		vy = -AXE_SPEED_Y;
