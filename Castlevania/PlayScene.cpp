@@ -12,6 +12,8 @@
 #include"Knife.h"
 #include"Axe.h"
 #include"Effect.h"
+#include"Boomerang.h"
+#include"HollyWater.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -255,6 +257,8 @@ void CPlayScene::Load()
 
 	singleToneObjects.push_back(CKnife::GetInstance());
 	singleToneObjects.push_back(CAxe::GetInstance());
+	singleToneObjects.push_back(CBoomerang::GetInstance());
+	singleToneObjects.push_back(CHollyWater::GetInstance());
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }

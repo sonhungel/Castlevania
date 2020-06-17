@@ -1,6 +1,8 @@
 ﻿#include "Boomerang.h"
 #include"Torch.h"
 #include"Game.h"
+#include"Simon.h"
+
 CBoomerang* CBoomerang::__instance = NULL;
 
 CBoomerang* CBoomerang::GetInstance()
@@ -16,33 +18,47 @@ CBoomerang::CBoomerang()
 	AddAnimation(BOOMERANG_ANI_ID);
 	state = STATE_BOOMERANG_HIDE;
 	start_attack = 0;
+	turn = 0;
 }
 
 void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (this->state == STATE_BOOMERANG_APPEAR)
+	if (this->state == STATE_BOOMERANG_APPEAR )
 	{
+
 		CGameObject::Update(dt);
 		if (start_attack == 0)
 			start_attack = GetTickCount();
 
 		x += vx * dt;
 
+		vx -= BOOMERANG_SLOW_DOWN_X;
 		if (GetTickCount() - start_attack > BOOMERANG_TIME)
 		{
 			state = STATE_BOOMERANG_HIDE;
+			vx = nx * BOOMERANG_SPEED;
 			start_attack = 0;
 			animations[0]->ResetFrame();
+			turn = 0;
 		}
-		if (x <= x_left || x >= x_right)
+		if ((x < x_left && vx < 0) || (x > x_right && vx > 0))
 		{
-			vx = -vx;
+			DebugOut(L"Vao dc IF\n");
+			nx = -nx;
+			vx = nx*BOOMERANG_SPEED;
 			turn++;
 		}
+		if (turn >= 2)
+			state == STATE_BOOMERANG_HIDE;
 		if(turn<2)
 			CollisionWithObject(dt, *coObjects);
-		//DebugOut(L"AXE appear\n");
 	}
+	//DebugOut(L"state boomerang: %d \n",this->state);
+	
+	//CGame::GetInstance()->GetCamPos(tempx, tempy);
+	//DebugOut(L"Vi tri X_Cam: %d\n",(int)tempx);
+	//DebugOut(L"Vi tri x_left: %d \n", (int)this->x_left);;
+	//DebugOut(L"Vi tri boomerang: %d , %d \n", (int)this->x, (int)this->y);
 }
 
 void CBoomerang::SetPosition(float simon_x, float simon_y)
@@ -60,9 +76,10 @@ void CBoomerang::SetPosition(float simon_x, float simon_y)
 
 void CBoomerang::Render()
 {
-	if (state == STATE_BOOMERANG_APPEAR)
+	if (state == STATE_BOOMERANG_APPEAR && turn < 2)
 	{
 		animations[0]->RenderTrend(x, y, nx);
+		//DebugOut(L"BOOMERANG rendered\n");
 	}
 }
 
@@ -114,6 +131,21 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			}
 		}
 	}
+	if (turn > 0)
+	{
+		// Khi boomerang va chạm simon sẽ state=hide
+		CSimon::GetInstance()->GetBoundingBox(l2, t2, r2, b2);
+		rect2.left = (int)l2;
+		rect2.top = (int)t2;
+		rect2.right = (int)r2;
+		rect2.bottom = (int)b2;
+		if (CGame::GetInstance()->isCollision(rect1, rect2))
+		{
+			this->state = STATE_BOOMERANG_HIDE;
+			vx = vy = 0;
+			start_attack = 0;
+		}
+	}
 }
 
 void CBoomerang::SetState(int st)
@@ -122,9 +154,9 @@ void CBoomerang::SetState(int st)
 	if (st == STATE_BOOMERANG_APPEAR)
 	{
 		vx = nx * BOOMERANG_SPEED;
-
+		turn = 0;
 		float temp;
 		CGame::GetInstance()->GetCamPos(x_left,temp);
-		x_right = x_left + SCREEN_WIDTH;
+		x_right = x_left + SCREEN_WIDTH - 40;
 	}
 }

@@ -14,9 +14,6 @@
 #define KNIFE_HEIGHT 24
 #define KNIFE_WIDTH	42
 
-#define KNIFE_EXSIST	1
-#define KNIFE_NOT_EXSIST	0
-
 #define KNIFE_SPEED 0.5f
 
 #define STATE_KNIFE_APPEAR 1
@@ -42,7 +39,7 @@ public:
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
-	void SetPosition(float x, float y);
+	void SetPosition(float simon_x, float simon_y);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 };

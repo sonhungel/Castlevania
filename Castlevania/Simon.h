@@ -78,7 +78,6 @@ class CSimon : public CGameObject
 
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
-	//bool isHave3Direction; // dùng cho hidenObj đặc biệt
 	
 	bool isBeingOnStair;
 	bool isAutoGo;

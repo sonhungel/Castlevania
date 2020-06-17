@@ -10,6 +10,8 @@
 #include"Axe.h"
 #include"Portal.h"
 #include"ItemMoney.h"
+#include"Boomerang.h"
+#include"HollyWater.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -26,14 +28,13 @@ CSimon::CSimon()
 	untouchable = 0;
 	trans_start = 0;
 	stair_start = 0;
-	subWeapon = eType::WEAPON_AXE;
+	subWeapon = eType::WEAPON_HOLLYWATER;
 
 	isBeingOnStair = false;
 	isCanOnStair = 0;
 	isAutoGo = false;
 	_stairTrend = -1;
 	auto_x = -1;
-	//isHave3Direction = false;
 
 	idScene_current = 1;
 	idScene_next = 2;
@@ -509,6 +510,30 @@ void CSimon::SetState(int state)
 						axe->SetTrend(nx);
 						axe->SetPosition(this->x, this->y);
 						axe->SetState(STATE_AXE_APPEAR);
+					}
+				}
+				break;
+				case eType::WEAPON_BOOMERANG:
+				{
+					CBoomerang* boomerang = CBoomerang::GetInstance();
+					{
+						if (boomerang->GetState() == STATE_BOOMERANG_HIDE)
+						{
+							boomerang->SetTrend(nx);
+							boomerang->SetPosition(this->x, this->y);
+							boomerang->SetState(STATE_BOOMERANG_APPEAR);
+						}
+					}
+				}
+				break;
+				case eType::WEAPON_HOLLYWATER:
+				{
+					CHollyWater* hollywater = CHollyWater::GetInstance();
+					if (hollywater->GetState() == STATE_HOLLYWATER_HIDE)
+					{
+						hollywater->SetTrend(nx);
+						hollywater->SetPosition(this->x, this->y);
+						hollywater->SetState(STATE_HOLLYWATER_APPEAR);
 					}
 				}
 				break;

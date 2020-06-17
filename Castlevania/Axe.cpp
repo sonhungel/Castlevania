@@ -51,10 +51,10 @@ void CAxe::SetPosition(float simon_x, float simon_y)
 {
 	if (nx < 0)
 	{
-		this->x = simon_x + 5;
+		this->x = simon_x ;
 	}
 	else {
-		this->x = simon_x - 10;
+		this->x = simon_x + 10;
 	}
 
 	this->y = simon_y;
@@ -64,7 +64,6 @@ void CAxe::Render()
 {
 	if (state == STATE_AXE_APPEAR)
 	{
-		//animations[0]->Render(x, y, nx);
 		animations[0]->RenderTrend(x, y, nx);
 		//DebugOut(L"AXE rendered\n");
 		RenderBoundingBox();
@@ -74,10 +73,13 @@ void CAxe::Render()
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	right = x + AXE_WIDTH;
-	top = y;
-	bottom = y + AXE_HEIGHT;
+	if (state == STATE_AXE_APPEAR)
+	{
+		left = x;
+		right = x + AXE_WIDTH;
+		top = y;
+		bottom = y + AXE_HEIGHT;
+	}
 }
 
 void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)

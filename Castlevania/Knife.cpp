@@ -41,25 +41,28 @@ void CKnife::Render()
 	}
 }
 
-void CKnife::SetPosition(float x, float y)
+void CKnife::SetPosition(float simon_x, float simon_y)
 {
 	if (nx < 0)
 	{
-		this->x = x;
+		this->x = simon_x + 5;
 	}
 	else
 	{
-		this->x = x;
+		this->x = simon_x - 10;
 	}
-	this->y = y;
+	this->y = simon_y;
 }
 
 void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + KNIFE_WIDTH;
-	bottom = y + KNIFE_HEIGHT;
+	if (state == STATE_KNIFE_APPEAR)
+	{
+		left = x;
+		top = y;
+		right = x + KNIFE_WIDTH;
+		bottom = y + KNIFE_HEIGHT;
+	}
 }
 
 void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)

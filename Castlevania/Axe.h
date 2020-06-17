@@ -4,9 +4,6 @@
 #define AXE_WIDTH	32
 #define AXE_HEIGHT	32
 
-#define AXE_EXIST	1
-#define AXE_NOT_EXIST	0
-
 #define AXE_SPEED_X	0.4f
 #define AXE_SPEED_Y	0.5f
 

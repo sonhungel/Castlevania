@@ -2,7 +2,7 @@
 #include"GameObject.h"
 
 #define EFFECT_WIDTH 25
-#define EFFECT_HEIGHT 37
+#define EFFECT_HEIGHT 30
 
 #define DEATH_EFFECT_ANI_ID	800
 
@@ -23,4 +23,5 @@ public:
 	~CEffect() {};
 	virtual  void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };
