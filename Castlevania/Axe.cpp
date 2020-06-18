@@ -41,10 +41,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			start_attack = 0;
 			animations[0]->ResetFrame();
 		}
-		//DebugOut(L"AXE appear\n");
 	}
-	//DebugOut(L"Vi tri AXE : %d, %d\n", (int)this->x, (int)this->y);
-	//DebugOut(L"AXE is running update\n");
 }
 
 void CAxe::SetPosition(float simon_x, float simon_y)
@@ -65,10 +62,9 @@ void CAxe::Render()
 	if (state == STATE_AXE_APPEAR)
 	{
 		animations[0]->RenderTrend(x, y, nx);
-		//DebugOut(L"AXE rendered\n");
+
 		RenderBoundingBox();
 	}
-	//DebugOut(L"AXE is running Render\n");
 }
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -116,20 +112,6 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					this->state = STATE_AXE_HIDE;
 					start_attack = 0;
 				}
-			}
-		}
-		if (dynamic_cast<CBrick*>(listObj.at(i)))
-		{
-			listObj.at(i)->GetBoundingBox(l2, t2, r2, b2);
-			rect2.left = (int)l2;
-			rect2.top = (int)t2;
-			rect2.right = (int)r2;
-			rect2.bottom = (int)b2;
-			if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-			{
-				vx = vy = 0;
-				this->state = STATE_AXE_HIDE;
-				start_attack = 0;
 			}
 		}
 	}

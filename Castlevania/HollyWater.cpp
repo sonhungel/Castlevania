@@ -50,7 +50,12 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			x += vx * dt;
 			vy += GRAVITY * dt;
-			y += vy * dt;
+			//y += vy * dt;
+		}
+		else
+		{
+			vy += GRAVITY * dt;
+			//y += vy * dt;
 		}
 
 		vector<LPCOLLISIONEVENT> coEvents;
@@ -61,6 +66,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (coEvents.size() == 0)
 		{
+			y += dy;
 		}
 		else
 		{
@@ -71,12 +77,11 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 			// block 
-			//x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			y -= 10;//min_ty * dy + ny * 0.5f;
+			y += min_ty * dy + ny * 0.5f;
 
 			isBroke = true;
-				vx = 0;
-				vy = 0;
+			vx = 0;
+			vy = 0;
 		}
 
 		// clean up collision events
@@ -106,7 +111,6 @@ void CHollyWater::Render()
 		else
 		{
 			animations[0]->RenderTrend(x, y, nx);
-			//DebugOut(L"AXE rendered\n");
 			RenderBoundingBox();
 		}
 	}
@@ -157,30 +161,15 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
-					vx = vy = 0;
+					//vx = 0;
 					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
-					this->state = STATE_HOLLYWATER_HIDE;
-					start_attack = 0;
+					this->state = STATE_HOLLYWATER_APPEAR;
+					//this->state = STATE_HOLLYWATER_HIDE;
+					this->isBroke = true;
 				}
 			}
 		}
 		
-		/*
-		if (dynamic_cast<CBrick*>(listObj.at(i)))
-		{
-			listObj.at(i)->GetBoundingBox(l2, t2, r2, b2);
-			rect2.left = (int)l2;
-			rect2.top = (int)t2;
-			rect2.right = (int)r2;
-			rect2.bottom = (int)b2;
-			if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-			{
-				vx = vy = 0;
-				//isBroke = true;
-				y -= 15;
-				//start_attack = 0;
-			}
-		}*/
 	}
 }
 
@@ -188,20 +177,10 @@ void CHollyWater::GetBoundingBox(float& left, float& top, float& right, float& b
 {
 	if (state == STATE_HOLLYWATER_APPEAR)
 	{
-		if (isBroke == false)
-		{
-			left = x;
-			top = y;
-			right = x + HOLLYWATER_WIDTH;
-			bottom = y + HOLLYWATER_HEIGHT;
-		}
-		else
-		{
-			left = x;
-			top = y;
-			right = x + 25;
-			bottom = y + 30;
-		}
+		left = x;
+		top = y;
+		right = x + HOLLYWATER_WIDTH;
+		bottom = y + HOLLYWATER_HEIGHT;
 	}
 }
 

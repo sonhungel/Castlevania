@@ -28,7 +28,7 @@ CSimon::CSimon()
 	untouchable = 0;
 	trans_start = 0;
 	stair_start = 0;
-	subWeapon = eType::WEAPON_HOLLYWATER;
+	subWeapon = eType::WEAPON_AXE;
 
 	isBeingOnStair = false;
 	isCanOnStair = 0;

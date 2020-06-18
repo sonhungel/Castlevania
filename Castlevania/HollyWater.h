@@ -3,11 +3,8 @@
 #include"Effect.h"
 #include"Define.h"
 
-#define HOLLYWATER_HEIGHT 18
-#define HOLLYWATER_WIDTH 18
-
-#define HOLLYWATER_EFFECT_WIDTH	30
-#define HOLLYWATER_EFFECT_HEIGHT	27
+#define HOLLYWATER_HEIGHT 27
+#define HOLLYWATER_WIDTH 30
 
 #define HOLLYWATER_SPEED_X 0.3f
 #define HOLLYWATER_SPEED_Y 0.4f
