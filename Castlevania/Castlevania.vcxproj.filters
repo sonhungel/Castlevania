@@ -73,6 +73,9 @@
     <Filter Include="GameObject\Item\Item Base">
       <UniqueIdentifier>{c8670dc7-2799-43c3-933e-00d6b8c3646a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Platform Moving">
+      <UniqueIdentifier>{ea61a623-9fd2-4498-9446-444adb64accb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -168,6 +171,15 @@
     <ClInclude Include="Candle.h">
       <Filter>GameObject\StaticObject</Filter>
     </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>GameObject\Platform Moving</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakBrick.h">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectBrick.h">
+      <Filter>GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -259,6 +271,15 @@
     </ClCompile>
     <ClCompile Include="Candle.cpp">
       <Filter>GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>GameObject\Platform Moving</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakBrick.cpp">
+      <Filter>GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectBrick.cpp">
+      <Filter>GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 # type	x	y	animation_id
 # type: 0 = SIMON , 1 = Brick , 2 = Torch
 # SIMON
-0	100	20
+0	100	10
 # BRICK
 # type 	x	y	width	height	animation_id
 1	32	43	32	32
@@ -82,10 +82,10 @@
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend
-0	0	1	-1	1465	332
+0	0	1	-1	1465	300
 #======= simon back map before===========
 # type1	beingOnstair	stairTrend	nx	x	y
-1	1	1	1	153	51
+1	1	1	1	152	51
 [CAMERA]
 # XLeft	XRight
 0	1025

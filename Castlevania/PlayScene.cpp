@@ -14,6 +14,7 @@
 #include"Effect.h"
 #include"Boomerang.h"
 #include"HollyWater.h"
+#include"Platform.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -38,6 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_STAIR	3
+#define OBJECT_TYPE_PLATFORM	4
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -129,6 +131,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int ny = atoi(tokens[7].c_str());
 		obj = new CHidenObject(x, y, width,height,state, nx, ny);
 		objects.push_back(obj); 
+	}
+		break;
+	case OBJECT_TYPE_PLATFORM:
+	{
+		int ani_id = atoi(tokens[3].c_str());
+		obj = new CPlatform(ani_id);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
 	}
 		break;
 	default:
@@ -342,7 +352,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();

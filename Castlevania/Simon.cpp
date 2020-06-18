@@ -12,6 +12,7 @@
 #include"ItemMoney.h"
 #include"Boomerang.h"
 #include"HollyWater.h"
+#include"Platform.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -122,6 +123,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{ 
 		vector<LPGAMEOBJECT> listTorch;
 		vector<LPGAMEOBJECT> listBrick;
+		vector<LPGAMEOBJECT> platform;
 		vector<LPGAMEOBJECT> listHideObject;
 
 		for (UINT i = 0; i < coObjects->size(); i++)
@@ -232,8 +234,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			
 			float min_tx, min_ty, nx = 0, ny=0;
-			float rdx = 1;
-			float rdy = 1;
+			float rdx = 0;
+			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
@@ -245,6 +247,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				x += dx;
 				y += dy;
 			}
+
 		//
 		// Collision logic with objects
 		//
@@ -266,20 +269,25 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (dynamic_cast<CBrick*>(e->obj))
 				{
-					//DebugOut(L"passed brick\n");
 					if (isBeingOnStair==false)
 					{
-						//DebugOut(L"Set va cham brick\n");
-						//CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-						//listBrick.push_back(brick);
 						CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
 						listBrick.clear();
 					}
-					//else
-					//{
-					//	x += dx;
-					//	y += dy;
-					//}
+				}
+				else if (dynamic_cast<CPlatform*>(e->obj))
+				{
+					y += min_ty * dy + ny * 0.4f;
+
+
+					vx += e->obj->Getvx();
+					if (vx > e->obj->Getvx())
+						vx -= e->obj->Getvx();
+					dx = vx * dt;
+
+					x += dx;
+		
+					//DebugOut(L"dt simon dang trn plf : %d\n", dt);
 				}
 				else if (dynamic_cast<CTorch*>(e->obj))
 				{
@@ -305,11 +313,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 		//for (UINT i = 0; i < coEventsResult.size(); i++) delete coEventsResult[i];
 	}
+
 	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
-	//if (isBeingOnStair)
-	//	DebugOut(L"Dang tren thang\n");
-	//if(isHave3Direction)
-	//	DebugOut(L"Dang o thang dac biet\n");
+
 }
 
 void CSimon::Render()

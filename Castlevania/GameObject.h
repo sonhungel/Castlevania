@@ -112,6 +112,8 @@ public:
 	int GetID() { return id; }
 	void SetID(int id) { this->id = id; }
 
+	float Getvx() { return vx; }
+
 	int GetBlood() { return blood; }
 	virtual void Hurt() { blood -= 2; }
 	~CGameObject();

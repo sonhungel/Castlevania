@@ -18,6 +18,9 @@ enum eType
 
 	TORCH=11,
 
+	// CANDLE
+	CANDLE=12,
+
 	// WEAPON
 
 	WEAPON_KNIFE=40,
