@@ -4,6 +4,7 @@
 #include "Game.h"
 #include"Effect.h"
 #include"Define.h"
+#include"Brick.h"
 
 CWhip* CWhip::__instance = NULL;
 
@@ -16,7 +17,7 @@ CWhip* CWhip::GetInstance()
 CWhip::CWhip()
 {
 	type = eType::WEAPON_WHIP;
-	_level = 1;
+	_level = 3;
 	AddAnimation(WHIP_LEVEL_1_ID);
 	AddAnimation(WHIP_LEVEL_2_ID); // level 2
 	AddAnimation(WHIP_LEVEL_3_ID);	// level 3
@@ -25,21 +26,11 @@ CWhip::CWhip()
 
 void CWhip::SetPosition(float x, float y)
 {
-	if (_level == 1)
+	if (_level == 1||_level==2)
 	{
 		if (nx < 0)
 		{
-			this->x = x - 40;
-		}
-		else {
-			this->x = x - 10;
-		}
-	}
-	else if (_level == 2)
-	{
-		if (nx < 0)
-		{
-			this->x = x - 40;
+			this->x = x - 49;
 		}
 		else {
 			this->x = x - 10;
@@ -49,13 +40,13 @@ void CWhip::SetPosition(float x, float y)
 	{
 		if (nx < 0)
 		{
-			this->x = x - 70;
+			this->x = x - 75;
 		}
 		else {
 			this->x = x - 10;
 		}
 	}
-	this->y = y;
+	this->y = y+8;
 }
 
 void CWhip::Render()
@@ -92,17 +83,16 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	{
 		left = x;
 		right = x + WHIPNORMAL_WIDTH;
-		top = y;
-		bottom = y + WHIPNORMAL_HEIGHT;
+		top = y+17;
+		bottom = y  + WHIPNORMAL_HEIGHT;
 	}
 
 	else
 	{
 		left = x;
 		right = x + 145;
-		top = y;
+		top = y+10;
 		bottom = y + 35;
-
 	}
 }
 
@@ -142,6 +132,7 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				}
 			}
 		}
+		
 	}
 }
 

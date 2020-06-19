@@ -61,6 +61,8 @@
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100
+#define ATTACK_TIME_WAIT	600
+
 #define TRANSITION_TIME		400
 #define JUMP_TIME			0
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
@@ -74,8 +76,11 @@ class CSimon : public CGameObject
 	DWORD trans_start; // Simon nhấp nháy
 	DWORD stair_start;
 
+	DWORD attack_start;
+
 	CWhip* whip;
 
+	
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
 	
@@ -94,6 +99,8 @@ class CSimon : public CGameObject
 	int _score;
 	int _heart;
 	int _live;
+
+	
 	
 public:
 	static CSimon* GetInstance();
@@ -120,7 +127,8 @@ public:
 
 	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float min_tx0, float min_ty0, int nx0, int ny0, 
 																		float rdx0, float rdy0);
-
+	void CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0,
+																		float rdx0, float rdy0);
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj, float min_tx0, float min_ty0, int nx0, int ny0,
 																			float rdx0, float rdy0);// dùng cho kết thúc thang
 
@@ -139,6 +147,8 @@ public:
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }
 	void CalculateAutoGo();	// xác định lại hướng simon cần di chuyển để phù hợp cho vị trí auto go
+
+	bool IsAttacking() { if (attack_start > 0)return true; return false; }
 
 	// function for score, bla bla.....
 	int GetScore() { return _score; }

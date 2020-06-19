@@ -20,6 +20,8 @@ enum eType
 
 	// CANDLE
 	CANDLE=12,
+	// BREAK BRICK
+	BREAK_BRICK=13,
 
 	// WEAPON
 

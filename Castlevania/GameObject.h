@@ -115,7 +115,7 @@ public:
 	float Getvx() { return vx; }
 
 	int GetBlood() { return blood; }
-	virtual void Hurt() { blood -= 2; }
+	virtual void Hurt() { blood -=1; }
 	~CGameObject();
 };
 

@@ -13,6 +13,9 @@
 #include"Boomerang.h"
 #include"HollyWater.h"
 #include"Platform.h"
+#include"Candle.h"
+#include"BreakBrick.h"
+
 
 CSimon* CSimon::__instance = NULL;
 
@@ -44,6 +47,8 @@ CSimon::CSimon()
 	_heart = 0;
 	_score = 0;
 	_live = 5;
+
+
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -56,7 +61,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			trans_start = 0;
 		}
 	}
-	if (isAutoGo)
+	 if (isAutoGo)
 	{
 		CalculateAutoGo();
 		if (abs(auto_x - x) > 0.5f)
@@ -103,6 +108,29 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		return;
 	}
+
+	if (attack_start > 0)
+	{
+		if (GetTickCount() - attack_start < ATTACK_TIME)
+		{
+			attack_start = 0;
+		}
+		/*else if (GetTickCount() - attack_start < ATTACK_TIME_WAIT)
+		{
+			if (state == STATE_SIMON_SIT_ATTACK || state == STATE_SIMON_SIT)
+			{
+				state = STATE_SIMON_SIT;
+			}
+			else
+			{
+				state = STATE_SIMON_IDLE;
+			}
+		}
+		else
+		{
+			//attack_start = 0;
+		}*/
+	}
 	if (stair_start > 0)
 	{
 		if (GetTickCount() - stair_start > TIME_FOR_ONE_STEP)
@@ -119,13 +147,16 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			animations[ANI_SIMON_GO_DOWN]->ResetFrame();
 		}
 	}
-	else
+	
+	else 
 	{ 
+		
 		vector<LPGAMEOBJECT> listTorch;
+		vector<LPGAMEOBJECT> listCandle;
 		vector<LPGAMEOBJECT> listBrick;
 		vector<LPGAMEOBJECT> platform;
 		vector<LPGAMEOBJECT> listHideObject;
-
+		// Lọc
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
 			if (dynamic_cast<CHidenObject*>(coObjects->at(i)))
@@ -194,6 +225,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			IsCanOnStair(listHideObject); // dùng để bắt đầu thang, còn việc phát hiện va chạm AABB là để kết thúc thang
 		listHideObject.clear();
 
+		
 
 		if (state == STATE_SIMON_SIT_ATTACK || 
 			state == STATE_SIMON_STAND_ATTACK||
@@ -205,7 +237,68 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			whip->SetTrend(nx);
 			whip->CollisionWithObject(dt, *coObjects);
 		}
-
+		
+		// SubWeapon
+#pragma region subweapon
+		if (state == STATE_SIMON_ATTACK_SUBWEAPON)
+		{
+			if (subWeapon != -1)
+			{
+				switch (subWeapon)
+				{
+				case eType::WEAPON_KNIFE:
+				{
+					CKnife* knife = CKnife::GetInstance();
+					if (knife->GetState() == STATE_KNIFE_HIDE)
+					{
+						knife->SetState(STATE_KNIFE_APPEAR);
+						knife->SetPosition(this->x, this->y);
+						knife->SetTrend(nx);
+					}
+				}
+				break;
+				case eType::WEAPON_AXE:
+				{
+					CAxe* axe = CAxe::GetInstance();
+					if (axe->GetState() == STATE_AXE_HIDE)
+					{
+						axe->SetTrend(nx);
+						axe->SetPosition(this->x, this->y);
+						axe->SetState(STATE_AXE_APPEAR);
+					}
+				}
+				break;
+				case eType::WEAPON_BOOMERANG:
+				{
+					CBoomerang* boomerang = CBoomerang::GetInstance();
+					{
+						if (boomerang->GetState() == STATE_BOOMERANG_HIDE)
+						{
+							boomerang->SetTrend(nx);
+							boomerang->SetPosition(this->x, this->y);
+							boomerang->SetState(STATE_BOOMERANG_APPEAR);
+						}
+					}
+				}
+				break;
+				case eType::WEAPON_HOLLYWATER:
+				{
+					CHollyWater* hollywater = CHollyWater::GetInstance();
+					if (hollywater->GetState() == STATE_HOLLYWATER_HIDE)
+					{
+						hollywater->SetTrend(nx);
+						hollywater->SetPosition(this->x, this->y);
+						hollywater->SetState(STATE_HOLLYWATER_APPEAR);
+					}
+				}
+				break;
+				}
+			}
+		}
+#pragma endregion
+	
+		// Collsion
+#pragma region collsion
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -226,13 +319,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// No collision occured, proceed normally
 		if (coEvents.size() == 0)
 		{
+			
 			x += dx;
 			y += dy;
 
 		}
 		else// Xử lý collision for simon
 		{
-			
+
 			float min_tx, min_ty, nx = 0, ny=0;
 			float rdx = 0;
 			float rdy = 0;
@@ -269,16 +363,25 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (dynamic_cast<CBrick*>(e->obj))
 				{
-					if (isBeingOnStair==false)
+					if (isBeingOnStair == false)
 					{
 						CollisionWithBrick(dt, listBrick, min_tx, min_ty, nx, ny, rdx, rdy);
 						listBrick.clear();
 					}
 				}
+				else if (dynamic_cast<CBreakBrick*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+					y += min_ty * dy + ny * 0.4f;
+
+					if (nx != 0)
+						vx = 0;
+					if (ny != 0)
+						vy = 0;
+				}
 				else if (dynamic_cast<CPlatform*>(e->obj))
 				{
 					y += min_ty * dy + ny * 0.4f;
-
 
 					vx += e->obj->Getvx();
 					if (vx > e->obj->Getvx())
@@ -286,7 +389,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					dx = vx * dt;
 
 					x += dx;
-		
+
 					//DebugOut(L"dt simon dang trn plf : %d\n", dt);
 				}
 				else if (dynamic_cast<CTorch*>(e->obj))
@@ -299,6 +402,17 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						listTorch.clear();
 					}
 				}
+				else if (dynamic_cast<CCandle*>(e->obj))
+				{
+					if (untouchable == 0)
+					{
+						CCandle* candle = dynamic_cast<CCandle*>(e->obj);
+						listCandle.push_back(candle);
+						CollisionWithCandle(dt, listCandle, min_tx, min_ty, nx, ny, rdx, rdy);
+						listCandle.clear();
+					}
+				}
+
 				else if (dynamic_cast<CHidenObject*>(e->obj))
 				{
 					//DebugOut(L"Va cham ket thuc thang\n");
@@ -315,7 +429,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
-
+#pragma endregion
+	DebugOut(L"State simon : %d\n", (int)this->state);
 }
 
 void CSimon::Render()
@@ -364,7 +479,6 @@ void CSimon::Render()
 			ani = ANI_SIMON_GO_DOWN_ATTACK;
 			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame());
 			whip->Render();
-			
 		}
 	}
 	else if (state == STATE_SIMON_GO_UP_ATTACK)
@@ -374,13 +488,11 @@ void CSimon::Render()
 			ani = ANI_SIMON_GO_UP_ATTACK;
 			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame());
 			whip->Render();
-
 		}
 	}
-
 	else if (state == STATE_SIMON_ATTACK_SUBWEAPON)
 	{
-		//if (subWeapon!=-1)
+		if (subWeapon!=-1)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else if (trans_start > 0) {
@@ -407,13 +519,12 @@ void CSimon::Render()
 	}
 	else if (state = STATE_SIMON_GO_UP && isBeingOnStair)
 	{
-		//if(isCanOnStair == 1 )
 		ani = ANI_SIMON_GO_UP;
 	}
 	else {
 		if (vx == 0)
 		{
-			if(state!=STATE_SIMON_SIT_ATTACK||state!=STATE_SIMON_STAND_ATTACK)
+			if(state!=STATE_SIMON_SIT_ATTACK||state!=STATE_SIMON_STAND_ATTACK&&state!=STATE_SIMON_ATTACK_SUBWEAPON)
 			ani = ANI_SIMON_IDLE;
 		}
 		else
@@ -436,10 +547,10 @@ void CSimon::SetState(int state)
 	{}
 	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
 	{}
-	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
-	{}
-	else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
-	{}
+//	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
+	//{}
+	//else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
+//	{}
 	else if (trans_start > 0)
 	{}
 	else if(isAutoGo)
@@ -447,6 +558,8 @@ void CSimon::SetState(int state)
 	else if (animations[ANI_SIMON_GO_UP]->GetCurrentFrame() > 1 && isBeingOnStair)
 	{}
 	else if (animations[ANI_SIMON_GO_DOWN]->GetCurrentFrame() > 1 && isBeingOnStair)
+	{}
+	else if(attack_start>0)
 	{}
 	//else if (animations[ANI_SIMON_JUMPING]->GetCurrentFrame() > 0)
 	//{}
@@ -478,74 +591,26 @@ void CSimon::SetState(int state)
 			vx = 0;
 			break;
 		case STATE_SIMON_STAND_ATTACK:
+			attack_start = GetTickCount();
 			vx = 0;
 			break;
 		case STATE_SIMON_SIT_ATTACK:
+			attack_start = GetTickCount();
 			vx = 0;
 			break;
 		case STATE_SIMON_GO_UP_ATTACK:
+			attack_start = GetTickCount();
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_GO_DOWN_ATTACK:
+			attack_start = GetTickCount();
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_ATTACK_SUBWEAPON:
+			attack_start = GetTickCount();
 			vx = 0;
-			if (subWeapon!=-1)
-			{
-				switch (subWeapon)
-				{
-				case eType::WEAPON_KNIFE:
-				{
-					CKnife* knife = CKnife::GetInstance();
-					if (knife->GetState() == STATE_KNIFE_HIDE)
-					{
-						knife->SetState(STATE_KNIFE_APPEAR);
-						knife->SetPosition(this->x, this->y);
-						knife->SetTrend(nx);
-					}
-				}
-					break;
-				case eType::WEAPON_AXE:
-				{
-					CAxe* axe = CAxe::GetInstance();
-					if (axe->GetState() == STATE_AXE_HIDE)
-					{
-						axe->SetTrend(nx);
-						axe->SetPosition(this->x, this->y);
-						axe->SetState(STATE_AXE_APPEAR);
-					}
-				}
-				break;
-				case eType::WEAPON_BOOMERANG:
-				{
-					CBoomerang* boomerang = CBoomerang::GetInstance();
-					{
-						if (boomerang->GetState() == STATE_BOOMERANG_HIDE)
-						{
-							boomerang->SetTrend(nx);
-							boomerang->SetPosition(this->x, this->y);
-							boomerang->SetState(STATE_BOOMERANG_APPEAR);
-						}
-					}
-				}
-				break;
-				case eType::WEAPON_HOLLYWATER:
-				{
-					CHollyWater* hollywater = CHollyWater::GetInstance();
-					if (hollywater->GetState() == STATE_HOLLYWATER_HIDE)
-					{
-						hollywater->SetTrend(nx);
-						hollywater->SetPosition(this->x, this->y);
-						hollywater->SetState(STATE_HOLLYWATER_APPEAR);
-					}
-				}
-				break;
-
-				}
-			}
 			break;
 		case STATE_SIMON_GO_UP:
 
@@ -674,6 +739,7 @@ void CSimon::CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float
 		vx = 0;
 	if (ny != 0)
 		vy = 0;
+
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
@@ -717,6 +783,50 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 				CItem* item = dynamic_cast<CItem*>(torch->GetItem());
 				listItem.push_back(item);
 				torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST);	// item was eated
+			}
+		}
+	}
+	CollisionWithItem(dt, listItem);
+}
+
+void CSimon::CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+
+	CalcPotentialCollisions(&listCandle, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0, rdy = 0;
+
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+	//// block 
+	if (min_tx <= min_tx0)
+		x += dx;
+	if (min_ty <= min_ty0)
+		y += dy;
+
+	// clean up collision events
+
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	vector<LPGAMEOBJECT> listItem;
+	for (UINT i = 0; i < listCandle.size(); i++)
+	{
+		CCandle* candle = dynamic_cast<CCandle*>(listCandle.at(i));	// Check torch is true??
+		if (candle->GetState() == STATE_CANDLE_EXSIST)
+		{
+		}
+		else
+		{
+			if (dynamic_cast<CItem*>(candle->GetItem()))	// check					
+			{
+				CItem* item = dynamic_cast<CItem*>(candle->GetItem());
+				listItem.push_back(item);
+				candle->SetState(STATE_CANDLE_ITEM_NOT_EXSIST);	// item was eated
 			}
 		}
 	}

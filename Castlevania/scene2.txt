@@ -43,6 +43,13 @@
 1	448	362	32	32	497
 1	480	362	32	32	497
 1	-32	236	32	128
+# CANDLE
+# type 	x	y	ani_id_Torch	type item	ani_id_Item
+# type 1: item whipUpgrade, 2: item knife, 3: item heart
+# lưu ý type item phải tương ứng với animation_item, xem trong item.h
+5	155	255	502	56	705
+5	396	265	502	57	706
+5	260	75	502	53	702
 # type 	x	y	type item
 
 # --- SCENE PORTAL ----

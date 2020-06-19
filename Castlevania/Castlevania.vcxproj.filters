@@ -174,11 +174,11 @@
     <ClInclude Include="Platform.h">
       <Filter>GameObject\Platform Moving</Filter>
     </ClInclude>
-    <ClInclude Include="BreakBrick.h">
-      <Filter>GameObject\StaticObject</Filter>
-    </ClInclude>
     <ClInclude Include="EffectBrick.h">
       <Filter>GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakBrick.h">
+      <Filter>GameObject\StaticObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -275,11 +275,11 @@
     <ClCompile Include="Platform.cpp">
       <Filter>GameObject\Platform Moving</Filter>
     </ClCompile>
-    <ClCompile Include="BreakBrick.cpp">
-      <Filter>GameObject\StaticObject</Filter>
-    </ClCompile>
     <ClCompile Include="EffectBrick.cpp">
       <Filter>GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakBrick.cpp">
+      <Filter>GameObject\StaticObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,6 +15,8 @@
 #include"Boomerang.h"
 #include"HollyWater.h"
 #include"Platform.h"
+#include"Candle.h"
+#include"BreakBrick.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -40,6 +42,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_STAIR	3
 #define OBJECT_TYPE_PLATFORM	4
+#define OBJECT_TYPE_CANDLE	5
+#define OBJECT_TYPE_BREAK_BRICK	6
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -68,11 +72,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
-		//if (simon != NULL)
-		//{
-		//	DebugOut(L"[ERROR] SIMON object was created before!\n");
-		//	return;
-		//}
+
 		obj = CSimon::GetInstance();
 		
 		for (int i = 3; i < tokens.size(); i += 1)
@@ -109,7 +109,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
 		}
-		obj->SetPosition(x,y);
+		obj->SetPosition(x, y);
 		objects.push_back(obj);
 			
 	}
@@ -138,6 +138,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int ani_id = atoi(tokens[3].c_str());
 		obj = new CPlatform(ani_id);
 		obj->SetPosition(x, y);
+		objects.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_BREAK_BRICK:
+	{
+		int ani_id = atoi(tokens[3].c_str());
+		obj = new CBreakBrick(x, y, ani_id);
+		objects.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_CANDLE:
+	{
+		float item = atoi(tokens[4].c_str());
+		float ani_item = atoi(tokens[5].c_str());
+
+		obj = new CCandle(item, ani_item, x, y);
+
+		int animation_id = atoi(tokens[3].c_str());
+		obj->AddAnimation(animation_id);
+
 		objects.push_back(obj);
 	}
 		break;
@@ -427,36 +447,37 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 		break;
 	case DIK_Z:
-		if (game->IsKeyDown(DIK_DOWN))
+		if (game->IsKeyDown(DIK_DOWN) )
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else if (simon->IsBeingOnStair())
 		{
 			if (simon->GetStairTrend() == 1)
 			{
-				if (simon->GetTrend() == 1)
+				if (simon->GetTrend() == 1 )
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
-				else if (simon->GetTrend() == -1)
+				else if (simon->GetTrend() == -1 )
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
 			}
 			else if (simon->GetStairTrend() == -1)
 			{
-				if (simon->GetTrend() == 1)
+				if (simon->GetTrend() == 1 )
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
-				else if (simon->GetTrend() == -1)
+				else if (simon->GetTrend() == -1 )
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
 			}
 		}
-		//else if (game->IsKeyDown(DIK_UP))
-		//{
-		//}
+		else if (game->IsKeyDown(DIK_UP) )
+		{
+			simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
+		}
 		else if(simon->IsBeingOnStair()==false)
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
@@ -511,15 +532,13 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 		if (simon->IsBeingOnStair())
 		{
 			if ((simon->GetStairTrend() == -1 && simon->GetTrend() == 1) || (simon->GetStairTrend() == 1 && simon->GetTrend() == -1))
-			{
 				simon->SetState(STATE_SIMON_IDLE_UP);
-			}
 			else
-			{
 				simon->SetState(STATE_SIMON_IDLE_DOWN);
-			}
 		}
-		else 
+		else if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			simon->SetState(STATE_SIMON_UP);
+		else  
 			simon->SetState(STATE_SIMON_IDLE);
 	}
 	
