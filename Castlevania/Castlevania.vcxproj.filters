@@ -76,6 +76,9 @@
     <Filter Include="GameObject\Platform Moving">
       <UniqueIdentifier>{ea61a623-9fd2-4498-9446-444adb64accb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemy">
+      <UniqueIdentifier>{830d30c3-943d-4900-b7d7-1aff9f04c69c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -180,6 +183,9 @@
     <ClInclude Include="BreakBrick.h">
       <Filter>GameObject\StaticObject</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -280,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="BreakBrick.cpp">
       <Filter>GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

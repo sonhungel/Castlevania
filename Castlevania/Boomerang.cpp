@@ -2,6 +2,7 @@
 #include"Torch.h"
 #include"Game.h"
 #include"Simon.h"
+#include"Candle.h"
 
 CBoomerang* CBoomerang::__instance = NULL;
 
@@ -113,6 +114,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
+			CTorch* torch = dynamic_cast<CTorch*>(listObj.at(i));
 			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
 			{
 				// get bounding box of the object that knife collision
@@ -123,8 +125,29 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
+					torch->isStrock = true;
 					vx = vy = 0;
-					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
+					torch->SetState(STATE_TORCH_NOT_EXSIST);
+					this->state = STATE_BOOMERANG_HIDE;
+					start_attack = 0;
+				}
+			}
+		}
+		if (dynamic_cast<CCandle*>(listObj.at(i)))
+		{
+			CCandle* candle = dynamic_cast<CCandle*>(listObj.at(i));
+			if (candle->GetState() == STATE_CANDLE_EXSIST)
+			{
+				candle->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
+				{
+					candle->isStrock = true;
+					candle->SetState(STATE_CANDLE_NOT_EXSIST);
+					vx = vy = 0;
 					this->state = STATE_BOOMERANG_HIDE;
 					start_attack = 0;
 				}
@@ -157,6 +180,6 @@ void CBoomerang::SetState(int st)
 		turn = 0;
 		float temp;
 		CGame::GetInstance()->GetCamPos(x_left,temp);
-		x_right = x_left + SCREEN_WIDTH - 40;
+		x_right = x_left + SCREEN_WIDTH - 50;	// Căn chỉnh lại x right phù hợp 
 	}
 }

@@ -62,4 +62,5 @@ void CMap::DrawMap()
 			
 		}
 	}
+	sprites = NULL;
 }

@@ -17,6 +17,7 @@
 #include"Platform.h"
 #include"Candle.h"
 #include"BreakBrick.h"
+#include"Board.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -368,6 +369,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SwitchScene(game->tagSwitchScene);
 	}
+	game = NULL;
 }
 
 void CPlayScene::Render()
@@ -417,6 +419,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CSimon* simon = CSimon::GetInstance();
 	CGame* game = CGame::GetInstance();
+	CBoard* HUD = CBoard::GetInstance();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
@@ -443,42 +446,45 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 
 	case DIK_X:
 		break;
+	case DIK_Q:
+		HUD->ChangeWeapon();
+		break;
 	case DIK_A:
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 		break;
 	case DIK_Z:
-		if (game->IsKeyDown(DIK_DOWN) )
+		if (game->IsKeyDown(DIK_DOWN) && simon->isCanAttack == true)
 			simon->SetState(STATE_SIMON_SIT_ATTACK);
 		else if (simon->IsBeingOnStair())
 		{
 			if (simon->GetStairTrend() == 1)
 			{
-				if (simon->GetTrend() == 1 )
+				if (simon->GetTrend() == 1 && simon->isCanAttack == true)
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
-				else if (simon->GetTrend() == -1 )
+				else if (simon->GetTrend() == -1 && simon->isCanAttack == true)
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
 			}
 			else if (simon->GetStairTrend() == -1)
 			{
-				if (simon->GetTrend() == 1 )
+				if (simon->GetTrend() == 1 && simon->isCanAttack == true)
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
-				else if (simon->GetTrend() == -1 )
+				else if (simon->GetTrend() == -1 && simon->isCanAttack == true)
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
 			}
 		}
-		else if (game->IsKeyDown(DIK_UP) )
+		else if (game->IsKeyDown(DIK_UP) && simon->isCanAttack == true)
 		{
 			simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 		}
-		else if(simon->IsBeingOnStair()==false)
+		else if(simon->IsBeingOnStair()==false && simon->isCanAttack == true)
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
 	case DIK_DOWN:
@@ -490,6 +496,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 			simon->isGoUp = true;
 		break;
 	}
+
 }
 
 void CPlaySceneKeyHandler::KeyState(BYTE* states)
@@ -497,11 +504,11 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
 
-	if (game->IsKeyDown(DIK_Z)&&game->IsKeyDown(DIK_UP))
+	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true)
 	{
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 	}
-	if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z))
+	if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z) && simon->isCanAttack == true)
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
 	}

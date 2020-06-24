@@ -61,7 +61,7 @@
 #define SIMON_UNTOUCHABLE_TIME		5000
 
 #define ATTACK_TIME			100
-#define ATTACK_TIME_WAIT	600
+#define ATTACK_TIME_WAIT	1000
 
 #define TRANSITION_TIME		400
 #define JUMP_TIME			0
@@ -100,17 +100,19 @@ class CSimon : public CGameObject
 	int _heart;
 	int _live;
 
-	
+	int subWeapon;
 	
 public:
 	static CSimon* GetInstance();
 	CSimon();
 
+	bool isCanAttack;
+
 	int auto_x;
 
 	bool isGoUp; // set simon ở vị trí thang đặc biệt
 	bool isGoDown;
-	int subWeapon;
+	
 
 	// Biến liên quan đến scene
 
@@ -129,9 +131,10 @@ public:
 																		float rdx0, float rdy0);
 	void CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0, float rdy0);
-	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj, float min_tx0, float min_ty0, int nx0, int ny0,
-																			float rdx0, float rdy0);// dùng cho kết thúc thang
-
+	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);//, float min_tx0, float min_ty0, int nx0, int ny0,
+																			//float rdx0, float rdy0);// dùng cho kết thúc thang
+	void CollisionWithPlatform(DWORD dt, vector<LPGAMEOBJECT>& listPlf, float min_tx0, float min_ty0, int nx0, int ny0,
+																		float rdx0, float rdy0);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 
@@ -154,5 +157,8 @@ public:
 	int GetScore() { return _score; }
 	int GetHeart() { return _heart; }
 	int GetLive() { return _live; }
+
+	int GetWeapon() { return subWeapon; }
+	void SetWeapon(int wp) { subWeapon = wp; }
 };
 #endif

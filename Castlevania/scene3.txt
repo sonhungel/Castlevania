@@ -40,13 +40,13 @@
 # type 	x	y	ani_id_Torch	type item	ani_id_Item
 # type 1: item whipUpgrade, 2: item knife, 3: item heart
 # lưu ý type item phải tương ứng với animation_item, xem trong item.h
-5	917	100	502	56	705
-5	790	100	502	57	706
-5	665	100	502	53	702
+5	917	100	502	55	704
+5	790	100	502	55	704
+5	665	100	502	55	704
 5	543	100	502	56	705
-5	405	100	502	57	706
-5	270	100	502	53	702
-5	150	100	502	53	702
+5	405	100	502	55	704
+5	270	100	502	57	706
+5	150	100	502	56	705
 # type 	x	y	type item
 
 # --- SCENE PORTAL ----

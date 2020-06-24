@@ -48,5 +48,5 @@ enum eType
 	ITEM_BOSSBALL = 61,			// 714
 	ITEM_BOONGMERANG = 65,		// 715
 	ITEM_VASE = 66,				// 716
-	ITEM_HIDEN_MONEY = 67,		// 717
+	ITEM_BLUE_MONEY=67			// 717
 };

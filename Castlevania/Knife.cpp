@@ -1,5 +1,7 @@
 ﻿#include "Knife.h"
 #include"Game.h"
+#include"Candle.h"
+
 
 CKnife* CKnife::__instance = NULL;
 
@@ -85,17 +87,37 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 	{
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
+			CTorch* torch = dynamic_cast<CTorch*>(listObj.at(i));
 			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
 			{
 				// get bounding box of the object that knife collision
-				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2);
+				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2); 
 				rect2.left = (int)l2;
 				rect2.top = (int)t2;
 				rect2.right = (int)r2;
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
-					listObj.at(i)->SetState(STATE_TORCH_NOT_EXSIST);
+					torch->isStrock = true;
+					torch->SetState(STATE_TORCH_NOT_EXSIST);
+					this->state = STATE_KNIFE_HIDE;
+				}
+			}
+		}
+		if (dynamic_cast<CCandle*>(listObj.at(i)))
+		{
+			CCandle* candle = dynamic_cast<CCandle*>(listObj.at(i));
+			if (candle->GetState() == STATE_CANDLE_EXSIST)
+			{
+				candle->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
+				{
+					candle->isStrock = true;
+					candle->SetState(STATE_CANDLE_NOT_EXSIST);
 					this->state = STATE_KNIFE_HIDE;
 				}
 			}

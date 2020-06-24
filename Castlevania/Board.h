@@ -43,6 +43,7 @@ public:
 			_count = GetTickCount();
 		}
 	}
+	void ChangeWeapon();
 
 };
 

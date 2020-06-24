@@ -25,7 +25,7 @@ CCandle::CCandle(int type, int ani_id, float _x, float _y)
 	else if (type == eType::ITEM_RED_MONEY ||
 		type == eType::ITEM_YELLOW_MONEY ||
 		type == eType::ITEM_PURPLE_MONEY ||
-		type == eType::ITEM_HIDEN_MONEY)
+		type == eType::ITEM_BLUE_MONEY)
 		item = new CItemMoney(x, y, type, ani_id);
 	else
 		item = new CItemNormal(x, y, type, ani_id); //
@@ -44,13 +44,14 @@ void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (item != NULL)		// => có item 
 		{
-			item->Update(dt, coObjects);
 			if (GetTickCount() - dt_die > TIME_EFFECT_DEATH) // 100 is time default
 			{
 				delete effectDie;
 				effectDie = NULL;
 				state = STATE_CANDLE_ITEM_EXSIST;
 			}
+			if(state==STATE_CANDLE_ITEM_EXSIST)
+				item->Update(dt, coObjects);
 		}
 	}
 	if (item->state == STATE_ITEM_NOT_EXSIST)

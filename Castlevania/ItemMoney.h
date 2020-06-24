@@ -18,10 +18,6 @@ private:
 	DWORD dt_effection;
 	CEffect* effect;
 
-	float destination_x; // Dùng cho hiden money 1000
-	float destination_y;
-
-	static bool isStartShowHiden;	// dùng cho hiden money
 
 public: 
 	bool isEated;
@@ -40,7 +36,7 @@ public:
 		case eType::ITEM_PURPLE_MONEY:
 			effect = new CEffect(ITEM_MONEY_EFFECT_700, x, y);
 			break;
-		case eType::ITEM_HIDEN_MONEY:
+		case eType::ITEM_BLUE_MONEY:
 			effect = new CEffect(ITEM_MONEY_EFFECT_1000, x, y);
 			break;
 		default:
@@ -48,17 +44,12 @@ public:
 		}
 		dt_effection = 0;
 		isEated = false;
-		destination_x = x;
-		destination_y = y - 33;
+
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-
-	static void Start() { isStartShowHiden = true; }
-	static void Stop() { isStartShowHiden = false; }
-	static bool IsStart() { return isStartShowHiden; }
 
 };
 

@@ -30,7 +30,6 @@
 #define TYPE_ITEM_BALL_BOSS		15	// 714
 #define TYPE_ITEM_BOMMERANG		16	// 715
 #define TYPE_ITEM_VASE			17	// 716
-#define TYPE_ITEM_HIDEN_MONEY	18	// 717	// có effect
 
 #define GRAVITY_ITEM		  0.002f
 

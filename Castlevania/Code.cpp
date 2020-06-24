@@ -44,7 +44,9 @@ void CCode::DrawBloodBar(float _x, float _y, int _type , int string )
 		sprite1->Draw(_x, _y);
 		_x += 11;
 	}
-	
+	sprites = NULL;
+	sprite1 = NULL;
+	sprite2 = NULL;
 }
 
 int CCode::ConvertToInt(char C)

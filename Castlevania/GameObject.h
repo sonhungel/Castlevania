@@ -113,6 +113,7 @@ public:
 	void SetID(int id) { this->id = id; }
 
 	float Getvx() { return vx; }
+	float Getvy() { return vy; }
 
 	int GetBlood() { return blood; }
 	virtual void Hurt() { blood -=1; }
