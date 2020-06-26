@@ -13,7 +13,7 @@ CCandle::CCandle(int type, int ani_id, float _x, float _y)
 	dt_strock = 0;
 
 	this->blood = 1;
-	state = STATE_CANDLE_EXSIST;
+	state = STATE_CANDLE_EXIST;
 
 	isStrock = false;
 
@@ -35,7 +35,7 @@ void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (dt_die == 0)
 	{
-		if (state == STATE_CANDLE_NOT_EXSIST)
+		if (state == STATE_CANDLE_NOT_EXIST)
 		{
 			dt_die = GetTickCount();
 		}
@@ -48,9 +48,9 @@ void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				delete effectDie;
 				effectDie = NULL;
-				state = STATE_CANDLE_ITEM_EXSIST;
+				state = STATE_CANDLE_ITEM_EXIST;
 			}
-			if(state==STATE_CANDLE_ITEM_EXSIST)
+			if(state==STATE_CANDLE_ITEM_EXIST)
 				item->Update(dt, coObjects);
 		}
 	}
@@ -77,7 +77,7 @@ void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CCandle::Render()
 {
-	if (state == STATE_CANDLE_EXSIST)
+	if (state == STATE_CANDLE_EXIST)
 	{
 		animations[0]->Render(x, y);
 
@@ -88,7 +88,7 @@ void CCandle::Render()
 	}
 	if (isStrock == true)
 		effectHit->Render();
-	if (state == STATE_CANDLE_ITEM_EXSIST)
+	if (state == STATE_CANDLE_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -100,14 +100,14 @@ void CCandle::Render()
 
 void CCandle::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_CANDLE_EXSIST)
+	if (state == STATE_CANDLE_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + CANDLE_WIDTH;
 		bottom = y + CANDLE_HEIGHT;
 	}
-	else if (state == STATE_CANDLE_ITEM_EXSIST)
+	else if (state == STATE_CANDLE_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);

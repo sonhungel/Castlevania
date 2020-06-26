@@ -125,6 +125,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Axe.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="BlackKnight.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BreakBrick.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectBrick.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Grid.h" />
@@ -162,6 +164,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="BlackKnight.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BreakBrick.cpp" />
@@ -170,6 +173,7 @@
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectBrick.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Grid.cpp" />

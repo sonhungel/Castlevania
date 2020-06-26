@@ -79,6 +79,9 @@
     <Filter Include="GameObject\Enemy">
       <UniqueIdentifier>{830d30c3-943d-4900-b7d7-1aff9f04c69c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemy\Base Enemy">
+      <UniqueIdentifier>{3a03a1e3-49da-4813-a81f-8ffa7ff1fdaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -186,6 +189,12 @@
     <ClInclude Include="Bat.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="BlackKnight.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameObject\Enemy\Base Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -289,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackKnight.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject\Enemy\Base Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

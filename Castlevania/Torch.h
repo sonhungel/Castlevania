@@ -14,10 +14,10 @@
 #define TORCH_WIDTH			32
 #define TORCH_HEIGHT		68
 
-#define STATE_TORCH_NOT_EXSIST		0
-#define STATE_TORCH_EXSIST			1
-#define STATE_TORCH_ITEM_EXSIST		2
-#define STATE_TORCH_ITEM_NOT_EXSIST 3
+#define STATE_TORCH_NOT_EXIST		0
+#define STATE_TORCH_EXIST			1
+#define STATE_TORCH_ITEM_EXIST		2
+#define STATE_TORCH_ITEM_NOT_EXIST	3
 
 
 #define TIME_EFFECT_DEATH		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds
@@ -41,6 +41,10 @@ public:
 		CGameObject::~CGameObject();
 		if (item != NULL)
 			delete item;
+		if (effectDie != NULL)
+			delete effectDie;
+		if (effectHit != NULL)
+			delete effectHit;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();

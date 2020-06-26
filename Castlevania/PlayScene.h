@@ -17,7 +17,7 @@
 class CPlayScene:public CScene
 {
 protected:
-	//CSimon* simon;		
+	CSimon* simon;		
 	CMap* map;
 	int _xLeft, _xRight;		// Set cứng cam cho mỗi scene
 
@@ -27,6 +27,8 @@ protected:
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects;
+
+	vector<LPGAMEOBJECT> listEnemy;
 
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_SETUP(string line);

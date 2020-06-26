@@ -13,7 +13,7 @@ CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 	dt_strock = 0;
 
 	this->blood = 1;
-	state = STATE_TORCH_EXSIST;
+	state = STATE_TORCH_EXIST;
 	
 	isStrock = false;
 
@@ -33,9 +33,9 @@ CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 
 void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (dt_die == 0)
+	if (dt_die == 0)	// đo thời gian die
 	{
-		if (state == STATE_TORCH_NOT_EXSIST)
+		if (state == STATE_TORCH_NOT_EXIST)
 		{
 			dt_die = GetTickCount();
 		}
@@ -48,15 +48,15 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				delete effectDie;
 				effectDie = NULL;
-				state = STATE_TORCH_ITEM_EXSIST;
+				state = STATE_TORCH_ITEM_EXIST;
 			}
-			if(state==STATE_TORCH_ITEM_EXSIST)
+			if(state==STATE_TORCH_ITEM_EXIST)
 				item->Update(dt, coObjects);
 		}
 	}
 	if (item->state == STATE_ITEM_NOT_EXSIST)
 		blood--;
-	if (dt_strock == 0)
+	if (dt_strock == 0)			// đo thời gian effect
 	{
 		if (isStrock == true)
 			dt_strock = GetTickCount();
@@ -77,7 +77,7 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CTorch::Render()
 {
-	if (state == STATE_TORCH_EXSIST)
+	if (state == STATE_TORCH_EXIST)
 	{
 		animations[0]->Render(x, y);
 		
@@ -88,7 +88,7 @@ void CTorch::Render()
 	}
 	if (isStrock == true)
 		effectHit->Render();
-	if (state == STATE_TORCH_ITEM_EXSIST)
+	if (state == STATE_TORCH_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -100,14 +100,14 @@ void CTorch::Render()
 
 void CTorch::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_TORCH_EXSIST)
+	if (state == STATE_TORCH_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + TORCH_WIDTH;
 		bottom = y + TORCH_HEIGHT;
 	}
-	else if (state == STATE_TORCH_ITEM_EXSIST)
+	else if (state == STATE_TORCH_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left,top,right,bottom);

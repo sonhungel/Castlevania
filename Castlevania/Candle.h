@@ -12,10 +12,10 @@
 #define CANDLE_WIDTH			15
 #define CANDLE_HEIGHT			30
 
-#define STATE_CANDLE_NOT_EXSIST			0
-#define STATE_CANDLE_EXSIST				1
-#define STATE_CANDLE_ITEM_EXSIST		2
-#define STATE_CANDLE_ITEM_NOT_EXSIST	3
+#define STATE_CANDLE_NOT_EXIST			0
+#define STATE_CANDLE_EXIST				1
+#define STATE_CANDLE_ITEM_EXIST		2
+#define STATE_CANDLE_ITEM_NOT_EXIST	3
 
 
 #define TIME_EFFECT_DEATH		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds

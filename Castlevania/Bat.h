@@ -1,6 +1,9 @@
 #pragma once
 #include "GameObject.h"
-class CBat :public CGameObject
+#include"Enemy.h"
+
+
+class CBat :public CEnemy
 {
 };
 

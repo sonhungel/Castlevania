@@ -18,6 +18,8 @@
 #include"Candle.h"
 #include"BreakBrick.h"
 #include"Board.h"
+#include"BlackKnight.h"
+#include"Bat.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -43,8 +45,12 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_STAIR	3
 #define OBJECT_TYPE_PLATFORM	4
-#define OBJECT_TYPE_CANDLE	5
+#define OBJECT_TYPE_CANDLE		5
 #define OBJECT_TYPE_BREAK_BRICK	6
+
+#define OBJECT_TYPE_ENEMY_BLACK_KNIGHT	7
+#define OBJECT_TYPE_ENEMY_ZOMBIE		8
+#define OBJECT_TYPE_ENEMY_BAT			9
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -151,8 +157,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
-		float item = atoi(tokens[4].c_str());
-		float ani_item = atoi(tokens[5].c_str());
+		int item = atoi(tokens[4].c_str());
+		int ani_item = atoi(tokens[5].c_str());
 
 		obj = new CCandle(item, ani_item, x, y);
 
@@ -160,6 +166,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->AddAnimation(animation_id);
 
 		objects.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_ENEMY_BLACK_KNIGHT:
+	{
+		int type_item= atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+		int x_left= atoi(tokens[5].c_str());
+		int x_right= atoi(tokens[6].c_str());
+
+		obj = new CBlackKnight(x, y, type_item, ani_item, x_left, x_right);
+
+		listEnemy.push_back(obj);
 	}
 		break;
 	default:
@@ -305,6 +323,10 @@ void CPlayScene::UnLoad()
 
 	singleToneObjects.clear();
 
+	for (int i = 0; i < listEnemy.size(); i++)
+		delete listEnemy[i];
+	listEnemy.clear();
+
 	delete grid;
 	grid = NULL;
 	
@@ -352,7 +374,10 @@ void CPlayScene::Update(DWORD dt)
 		singleToneObjects[i]->Update(dt, &coObjects);
 	}
 
-	//if (simon == NULL) return;
+	for (int i = 0; i < listEnemy.size(); i++)
+		listEnemy[i]->Update(dt, &coObjects);
+
+	CSimon::GetInstance()->CollisionWithEnemy(listEnemy);
 
 	CSimon::GetInstance()->GetPosition(cx, cy);
 
@@ -374,7 +399,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
@@ -386,6 +411,9 @@ void CPlayScene::Render()
 
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
+
+	for (int i = 0; i < listEnemy.size(); i++)
+		listEnemy[i]->Render();
 }
 
 
@@ -512,7 +540,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
 	}
-	else if (game->IsKeyDown(DIK_X))
+	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT)
 		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{

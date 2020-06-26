@@ -80,7 +80,6 @@ class CSimon : public CGameObject
 
 	CWhip* whip;
 
-	
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
 	
@@ -122,7 +121,7 @@ public:
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	
-	void CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
+	void CollisionWithItem( vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
 
 	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0,float rdy0);
@@ -135,6 +134,7 @@ public:
 																			//float rdx0, float rdy0);// dùng cho kết thúc thang
 	void CollisionWithPlatform(DWORD dt, vector<LPGAMEOBJECT>& listPlf, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0, float rdy0);
+	void CollisionWithEnemy(vector<LPGAMEOBJECT>& listObj);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 

@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include"Game.h"
+#include"Define.h"
 
 #define BRICK_WIDTH  32
 class CBrick : public CGameObject
@@ -14,6 +15,7 @@ private:
 public:
 	CBrick(int _width,int _height) :CGameObject()
 	{
+		type = eType::BRICK;
 		this->blood = 1;
 		this->width = _width;
 		this->height = _height;

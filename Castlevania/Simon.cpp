@@ -311,7 +311,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 		}
-
+		listHideObject.clear();
 
 		coEvents.clear();
 		coEventsResult.clear();
@@ -448,7 +448,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	}
 
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -573,10 +573,10 @@ void CSimon::SetState(int state)
 	{}
 	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
 	{}
-//	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
-	//{}
-	//else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
-//	{}
+	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
+	{}
+	else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
+	{}
 	else if (trans_start > 0)
 	{}
 	else if(isAutoGo)
@@ -691,7 +691,7 @@ void CSimon::SetState(int state)
 	}
 	
 }
-void CSimon::CollisionWithItem(DWORD dt, vector<LPGAMEOBJECT>& listObj)
+void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 {
 	for (int i = 0; i < listObj.size(); i++)
 	{
@@ -838,7 +838,7 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 	for (UINT i = 0; i < listTorch.size(); i++)
 	{
 		CTorch* torch = dynamic_cast<CTorch*>(listTorch.at(i));	// Check torch is true??
-		if (torch->GetState() == STATE_TORCH_EXSIST)
+		if (torch->GetState() == STATE_TORCH_EXIST)
 		{
 		}
 		else
@@ -847,11 +847,11 @@ void CSimon::CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float
 			{
 				CItem* item = dynamic_cast<CItem*>(torch->GetItem());
 				listItem.push_back(item);
-				torch->SetState(STATE_TORCH_ITEM_NOT_EXSIST);	// item was eated
+				torch->SetState(STATE_TORCH_ITEM_NOT_EXIST);	// item was eated
 			}
 		}
 	}
-	CollisionWithItem(dt, listItem);
+	CollisionWithItem( listItem);
 }
 
 void CSimon::CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0)
@@ -882,7 +882,7 @@ void CSimon::CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, flo
 	for (UINT i = 0; i < listCandle.size(); i++)
 	{
 		CCandle* candle = dynamic_cast<CCandle*>(listCandle.at(i));	// Check torch is true??
-		if (candle->GetState() == STATE_CANDLE_EXSIST)
+		if (candle->GetState() == STATE_CANDLE_EXIST)
 		{
 		}
 		else
@@ -891,11 +891,11 @@ void CSimon::CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, flo
 			{
 				CItem* item = dynamic_cast<CItem*>(candle->GetItem());
 				listItem.push_back(item);
-				candle->SetState(STATE_CANDLE_ITEM_NOT_EXSIST);	// item was eated
+				candle->SetState(STATE_CANDLE_ITEM_NOT_EXIST);	// item was eated
 			}
 		}
 	}
-	CollisionWithItem(dt, listItem);
+	CollisionWithItem(listItem);
 }
 
 void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj)
@@ -1014,6 +1014,26 @@ void CSimon::CollisionWithPlatform(DWORD dt, vector<LPGAMEOBJECT>& listPlf, floa
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
+void CSimon::CollisionWithEnemy(vector<LPGAMEOBJECT>& listObj)
+{
+	if (listObj.size() > 0)
+	{
+		CKnife* knife = CKnife::GetInstance();
+		CBoomerang* boomerang = CBoomerang::GetInstance();
+		CHollyWater* hollywater = CHollyWater::GetInstance();
+		CAxe* axe = CAxe::GetInstance();
+		whip->CollisionWithObject(this->dt, listObj);
+		knife->CollisionWithObject(this->dt, listObj);
+		boomerang->CollisionWithObject(this->dt, listObj);
+		hollywater->CollisionWithObject(this->dt, listObj);
+		axe->CollisionWithObject(this->dt, listObj);
+		knife = NULL;
+		boomerang = NULL;
+		axe = NULL;
+		hollywater = NULL;
+	}
+}
+
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	//CGame *game = CGame::GetInstance();
@@ -1072,11 +1092,13 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_STAIR_ABOVE)
 				{
 					isCanOnStair = -1;
+					game = NULL;
 					return;
 				}
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_STAIR_BELOW)
 				{
 					isCanOnStair = 1;
+					game = NULL;
 					return;
 				}
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_SPECIAL)
@@ -1091,6 +1113,7 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 						_stairTrend = -1;
 						isCanOnStair = 1;
 					}
+					game = NULL;
 					return;
 				}
 			}
@@ -1101,6 +1124,7 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 	isGoUp = false;
 	auto_x = -1;
 	isCanOnStair = 0;
+	game = NULL;
 	return;
 }
 

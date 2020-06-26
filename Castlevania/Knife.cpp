@@ -88,7 +88,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 		if (dynamic_cast<CTorch*>(listObj.at(i)))
 		{
 			CTorch* torch = dynamic_cast<CTorch*>(listObj.at(i));
-			if (listObj.at(i)->GetState() == STATE_TORCH_EXSIST)
+			if (listObj.at(i)->GetState() == STATE_TORCH_EXIST)
 			{
 				// get bounding box of the object that knife collision
 				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2); 
@@ -99,7 +99,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
 					torch->isStrock = true;
-					torch->SetState(STATE_TORCH_NOT_EXSIST);
+					torch->SetState(STATE_TORCH_NOT_EXIST);
 					this->state = STATE_KNIFE_HIDE;
 				}
 			}
@@ -107,7 +107,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 		if (dynamic_cast<CCandle*>(listObj.at(i)))
 		{
 			CCandle* candle = dynamic_cast<CCandle*>(listObj.at(i));
-			if (candle->GetState() == STATE_CANDLE_EXSIST)
+			if (candle->GetState() == STATE_CANDLE_EXIST)
 			{
 				candle->GetBoundingBox(l2, t2, r2, b2);
 				rect2.left = (int)l2;
@@ -117,7 +117,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
 					candle->isStrock = true;
-					candle->SetState(STATE_CANDLE_NOT_EXSIST);
+					candle->SetState(STATE_CANDLE_NOT_EXIST);
 					this->state = STATE_KNIFE_HIDE;
 				}
 			}
