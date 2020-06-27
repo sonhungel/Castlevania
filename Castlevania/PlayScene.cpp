@@ -399,7 +399,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
