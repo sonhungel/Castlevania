@@ -6,8 +6,8 @@
 #include"ItemSmallHeart.h"
 #include"Effect.h"
 
-#define TIME_EFFECT_DEATH		400	// thời gian bằng đúng số lượng frame animation* 100 mili seconds
-#define TIME_EFFECT_HIT		200
+#define TIME_EFFECT_HIT_ENEMY	200
+#define TIME_EFFECT_DIE_ENEMY	400
 
 class CEnemy :public CGameObject
 {

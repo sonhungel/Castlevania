@@ -15,8 +15,6 @@
 
 #define ENEMY_BLACK_KNIGHT_ANI_ID	1001
 
-#define TIME_EFFECT_HIT_ENEMY	200
-#define TIME_EFFECT_DIE_ENEMY	400
 
 class CBlackKnight :public CEnemy
 {

@@ -180,6 +180,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listEnemy.push_back(obj);
 	}
 		break;
+	case OBJECT_TYPE_ENEMY_BAT:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+
+		obj = new CBat(x, y, type_item, ani_item);
+		listEnemy.push_back(obj);
+	}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -375,7 +384,10 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	for (int i = 0; i < listEnemy.size(); i++)
-		listEnemy[i]->Update(dt, &coObjects);
+	{
+		if(listEnemy[i]->blood>0)
+			listEnemy[i]->Update(dt, &coObjects);
+	}
 
 	CSimon::GetInstance()->CollisionWithEnemy(listEnemy);
 

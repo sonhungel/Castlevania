@@ -5,6 +5,7 @@
 
 void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+#pragma region Xu_Ly_Hieu_Ung&Item
 	if (dt_die == 0)	// đo thời gian die
 	{
 		//if (this->state==STATE_ENEMY_BLACK_KNIGHT_NOT_EXIST)
@@ -49,7 +50,7 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-	
+#pragma endregion
 	
 
 #pragma region collision
