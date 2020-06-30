@@ -21,8 +21,8 @@
 
 // => với ý tưởng này sẽ giải quyết đc bài toán khoảng cách active bat so với simon luôn luôn cố định, chỉ cần điều chỉnh position của bat cho phù hợp
 
-#define STATE_ENEMY_BAT_EXIST			0
-#define STATE_ENEMY_BAT_NOT_EXIST		1
+#define STATE_ENEMY_BAT_EXIST			1
+#define STATE_ENEMY_BAT_NOT_EXIST		0
 #define STATE_ENEMY_BAT_ITEM_EXIST		2
 #define STATE_ENEMY_BAT_ITEM_NOT_EXIST	3
 

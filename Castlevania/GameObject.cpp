@@ -1,4 +1,4 @@
-#include <d3dx9.h>
+﻿#include <d3dx9.h>
 #include <algorithm>
 
 
@@ -43,7 +43,7 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 	float sdx = svx * dt;
 	float sdy = svy * dt;
 
-	// (rdx, rdy) is RELATIVE movement distance/velocity 
+	// (rdx, rdy) is RELATIVE movement distance/velocity (Độ chênh lệch dx, dy)
 	float rdx = this->dx - sdx;
 	float rdy = this->dy - sdy;
 

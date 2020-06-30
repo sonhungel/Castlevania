@@ -33,7 +33,7 @@ public:
 		dt_die = 0;
 		dt_strock = 0;
 
-		vx = ENEMY_BLACK_KNIGHT_SPEED;
+		vx =  ENEMY_BLACK_KNIGHT_SPEED;
 
 		isStrock = false;
 

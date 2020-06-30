@@ -16,7 +16,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if(isActive==false)
 			isActive = true;
 	}
-	if (this->x > cam_x + SCREEN_WIDTH)
+	if (this->x > cam_x + SCREEN_WIDTH|| state==STATE_ENEMY_BAT_NOT_EXIST)
 	{
 		this->blood = 0;
 	}
@@ -70,13 +70,16 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 #pragma endregion
 		
 		CGameObject::Update(dt);
-		this->vy += ENEMY_BAT_SPEED_Y * dt;
+		
 		if (this->y <= bottomLimit)
 		{
 			y += dx;
+			vy = 0;
 		}
+		else
+			this->vy += ENEMY_BAT_SPEED_Y * dt;
 		x += dx;
-		DebugOut(L"Vi tri BAT : %d, %d\n", (int)this->x, (int)this->y);
+		//DebugOut(L"Vi tri BAT : %d, %d\n", (int)this->x, (int)this->y);
 		
 	}
 	simon = NULL;

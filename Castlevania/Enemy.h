@@ -8,6 +8,8 @@
 
 #define TIME_EFFECT_HIT_ENEMY	200
 #define TIME_EFFECT_DIE_ENEMY	400
+#define STATE_ENEMY_EXIST	1
+#define STATE_ENEMY_NOT_EXIST	0
 
 class CEnemy :public CGameObject
 {

@@ -75,7 +75,7 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			nx = -nx;
 			vx = nx * ENEMY_BLACK_KNIGHT_SPEED;
 		}
-
+		
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -84,26 +84,18 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (coEvents.size() == 0)
 		{
-
 			y += dy;
 		}
 		else
 		{
-			//float min_tx, min_ty, nx = 0, ny;
-			//float rdx = 0;
-			//float rdy = 0;
-
-			//FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-			// block 
-			//x += dx;	// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			//y += min_ty * dy + ny * 0.4f;
+			vy = vy = 0;
 		}
 		
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++)
 			delete coEvents[i];
 		listBrick.clear();
+		
 	}
 #pragma endregion
 	//DebugOut(L"Vi tri knight : %d, %d\n", (int)this->x, (int)this->y);
@@ -135,16 +127,23 @@ void CBlackKnight::Render()
 			item->Render();
 		}
 	}
-
 }
 
 void CBlackKnight::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (this->blood > 0)
+	if (state == STATE_ENEMY_BLACK_KNIGHT_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_BLACK_KNIGHT_WIDTH;
 		bottom = y + ENEMY_BLACK_KNIGHT_HEIGHT;
 	}
+	else if (state == STATE_ENEMY_BLACK_KNIGHT_ITEM_EXIST)
+	{
+		item->GetPosition(x, y);
+		item->GetBoundingBox(left, top, right, bottom);
+	}
+	//DebugOut(L"BBOX knight : %d, %d\n", (int)(right-left), (int)(bottom-top));
+	//DebugOut(L"Vi tri knight : %d, %d\n", (int)this->x, (int)this->y);
+
 }

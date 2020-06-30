@@ -58,7 +58,8 @@
 #define SIMON_HEIGHT_SIT			47
 #define SIMON_WIDTH					33
 
-#define SIMON_UNTOUCHABLE_TIME		5000
+#define SIMON_UNTOUCHABLE_TIME		1500
+#define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 
 #define ATTACK_TIME			100
 #define ATTACK_TIME_WAIT	1000
@@ -71,7 +72,7 @@ class CSimon : public CGameObject
 {
 	static CSimon* __instance;
 
-	int untouchable;
+	bool untouchable;
 	DWORD untouchable_start;
 	DWORD trans_start; // Simon nhấp nháy
 	DWORD stair_start;
@@ -134,13 +135,12 @@ public:
 																			//float rdx0, float rdy0);// dùng cho kết thúc thang
 	void CollisionWithPlatform(DWORD dt, vector<LPGAMEOBJECT>& listPlf, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0, float rdy0);
-	void CollisionWithEnemy(vector<LPGAMEOBJECT>& listObj);
+	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj, float min_tx0, float min_ty0, int nx0, int ny0,
+																	float rdx0, float rdy0);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 
-	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang
-
-	//bool IsCanGo3DirectionOnStair() { return isHave3Direction; }
+	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang 
 
 	void SetBeingOnStair(bool onStair) { this->isBeingOnStair = onStair; }
 	void SetStairTrend(int stairTrend) { this->_stairTrend = stairTrend; }

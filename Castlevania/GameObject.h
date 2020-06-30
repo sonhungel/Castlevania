@@ -48,7 +48,6 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
-	int id;
 
 	float x;
 	float y;
@@ -108,9 +107,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
-
-	int GetID() { return id; }
-	void SetID(int id) { this->id = id; }
 
 	float Getvx() { return vx; }
 	float Getvy() { return vy; }

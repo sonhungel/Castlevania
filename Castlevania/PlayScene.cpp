@@ -89,7 +89,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[INFO] added animation for SIMON: %d\n",animation_id);
 		}
 		obj->SetPosition(x, y);
-		//simon = (CSimon*)obj;
+		simon = (CSimon*)obj;
 		singleToneObjects.push_back(obj);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -177,7 +177,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = new CBlackKnight(x, y, type_item, ani_item, x_left, x_right);
 
-		listEnemy.push_back(obj);
+		objects.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_BAT:
@@ -186,7 +186,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int ani_item = atoi(tokens[4].c_str());
 
 		obj = new CBat(x, y, type_item, ani_item);
-		listEnemy.push_back(obj);
+		objects.push_back(obj);
 	}
 		break;
 	default:
@@ -368,28 +368,36 @@ void CPlayScene::Update(DWORD dt)
 
 	grid->GetListObject(coObjects,cx,cy);	// Lấy những obj ở trong cam
 
+	for (int i = 0; i < coObjects.size(); i++)
+	{
+		if (coObjects.at(i)->getType() == eType::ENEMY_BAT
+			 ||coObjects.at(i)->getType() == eType::ENEMY_BLACK_KNIGHT
+			|| coObjects.at(i)->getType() == eType::ENEMY_ZOMBIE)
+		{
+			listEnemy.push_back(coObjects.at(i));
+		}
+	}
+
+
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	//simon->Update(dt, &coObjects);
-
-	//CKnife::GetInstance()->Update(dt, &coObjects);
-	//CAxe::GetInstance()->Update(dt, &coObjects);
 
 	for (size_t i = 0; i < singleToneObjects.size(); i++)
 	{
 		singleToneObjects[i]->Update(dt, &coObjects);
 	}
 
-	for (int i = 0; i < listEnemy.size(); i++)
-	{
-		if(listEnemy[i]->blood>0)
-			listEnemy[i]->Update(dt, &coObjects);
-	}
+	//simon->CollisionWithEnemy(dt, listEnemy);
+	//for (int i = 0; i < listEnemy.size(); i++)
+	//{
+	//	if(listEnemy[i]->blood>0)
+	//		listEnemy[i]->Update(dt, &coObjects);
+	//}
+	listEnemy.clear();
 
-	CSimon::GetInstance()->CollisionWithEnemy(listEnemy);
 
 	CSimon::GetInstance()->GetPosition(cx, cy);
 
@@ -400,7 +408,7 @@ void CPlayScene::Update(DWORD dt)
 	// K có scene ngầm dưới lòng đất nên k cần xây dựng limit cam Y
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	HUD->Update(dt,&coObjects);// HUD chứa tất cả các subweapon
+	HUD->Update(dt,&coObjects);
 
 	if (game->tagSwitchScene != -1)
 	{
@@ -411,21 +419,18 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
 
 	//simon->Render();
 
-	//CKnife::GetInstance()->Render();
-	//CAxe::GetInstance()->Render();
-
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
 
-	for (int i = 0; i < listEnemy.size(); i++)
-		listEnemy[i]->Render();
+	//for (int i = 0; i < listEnemy.size(); i++)
+	//	listEnemy[i]->Render();
 }
 
 
