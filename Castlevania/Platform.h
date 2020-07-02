@@ -20,6 +20,7 @@ public:
 		this->blood = 1;
 		AddAnimation(ani_id);
 		vx = PLATFORM_SPEED_X;
+		vy = 0;
 		x_left = X_LEFT_LIMIT;
 		x_right = X_RIGHT_LIMIT;
 	}

@@ -95,6 +95,9 @@
 5	1465	200	502	53	702
 #========= Break brick
 6	1374	331	499
+#ENEMY
+#======Zombie==================
+8	700	200	56	705	-1
 
 #============= stair ================
 # type	x	y	width	height	state	trendX	trendY

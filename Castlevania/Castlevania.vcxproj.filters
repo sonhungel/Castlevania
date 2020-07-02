@@ -195,6 +195,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>GameObject\Enemy\Base Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -304,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>GameObject\Enemy\Base Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

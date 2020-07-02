@@ -20,6 +20,7 @@
 #include"Board.h"
 #include"BlackKnight.h"
 #include"Bat.h"
+#include"Zombie.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -189,6 +190,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		objects.push_back(obj);
 	}
 		break;
+	case OBJECT_TYPE_ENEMY_ZOMBIE:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+
+		int trend = atoi(tokens[5].c_str());
+		obj = new CZombie(x,y,type_item,ani_item,trend);
+		objects.push_back(obj);
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -367,7 +377,7 @@ void CPlayScene::Update(DWORD dt)
 	game->GetCamPos(cx, cy);
 
 	grid->GetListObject(coObjects,cx,cy);	// Lấy những obj ở trong cam
-
+	/*
 	for (int i = 0; i < coObjects.size(); i++)
 	{
 		if (coObjects.at(i)->getType() == eType::ENEMY_BAT
@@ -377,7 +387,7 @@ void CPlayScene::Update(DWORD dt)
 			listEnemy.push_back(coObjects.at(i));
 		}
 	}
-
+	*/
 
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
@@ -396,7 +406,7 @@ void CPlayScene::Update(DWORD dt)
 	//	if(listEnemy[i]->blood>0)
 	//		listEnemy[i]->Update(dt, &coObjects);
 	//}
-	listEnemy.clear();
+	//listEnemy.clear();
 
 
 	CSimon::GetInstance()->GetPosition(cx, cy);
@@ -419,7 +429,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
@@ -495,7 +505,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		HUD->ChangeWeapon();
 		break;
 	case DIK_A:
-		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
+		simon->SetState(STATE_SIMON_HURT);
 		break;
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN) && simon->isCanAttack == true)
@@ -553,7 +563,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	{
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 	}
-	if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z) && simon->isCanAttack == true)
+	else if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z) && simon->isCanAttack == true)
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
 	}
@@ -592,6 +602,10 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 			simon->SetState(STATE_SIMON_UP);
 		else  
 			simon->SetState(STATE_SIMON_IDLE);
+	}
+	else if (game->IsKeyDown(DIK_A))
+	{
+//		simon->SetState(STATE_SIMON_HURT);
 	}
 	
 }

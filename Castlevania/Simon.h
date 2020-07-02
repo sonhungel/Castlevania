@@ -133,8 +133,8 @@ public:
 																		float rdx0, float rdy0);
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);//, float min_tx0, float min_ty0, int nx0, int ny0,
 																			//float rdx0, float rdy0);// dùng cho kết thúc thang
-	void CollisionWithPlatform(DWORD dt, vector<LPGAMEOBJECT>& listPlf, float min_tx0, float min_ty0, int nx0, int ny0,
-																		float rdx0, float rdy0);
+	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx, float min_ty, int nx, int ny,
+																		float rdx, float rdy);
 	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj, float min_tx0, float min_ty0, int nx0, int ny0,
 																	float rdx0, float rdy0);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -144,8 +144,6 @@ public:
 
 	void SetBeingOnStair(bool onStair) { this->isBeingOnStair = onStair; }
 	void SetStairTrend(int stairTrend) { this->_stairTrend = stairTrend; }
-	//void SetIsCanOnStair(int _isCanOnStair) { this->isCanOnStair = _isCanOnStair; }
-	//void SetAutoGo(bool _autoGo) { this->isAutoGo = _autoGo; }
 
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }
