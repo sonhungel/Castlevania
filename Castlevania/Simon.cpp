@@ -442,7 +442,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	
-	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x+33,(int)this->y);
+	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip

@@ -50,11 +50,10 @@
 #ENEMY
 #===black knight=======
 # type 	x   y    type_item    ani_item    x_left   x_right
-7	677	288	65	715	641	672
-7	200	170	65	715	195	295
+7	677	288	65	715	675	705
 #===black knight=======
 # type 	x   y    type_item    ani_item
-9	595	95	65	715
+9	90	100	65	715
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	0	200	4
