@@ -131,8 +131,8 @@ public:
 																		float rdx0, float rdy0);
 	void CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0, float rdy0);
-	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);//, float min_tx0, float min_ty0, int nx0, int ny0,
-																			//float rdx0, float rdy0);// dùng cho kết thúc thang
+	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);// dùng cho kết thúc thang
+
 	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx, float min_ty, int nx, int ny,
 																		float rdx, float rdy);
 	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj, float min_tx0, float min_ty0, int nx0, int ny0,

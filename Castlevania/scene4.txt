@@ -1,3 +1,4 @@
+﻿
 [OBJECTS]
 # type	x	y	animation_id
 # type: 0 = SIMON , 1 = Brick , 2 = Torch
@@ -83,12 +84,15 @@
 5	420	360	502	57	706
 5	190	330	502	52	700
 5	320	205	502	65	715
-# type 	x	y	type item
 
+# type 	x	y	type item
+# ENEMY
+# ===== ghost ==========
+# type 	x   y    type_item    ani_item
+10	1000	320	65	715
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	130	45	5
-
 #============= stair ================
 # type	x	y	width	height	state	trendX	trendY
 # 1: stairAbove	2:stair below

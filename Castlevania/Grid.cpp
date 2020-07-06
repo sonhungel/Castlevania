@@ -69,5 +69,13 @@ void CGrid::Insert(LPGAMEOBJECT obj, float x, float y, float w, float h)
 void CGrid::ResetOnCamera(vector<LPGAMEOBJECT>& ListObj)
 {
 	for (int i = 0; i < ListObj.size(); i++)
-		ListObj[i]->isOnCamera = false;
+	{
+		if (ListObj.at(i)->blood <= 0)
+		{
+			delete ListObj.at(i);
+			ListObj.erase(ListObj.begin()+i);	// xóa những obj đã die ra khỏi vector object trong playscene
+		}
+		else
+			ListObj[i]->isOnCamera = false;
+	}
 }

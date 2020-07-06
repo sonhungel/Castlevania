@@ -239,7 +239,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else
 		{
-			state = STATE_SIMON_IDLE;
+			//state = STATE_SIMON_IDLE;
 		}
 
 		
@@ -442,7 +442,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y);
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -937,7 +937,6 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 					DebugOut(L"Ket thuc thang\n");
 					state = ANI_SIMON_IDLE;
 				}
-				//IsCanOnStair(listHidenObj);
 
 				auto_x = hidenObj->GetAutoX();
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_STAIR_ABOVE)
@@ -984,6 +983,7 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 void CSimon::CollisionWithPlatform(DWORD dt, LPGAMEOBJECT plf, float min_tx, float min_ty, int nx, int ny, float rdx, float rdy)
 {
 	y += min_ty * dy + ny * 0.4f;
+	//this->vy = GRAVITY*dt;
 
 	vx += plf->Getvx();
 	if (vx > plf->Getvx())
@@ -1029,6 +1029,8 @@ void CSimon::CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj, float mi
 				this->nx =1;
 		}
 
+		x += dx;
+		y += dy;
 
 		//// block 
 		if (nx != 0) vx = nx * 0.2f;

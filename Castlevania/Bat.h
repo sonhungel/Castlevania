@@ -34,12 +34,14 @@ class CBat :public CEnemy
 private:
 	float bottomLimit;
 
-	float x_active;	// dùng để phát hiện siom đã tới vị trí cần thiết để cho bat active
-	float y_active;
+	D3DXVECTOR2 posi_active;	// dùng để phát hiện siom đã tới vị trí cần thiết để cho bat active
 
 	bool isActive;
+
+	LPGAMEOBJECT target;		//==> this is simon
+
 public:
-	CBat(float _x, float _y, int _type, int ani_id) :CEnemy(_x, _y)
+	CBat(float _x, float _y, int _type, int ani_id,LPGAMEOBJECT _target) :CEnemy(_x, _y)
 	{
 		this->type = eType::ENEMY_BAT;
 
@@ -55,8 +57,10 @@ public:
 		dt_die = 0;
 		dt_strock = 0;
 
-		x_active = x + DISTANCE_FROM_PREPOSITION_TO_X_ACTIVE;
-		y_active = y + DISTANCE_FROM_PREPOSITION_TO_Y_ACTIVE;
+		posi_active.x = this->x + DISTANCE_FROM_PREPOSITION_TO_X_ACTIVE;
+		posi_active.y = this->y + DISTANCE_FROM_PREPOSITION_TO_Y_ACTIVE;
+
+		this->target = _target;
 
 		vx = ENEMY_BAT_SPEED_X;
 		vy = ENEMY_BAT_SPEED_Y;
@@ -80,5 +84,9 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	void SetBatDie() 
+	{	if(dt_die==0)
+			dt_die = GetTickCount(); }
 };
 

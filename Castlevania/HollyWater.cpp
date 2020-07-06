@@ -79,6 +79,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			// block 
 			y += min_ty * dy + ny * 0.5f;
+			x += min_tx * dx + nx * 0.4f;
 
 			isBroke = true;
 			vx = 0;
@@ -166,7 +167,7 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					torch->isStrock = true;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
 					this->state = STATE_HOLLYWATER_APPEAR;
-					this->isBroke = true;
+				//	this->isBroke = true;
 				}
 			}
 		}

@@ -114,6 +114,11 @@ void CGameObject::FilterCollision(
 	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 }
 
+float CGameObject::CalculateDistance(D3DXVECTOR2 obj1, D3DXVECTOR2 obj2)
+{
+	return (float)sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2));
+}
+
 void CGameObject::AddAnimation(int aniId)
 {
 	LPANIMATION ani = CAnimations::GetInstance()->Get(aniId);

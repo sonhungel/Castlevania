@@ -21,6 +21,7 @@
 #include"BlackKnight.h"
 #include"Bat.h"
 #include"Zombie.h"
+#include"Ghost.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -52,6 +53,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_ENEMY_BLACK_KNIGHT	7
 #define OBJECT_TYPE_ENEMY_ZOMBIE		8
 #define OBJECT_TYPE_ENEMY_BAT			9
+#define OBJECT_TYPE_ENEMY_GHOST			10
+#define OBJECT_TYPE_ENEMY_HUNCH_BACK	11
+#define OBJECT_TYPE_ENEMY_SKELETON		12
+#define OBJECT_TYPE_ENEMY_RAVEN			13
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -186,7 +191,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type_item = atoi(tokens[3].c_str());
 		int ani_item = atoi(tokens[4].c_str());
 
-		obj = new CBat(x, y, type_item, ani_item);
+		obj = new CBat(x, y, type_item, ani_item,simon);
 		objects.push_back(obj);
 	}
 		break;
@@ -199,6 +204,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CZombie(x,y,type_item,ani_item,trend);
 		objects.push_back(obj);
 	}
+		break;
+	case OBJECT_TYPE_ENEMY_GHOST:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+		obj = new CGhost(x, y, type_item, ani_item, simon);
+		objects.push_back(obj);
+	}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;

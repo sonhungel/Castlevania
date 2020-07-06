@@ -198,6 +198,12 @@
     <ClInclude Include="Zombie.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HunchBack.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -309,6 +315,12 @@
       <Filter>GameObject\Enemy\Base Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Zombie.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HunchBack.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

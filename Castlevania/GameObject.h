@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <d3dx9.h>
 #include <vector>
+#include <algorithm>
 
 #include "Sprites.h"
 #include"Animation.h"
@@ -74,6 +75,13 @@ public:
 
 public:
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	D3DXVECTOR2 GetPositionVector2(D3DXVECTOR2 &vt) 
+	{
+		vt.x = this->x;
+		vt.y = this->y;
+		return vt;
+	}
+
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
@@ -97,6 +105,9 @@ public:
 		float& ny,
 		float& rdx,
 		float& rdy);
+
+	// tính toán khoảng cách dựa vào 2 điểm
+	float CalculateDistance(D3DXVECTOR2 obj1, D3DXVECTOR2 obj2);
 
 	// không dùng animation_set nên sẽ dùng anmation theo hướng demo 4
 	void AddAnimation(int aniId); // push back ID vào phần vector LPANIMATION
