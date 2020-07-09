@@ -1,3 +1,4 @@
+﻿
 [OBJECTS]
 # type	x	y	animation_id
 # type: 0 = SIMON , 1 = Brick , 2 = Torch
@@ -57,7 +58,7 @@
 #===black knight=======
 # type 	x   y    type_item    ani_item    x_left   x_right
 7	120	169	  65	715	115	260
-#===black knight=======
+#===Bat =============
 # type 	x   y    type_item    ani_item
 9	90	100	  65	715
 # --- SCENE PORTAL ----

@@ -24,6 +24,8 @@ protected:
 	CBoard* HUD;
 	CGrid* grid;
 
+	CGrid *gridforEnemy;
+
 	vector<LPGAMEOBJECT> singleToneObjects;
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects;

@@ -1,4 +1,7 @@
 ﻿#include "HunchBack.h"
+#include"Brick.h"
+#include"Simon.h"
+
 
 void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -6,11 +9,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float cam_x, cam_y;
 	game->GetCamPos(cam_x, cam_y);
 
-	if (this->x > cam_x + SCREEN_WIDTH || this->x < cam_x - ENEMY_HUNCHBACK_WIDTH || state == STATE_ENEMY_HUNCHBACK_NOT_EXIST)
-	{
-		this->blood = 0;
-	}
-	if (this->blood > 0)
+	if (this->blood > 0 && this->x >= cam_x)
 	{
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
@@ -59,14 +58,81 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 #pragma endregion
 
+#pragma region Collision
+
+		CGameObject::Update(dt);
+
+		this->vy += SIMON_GRAVITY * dt;
+
+		if (x >= target->x)
+			nx = -1;
+		else
+			nx = 1;
+
+		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2( target->x, target->y)) <= DISTANCE_ACTIVE)
+		{
+			if (isWalk == false)
+			{
+				isWalk = true;
+				SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+			}
+		}
+		
+		Collision(coObjects);
+#pragma endregion
+
+#pragma region Logic_move
+
+		if (stateTemp != STATE_ENEMY_HUNCHBACK_WAIT)
+		{
+			if (x < target->x)
+			{
+				if (abs(target->x - x) > DISTANCE_WALK)
+				{
+					if (isJumping == false)
+					{
+						nx = 1;
+					}
+					SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
+				}
+			}
+			else if (x > target->x)
+			{
+				if (abs(target->x - x) > DISTANCE_WALK)
+				{
+
+					if (isJumping == false)
+					{
+						nx = -1;
+					}
+					SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
+				}
+			}
+
+			if (rand() % 60 <3)	// random hunch back jump tỉ lệ 0.05
+			{
+				if (isJumping == false && (abs(target->x - x) < DISTANCE_WALK))
+				{
+					SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+				}
+			}
+		}
+		//DebugOut(L"Vi tri Hunch Back : %d, %d\n", (int)this->x, (int)this->y);
+		//DebugOut(L"Mau cua Hunch Back : %d \n", this->blood);
+		DebugOut(L"Hunch Back UPDATED \n");
 	} 
+#pragma endregion
+	game = NULL;
 }
 
 void CHunchBack::Render()
 {
 	if (blood > 1 && animations.size() > 0)
 	{
-		animations[0]->RenderTrend(x, y, nx);
+		if(stateTemp == STATE_ENEMY_HUNCHBACK_JUMP)
+			animations[ENEMY_HUNCHBACK_ANI_JUMP]->RenderTrend(x, y, nx);
+		else if (stateTemp == STATE_ENEMY_HUNCHBACK_WAIT|| stateTemp == STATE_ENEMY_HUNCHBACK_WALK)
+			animations[ENEMY_HUNCHBACK_ANI_WAIT]->RenderTrend(x, y, nx);
 		RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
@@ -97,4 +163,91 @@ void CHunchBack::GetBoundingBox(float & left, float & top, float & right, float 
 		right = x + ENEMY_HUNCHBACK_WIDTH;
 		bottom = y + ENEMY_HUNCHBACK_HEIGHT;
 	}
+}
+
+void CHunchBack::SetStateTemp(int _state)
+{
+	if (_state == STATE_ENEMY_HUNCHBACK_WAIT)
+	{
+		this->stateTemp = _state;
+		this->vx = 0;
+		this->vy = 0;
+	}
+	else if (_state == STATE_ENEMY_HUNCHBACK_WALK)
+	{
+		this->stateTemp = _state;
+		if (nx > 0)
+			vx = HUNCHBACK_SPEED_X;
+		else
+			vx = -HUNCHBACK_SPEED_X;
+	}
+	else if (_state == STATE_ENEMY_HUNCHBACK_JUMP)
+	{
+		this->stateTemp = _state;
+		isJumping = true;
+		vy = -HUNCHBACK_SPEED_Y;
+	}
+}
+
+void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
+	item->SetPosition(x, y);
+	
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+	CalcPotentialCollisions(&listBrick, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		y += dy;
+		x += dx;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny = 0, rdx = 0,rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny,rdx,rdy);
+
+		x += min_tx * dx + nx * 0.3f;
+		y += min_ty * dy + ny * 0.3f;
+
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick*>(e->obj))
+			{
+				if (e->ny != 0)
+				{
+					if (e->ny == -1)
+					{
+						vy = 0;
+						if (isJumping == true)
+						{
+							isJumping = false;
+						}
+					}
+					else
+						y += dy;
+				}
+			}
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+	listBrick.clear();
 }

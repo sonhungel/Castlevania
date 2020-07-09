@@ -10,9 +10,9 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	game->GetCamPos(cam_x, cam_y);
 
 	target->GetPosition(x_simon, y_simon);
-	if (x_simon <= posi_active.x && y_simon < posi_active.y)
+	if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2(target->x, target->y)) < DISTANCE_ACTIVE)
 	{
-		if(isActive==false)
+		if (isActive == false)
 			isActive = true;
 	}
 	if (this->x > cam_x + SCREEN_WIDTH|| this->x < cam_x - ENEMY_BAT_WIDTH || state==STATE_ENEMY_BAT_NOT_EXIST)

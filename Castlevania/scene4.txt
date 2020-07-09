@@ -89,7 +89,9 @@
 # ENEMY
 # ===== ghost ==========
 # type 	x   y    type_item    ani_item
-10	1000	320	65	715
+#10	1000	320	65	715
+# ====== hunch back ======
+11	864	300	65	715
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	130	45	5
@@ -101,7 +103,7 @@
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend
-0	0	1	-1	1465	300
+0	0	1	-1	1465	290
 #======= simon back map before===========
 # type1	beingOnstair	stairTrend	nx	x	y
 1	1	1	1	152	51

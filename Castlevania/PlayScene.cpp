@@ -22,6 +22,7 @@
 #include"Bat.h"
 #include"Zombie.h"
 #include"Ghost.h"
+#include"HunchBack.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -213,6 +214,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		objects.push_back(obj);
 	}
 		break;
+	case OBJECT_TYPE_ENEMY_HUNCH_BACK:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+		obj = new CHunchBack(x, y, type_item, ani_item, simon);
+		listEnemy.push_back(obj);
+	}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -350,15 +359,14 @@ void CPlayScene::UnLoad()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	
+	for (int i = 0; i < listEnemy.size(); i++)
+		delete listEnemy[i];
+
 	objects.clear();
 
 	coObjects.clear();
 
 	singleToneObjects.clear();
-
-	for (int i = 0; i < listEnemy.size(); i++)
-		delete listEnemy[i];
-	listEnemy.clear();
 
 	delete grid;
 	grid = NULL;
@@ -415,11 +423,10 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	//simon->CollisionWithEnemy(dt, listEnemy);
-	//for (int i = 0; i < listEnemy.size(); i++)
-	//{
-	//	if(listEnemy[i]->blood>0)
-	//		listEnemy[i]->Update(dt, &coObjects);
-	//}
+	for (int i = 0; i < listEnemy.size(); i++)
+	{
+			listEnemy[i]->Update(dt, &coObjects);
+	}
 	//listEnemy.clear();
 
 
@@ -453,8 +460,8 @@ void CPlayScene::Render()
 	for (int i = 0; i < singleToneObjects.size(); i++)
 		singleToneObjects[i]->Render();
 
-	//for (int i = 0; i < listEnemy.size(); i++)
-	//	listEnemy[i]->Render();
+	for (int i = 0; i < listEnemy.size(); i++)
+		listEnemy[i]->Render();
 }
 
 

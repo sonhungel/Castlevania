@@ -16,8 +16,6 @@
 #define ENEMY_BAT_HEIGHT 32
 
 #define DISTANCE_FROM_PREPOSITION_TO_BOTTOM_LIMIT	96	// đã đo trong game thực tế với khoảng cách 4 viên gạch
-#define DISTANCE_FROM_PREPOSITION_TO_X_ACTIVE		160	// Đo khoảng cách, nếu simon_x<= bat_position + distance này => active
-#define DISTANCE_FROM_PREPOSITION_TO_Y_ACTIVE		128	//	Đo khoảng cách, nếu simon_y<= bat_position + distance này => active
 
 // => với ý tưởng này sẽ giải quyết đc bài toán khoảng cách active bat so với simon luôn luôn cố định, chỉ cần điều chỉnh position của bat cho phù hợp
 
@@ -26,15 +24,13 @@
 #define STATE_ENEMY_BAT_ITEM_EXIST		2
 #define STATE_ENEMY_BAT_ITEM_NOT_EXIST	3
 
-
+#define DISTANCE_ACTIVE			170
 
 
 class CBat :public CEnemy
 {
 private:
 	float bottomLimit;
-
-	D3DXVECTOR2 posi_active;	// dùng để phát hiện siom đã tới vị trí cần thiết để cho bat active
 
 	bool isActive;
 
@@ -56,9 +52,6 @@ public:
 
 		dt_die = 0;
 		dt_strock = 0;
-
-		posi_active.x = this->x + DISTANCE_FROM_PREPOSITION_TO_X_ACTIVE;
-		posi_active.y = this->y + DISTANCE_FROM_PREPOSITION_TO_Y_ACTIVE;
 
 		this->target = _target;
 
