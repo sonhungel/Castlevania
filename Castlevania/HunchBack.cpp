@@ -70,6 +70,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			nx = 1;
 
 		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2( target->x, target->y)) <= DISTANCE_ACTIVE)
+			// Chờ simon vào bên trong phần distance Active
 		{
 			if (isWalk == false)
 			{
@@ -77,7 +78,6 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
 			}
 		}
-		
 		Collision(coObjects);
 #pragma endregion
 
@@ -156,12 +156,17 @@ void CHunchBack::Render()
 
 void CHunchBack::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (this->blood > 0)
+	if (state == STATE_ENEMY_HUNCHBACK_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_HUNCHBACK_WIDTH;
 		bottom = y + ENEMY_HUNCHBACK_HEIGHT;
+	}
+	else if (state == STATE_ENEMY_HUNCHBACK_ITEM_EXIST)
+	{
+		item->GetPosition(x, y);
+		item->GetBoundingBox(left, top, right, bottom);
 	}
 }
 

@@ -23,6 +23,7 @@
 #include"Zombie.h"
 #include"Ghost.h"
 #include"HunchBack.h"
+#include"Raven.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -220,6 +221,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int ani_item = atoi(tokens[4].c_str());
 		obj = new CHunchBack(x, y, type_item, ani_item, simon);
 		listEnemy.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_ENEMY_RAVEN:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+		obj = new CRaven(x, y, type_item, ani_item, simon);
+		listEnemy.push_back(obj);
+		//objects.push_back(obj);
 	}
 		break;
 	default:
@@ -526,7 +536,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		HUD->ChangeWeapon();
 		break;
 	case DIK_A:
-		simon->SetState(STATE_SIMON_HURT);
+		simon->blood = 0;
 		break;
 	case DIK_Z:
 		if (game->IsKeyDown(DIK_DOWN) && simon->isCanAttack == true)
@@ -592,13 +602,13 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if(simon->GetState()!=STATE_SIMON_SIT)
+		if (simon->GetState() != STATE_SIMON_SIT && simon->GetState() != STATE_SIMON_SIT_ATTACK)
 			simon->SetState(STATE_SIMON_WALKING_RIGHT);
 		simon->SetTrend(SIMON_TREND_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (simon->GetState() != STATE_SIMON_SIT)
+		if (simon->GetState() != STATE_SIMON_SIT&& simon->GetState() != STATE_SIMON_SIT_ATTACK)
 			simon->SetState(STATE_SIMON_WALKING_LEFT);
 		simon->SetTrend(SIMON_TREND_LEFT);
 	}

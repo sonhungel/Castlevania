@@ -105,12 +105,17 @@ void CGhost::Render()
 
 void CGhost::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (this->blood > 0)
+	if (state == STATE_ENEMY_GHOST_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_GHOST_WIDTH;
 		bottom = y + ENEMY_GHOST_HEIGHT;
+	}
+	else if (state == STATE_ENEMY_GHOST_ITEM_EXIST)
+	{
+		item->GetPosition(x, y);
+		item->GetBoundingBox(left, top, right, bottom);
 	}
 }
 

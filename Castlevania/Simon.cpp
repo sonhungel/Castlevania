@@ -148,6 +148,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vector<LPGAMEOBJECT> listTorch;
 		vector<LPGAMEOBJECT> listCandle;
 		vector<LPGAMEOBJECT> listBrick;
+		vector<LPGAMEOBJECT> listBrick2;
 		vector<LPGAMEOBJECT> platform;
 		vector<LPGAMEOBJECT> listHideObject;
 		vector<LPGAMEOBJECT> listHidenTemp;
@@ -163,6 +164,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else
 			{
 				listCoObjects.push_back(coObjects->at(i));
+			}
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick2.push_back(coObjects->at(i));
 			}
 		}
 
@@ -242,6 +247,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			//state = STATE_SIMON_IDLE;
 		}
 
+		if (blood <= 0)
+			state = STATE_SIMON_DIE;
 		
 		// SubWeapon
 #pragma region subweapon
@@ -318,8 +325,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 		// turn off collision when die 
-		//if (state != STATE_SIMON_IDLE)
+		if (state != STATE_SIMON_IDLE)
 			CalcPotentialCollisions(&listCoObjects, coEvents);
+		else
+			CalcPotentialCollisions(&listBrick2, coEvents);
 
 		// No collision occured, proceed normally
 		if (coEvents.size() == 0)
@@ -627,7 +636,7 @@ void CSimon::SetState(int state)
 			}
 			break;
 		case STATE_SIMON_UP:
-			y -= 15;
+			y -= 20;
 		case STATE_SIMON_IDLE:
 			vx = 0;
 			break;
@@ -982,8 +991,8 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 
 void CSimon::CollisionWithPlatform(DWORD dt, LPGAMEOBJECT plf, float min_tx, float min_ty, int nx, int ny, float rdx, float rdy)
 {
-	y += min_ty * dy + ny * 0.4f;
-	//this->vy = GRAVITY*dt;
+	y += min_ty * dy + ny * 0.1f;
+	this->vy = GRAVITY*dt;
 
 	vx += plf->Getvx();
 	if (vx > plf->Getvx())
@@ -1056,14 +1065,22 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = this->x;
 	top = this->y;
 	right = this->x + SIMON_WIDTH;
-	bottom = this->y + SIMON_HEIGHT_STAND;
-	if (state == STATE_SIMON_SIT 
+
+	if (state == STATE_SIMON_DIE)
+	{
+		right = this->x + SIMON_WIDTH_DIE;
+		bottom = this->y + SIMON_HEIGHT_DIE;
+	}
+	else if (state == STATE_SIMON_SIT 
 		|| state == STATE_SIMON_SIT_ATTACK 
 		||(animations[ANI_SIMON_JUMPING]->GetCurrentFrame() > 0))
 		//|| (state == STATE_SIMON_GO_UP && state == STATE_SIMON_GO_DOWN))
 	{
-		bottom = this->y + SIMON_HEIGHT_SIT;
+		if(state!=STATE_SIMON_UP)
+			bottom = this->y + SIMON_HEIGHT_SIT;
 	}
+	else
+		bottom = this->y + SIMON_HEIGHT_STAND;
 }
 
 void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)

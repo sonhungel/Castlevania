@@ -204,6 +204,9 @@
     <ClInclude Include="HunchBack.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Raven.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -321,6 +324,9 @@
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="HunchBack.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

@@ -58,6 +58,9 @@
 #define SIMON_HEIGHT_SIT			47
 #define SIMON_WIDTH					33
 
+#define SIMON_HEIGHT_DIE			33
+#define SIMON_WIDTH_DIE				60
+
 #define SIMON_UNTOUCHABLE_TIME		1500
 #define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 

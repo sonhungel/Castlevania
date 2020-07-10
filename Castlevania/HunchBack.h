@@ -23,16 +23,12 @@
 #define STATE_ENEMY_HUNCHBACK_WAIT		2
 #define STATE_ENEMY_HUNCHBACK_WALK		3
 
-#define ENEMY_HUNCHBACK_TIME_WAIT	2000
-
 #define DISTANCE_ACTIVE		200		// khi khoảng cách giữa hunch back và simon< 200 thì sẽ active
 #define DISTANCE_WALK		100
 
 class CHunchBack :public CEnemy
 {
 	LPGAMEOBJECT target;		//==> this is simon
-
-	DWORD dt_Wait;
 
 	bool isJumping = false;
 	bool isWalk = false;
@@ -62,8 +58,6 @@ public:
 
 		dt_die = 0;
 		dt_strock = 0;
-
-		dt_Wait = 0;
 
 		vx = vy = 0;
 

@@ -116,11 +116,16 @@ void CBat::Render()
 
 void CBat::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (this->blood > 0)
+	if (state == STATE_ENEMY_BAT_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_BAT_WIDTH;
 		bottom = y + ENEMY_BAT_HEIGHT;
+	}
+	else if (state == STATE_ENEMY_BAT_ITEM_EXIST)
+	{
+		item->GetPosition(x, y);
+		item->GetBoundingBox(left, top, right, bottom);
 	}
 }
