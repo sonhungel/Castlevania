@@ -32,7 +32,7 @@ class CCandle : public CGameObject
 public:
 	bool isStrock;
 
-	CCandle(int type, int ani_id, float _x, float _y);
+	CCandle(int typeitem, int ani_id, float _x, float _y);
 	~CCandle()
 	{
 		CGameObject::~CGameObject();

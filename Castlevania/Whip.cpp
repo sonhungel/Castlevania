@@ -152,24 +152,24 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				}
 			}
 		}
-		if (dynamic_cast<CBlackKnight*>(listObj.at(i)))
+		if (dynamic_cast<CEnemy*>(listObj.at(i)))
 		{
-			CBlackKnight* bl_knight = dynamic_cast<CBlackKnight*>(listObj.at(i));
+			
+			if (listObj.at(i)->GetState() == STATE_ENEMY_EXIST)
 			{
-				if (bl_knight->GetState() == STATE_ENEMY_BLACK_KNIGHT_EXIST)
+				CEnemy* enemy = dynamic_cast<CEnemy*>(listObj.at(i));
+				enemy->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
-					bl_knight->GetBoundingBox(l2, t2, r2, b2);
-					rect2.left = (int)l2;
-					rect2.top = (int)t2;
-					rect2.right = (int)r2;
-					rect2.bottom = (int)b2;
-					if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-					{
-						bl_knight->isStrock = true;
-						//bl_knight->blood--;
-						//bl_knight->SetState(STATE_ENEMY_BLACK_KNIGHT_NOT_EXIST);
-					}
+					enemy->isStrock = true;
+					//bl_knight->blood--;
+					//bl_knight->SetState(STATE_ENEMY_BLACK_KNIGHT_NOT_EXIST);
 				}
+				
 			}
 		}
 		

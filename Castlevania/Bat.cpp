@@ -15,7 +15,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isActive == false)
 			isActive = true;
 	}
-	if (this->x > cam_x + SCREEN_WIDTH|| this->x < cam_x - ENEMY_BAT_WIDTH || state==STATE_ENEMY_BAT_NOT_EXIST)
+	if (this->x > cam_x + SCREEN_WIDTH|| this->x < cam_x - ENEMY_BAT_WIDTH || state==STATE_ENEMY_NOT_EXIST)
 	{
 		this->blood = 0;
 	}
@@ -38,11 +38,14 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					delete effectDie;
 					effectDie = NULL;
+					state = STATE_ENEMY_ITEM_EXIST;
 				}
 				else
-					state = STATE_ENEMY_BAT_ITEM_EXIST;
-				if (state == STATE_ENEMY_BAT_ITEM_EXIST)
+					effectDie->SetPosition(x, y);
+
+				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
+					item->SetPosition(this->x, this->y);
 					item->Update(dt, coObjects);
 				}
 			}
@@ -97,7 +100,7 @@ void CBat::Render()
 	}
 	else if (effectDie != NULL)
 	{
-		effectDie->SetPosition(x, y);
+		
 		effectDie->Render();
 	}
 	if (isStrock == true)
@@ -105,7 +108,7 @@ void CBat::Render()
 		effectHit->SetPosition(x, y);
 		effectHit->Render();
 	}
-	if (state == STATE_ENEMY_BAT_ITEM_EXIST)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -116,14 +119,14 @@ void CBat::Render()
 
 void CBat::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_ENEMY_BAT_EXIST)
+	if (state == STATE_ENEMY_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_BAT_WIDTH;
 		bottom = y + ENEMY_BAT_HEIGHT;
 	}
-	else if (state == STATE_ENEMY_BAT_ITEM_EXIST)
+	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);

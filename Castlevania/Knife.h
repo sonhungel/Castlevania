@@ -16,9 +16,6 @@
 
 #define KNIFE_SPEED 0.5f
 
-#define STATE_KNIFE_APPEAR 1
-#define STATE_KNIFE_HIDE 0
-
 #define KNIFE_TIME 900
 #define KNIFE_ANI_ID	701
 
@@ -35,7 +32,7 @@ public:
 		vx = KNIFE_SPEED;
 		AddAnimation(KNIFE_ANI_ID);
 		start_attack = 0;
-		state = STATE_KNIFE_HIDE;
+		state = STATE_SUBWEAPON_HIDE;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();

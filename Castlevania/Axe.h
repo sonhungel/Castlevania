@@ -7,9 +7,6 @@
 #define AXE_SPEED_X	0.4f
 #define AXE_SPEED_Y	0.5f
 
-#define STATE_AXE_HIDE	0
-#define STATE_AXE_APPEAR	1
-
 #define GRAVITY	0.002f
 
 #define AXE_TIME	900

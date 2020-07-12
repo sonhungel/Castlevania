@@ -30,8 +30,8 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					effectDie = NULL;
 				}
 				else
-					state = STATE_ENEMY_HUNCHBACK_ITEM_EXIST;
-				if (state == STATE_ENEMY_HUNCHBACK_ITEM_EXIST)
+					state = STATE_ENEMY_ITEM_EXIST;
+				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
 					item->Update(dt, coObjects);
 				}
@@ -69,7 +69,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 			nx = 1;
 
-		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2( target->x, target->y)) <= DISTANCE_ACTIVE)
+		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2( target->x, target->y)) <= DISTANCE_ACTIVE_HUNCHBACK)
 			// Chờ simon vào bên trong phần distance Active
 		{
 			if (isWalk == false)
@@ -119,7 +119,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		//DebugOut(L"Vi tri Hunch Back : %d, %d\n", (int)this->x, (int)this->y);
 		//DebugOut(L"Mau cua Hunch Back : %d \n", this->blood);
-		DebugOut(L"Hunch Back UPDATED \n");
+		//DebugOut(L"Hunch Back UPDATED \n");
 	} 
 #pragma endregion
 	game = NULL;
@@ -145,7 +145,7 @@ void CHunchBack::Render()
 		effectHit->SetPosition(x, y);
 		effectHit->Render();
 	}
-	if (state == STATE_ENEMY_HUNCHBACK_ITEM_EXIST)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -156,14 +156,14 @@ void CHunchBack::Render()
 
 void CHunchBack::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (state == STATE_ENEMY_HUNCHBACK_EXIST)
+	if (state == STATE_ENEMY_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_HUNCHBACK_WIDTH;
 		bottom = y + ENEMY_HUNCHBACK_HEIGHT;
 	}
-	else if (state == STATE_ENEMY_HUNCHBACK_ITEM_EXIST)
+	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);

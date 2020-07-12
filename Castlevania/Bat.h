@@ -19,10 +19,6 @@
 
 // => với ý tưởng này sẽ giải quyết đc bài toán khoảng cách active bat so với simon luôn luôn cố định, chỉ cần điều chỉnh position của bat cho phù hợp
 
-#define STATE_ENEMY_BAT_EXIST			1
-#define STATE_ENEMY_BAT_NOT_EXIST		0
-#define STATE_ENEMY_BAT_ITEM_EXIST		2
-#define STATE_ENEMY_BAT_ITEM_NOT_EXIST	3
 
 #define DISTANCE_ACTIVE			170
 
@@ -37,7 +33,7 @@ private:
 	LPGAMEOBJECT target;		//==> this is simon
 
 public:
-	CBat(float _x, float _y, int _type, int ani_id,LPGAMEOBJECT _target) :CEnemy(_x, _y)
+	CBat(float _x, float _y, int _typeitem, int ani_id,LPGAMEOBJECT _target) :CEnemy(_x, _y)
 	{
 		this->type = eType::ENEMY_BAT;
 
@@ -48,7 +44,7 @@ public:
 
 		this->blood = 2;	// tại sao blood lại phải = 2 khi đánh 1 cái là die, 
 							//vì cần blood =1 để xét item, và blood =0 để loại obj khỏi coObject
-		this->state = STATE_ENEMY_BAT_EXIST;
+		this->state = STATE_ENEMY_EXIST;
 
 		dt_die = 0;
 		dt_strock = 0;
@@ -64,15 +60,15 @@ public:
 		effectDie = new CEffect(DEATH_EFFECT_ANI_ID, this->x, this->y);
 		effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
-		if (type == eType::ITEM_SMALLHEART)
+		if (_typeitem == eType::ITEM_SMALLHEART)
 			item = new CItemSmallHeart(x, y);
-		else if (type == eType::ITEM_RED_MONEY ||
-			type == eType::ITEM_YELLOW_MONEY ||
-			type == eType::ITEM_PURPLE_MONEY ||
-			type == eType::ITEM_BLUE_MONEY)
-			item = new CItemMoney(x, y, type, ani_id);
+		else if (_typeitem == eType::ITEM_RED_MONEY ||
+			_typeitem == eType::ITEM_YELLOW_MONEY ||
+			_typeitem == eType::ITEM_PURPLE_MONEY ||
+			_typeitem == eType::ITEM_BLUE_MONEY)
+			item = new CItemMoney(x, y, _typeitem, ani_id);
 		else
-			item = new CItemNormal(x, y, type, ani_id);
+			item = new CItemNormal(x, y, _typeitem, ani_id);
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

@@ -1,3 +1,4 @@
+﻿
 [OBJECTS]
 # type	x	y	animation_id
 # type: 0 = SIMON , 1 = Brick , 2 = Torch
@@ -104,12 +105,12 @@
 # 1: stairAbove	2:stair below
 # stair 1
 3	175	130	60	10	1	1	1
-3	250	260	50	3	2	-1	-1
+3	250	264	50	3	2	-1	-1
 # stair 2
 3	555	195	60	10	1	1	1
-3	705	388	40	3	2	-1	-1
+3	705	393	40	3	2	-1	-1
 # stair 3
-3	1365	325	15	3	2	1	-1
+3	1365	329	15	3	2	1	-1
 3	1425	195	50	10	1	-1	1
 
 # type 	x	y	type item

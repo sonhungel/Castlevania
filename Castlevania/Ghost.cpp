@@ -9,7 +9,7 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float cam_x, cam_y;
 	game->GetCamPos(cam_x, cam_y);
 
-	if (this->x > cam_x + SCREEN_WIDTH || this->x < cam_x - ENEMY_GHOST_WIDTH || state == STATE_ENEMY_GHOST_NOT_EXIST)
+	if (this->x > cam_x + SCREEN_WIDTH || this->x < cam_x - ENEMY_GHOST_WIDTH || state == STATE_ENEMY_NOT_EXIST)
 	{
 		this->blood = 0;
 	}
@@ -34,8 +34,8 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					effectDie = NULL;
 				}
 				else
-					state = STATE_ENEMY_GHOST_ITEM_EXIST;
-				if (state == STATE_ENEMY_GHOST_ITEM_EXIST)
+					state = STATE_ENEMY_ITEM_EXIST;
+				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
 					item->Update(dt, coObjects);
 				}
@@ -94,7 +94,7 @@ void CGhost::Render()
 		effectHit->SetPosition(x, y);
 		effectHit->Render();
 	}
-	if (state == STATE_ENEMY_GHOST_ITEM_EXIST)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -105,14 +105,14 @@ void CGhost::Render()
 
 void CGhost::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (state == STATE_ENEMY_GHOST_EXIST)
+	if (state == STATE_ENEMY_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_GHOST_WIDTH;
 		bottom = y + ENEMY_GHOST_HEIGHT;
 	}
-	else if (state == STATE_ENEMY_GHOST_ITEM_EXIST)
+	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);

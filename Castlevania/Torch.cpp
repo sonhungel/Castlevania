@@ -3,9 +3,9 @@
 #include"ItemNormal.h"
 #include"ItemMoney.h"
 
-CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
+CTorch::CTorch(int typeitem, int ani_id,float _x, float _y) : CGameObject()
 {
-	this->type == eType::TORCH;
+	this->type = eType::TORCH;
 	this->x = _x;
 	this->y = _y;
 
@@ -20,15 +20,15 @@ CTorch::CTorch(int type, int ani_id,float _x, float _y) : CGameObject()
 	effectDie = new CEffect(DEATH_EFFECT_ANI_ID, this->x, this->y);
 	effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
-	if (type == eType::ITEM_SMALLHEART)
+	if (typeitem == eType::ITEM_SMALLHEART)
 		item = new CItemSmallHeart(x, y);
-	else if (type == eType::ITEM_RED_MONEY ||
-		type == eType::ITEM_YELLOW_MONEY ||
-		type == eType::ITEM_PURPLE_MONEY ||
-		type == eType::ITEM_BLUE_MONEY)
-		item = new CItemMoney(x,y,type,ani_id);
+	else if (typeitem == eType::ITEM_RED_MONEY ||
+		typeitem == eType::ITEM_YELLOW_MONEY ||
+		typeitem == eType::ITEM_PURPLE_MONEY ||
+		typeitem == eType::ITEM_BLUE_MONEY)
+		item = new CItemMoney(x,y,typeitem,ani_id);
 	else
-		item = new CItemNormal(x, y, type, ani_id); //
+		item = new CItemNormal(x, y, typeitem, ani_id); //
 }
 
 void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -50,12 +50,13 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				effectDie = NULL;
 				state = STATE_TORCH_ITEM_EXIST;
 			}
+
 			if(state==STATE_TORCH_ITEM_EXIST)
 				item->Update(dt, coObjects);
 		}
 	}
 	if (item->state == STATE_ITEM_NOT_EXSIST)
-		blood--;
+		this->blood=0;
 	if (dt_strock == 0)			// đo thời gian effect
 	{
 		if (isStrock == true)

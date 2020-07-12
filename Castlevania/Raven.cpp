@@ -30,8 +30,8 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					effectDie = NULL;
 				}
 				else
-					state = STATE_ENEMY_RAVEN_ITEM_EXIST;
-				if (state == STATE_ENEMY_RAVEN_ITEM_EXIST)
+					state = STATE_ENEMY_ITEM_EXIST;
+				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
 					item->Update(dt, coObjects);
 				}
@@ -143,7 +143,7 @@ void CRaven::Render()
 		effectHit->SetPosition(x, y);
 		effectHit->Render();
 	}
-	if (state == STATE_ENEMY_RAVEN_ITEM_EXIST)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -154,14 +154,14 @@ void CRaven::Render()
 
 void CRaven::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	if (state == STATE_ENEMY_RAVEN_EXIST)
+	if (state == STATE_ENEMY_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_RAVEN_WIDTH;
 		bottom = y + ENEMY_RAVEN_HEIGHT;
 	}
-	else if (state == STATE_ENEMY_RAVEN_ITEM_EXIST)
+	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);

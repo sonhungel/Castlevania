@@ -29,20 +29,20 @@ public:
 		if (state == HIDENOBJECT_TYPE_STAIR_BELOW)
 		{
 			if (nx > 0)
-				_autoX = x - 10;
+				_autoX = (int)x - 10;
 			else
-				_autoX = x + 20;
+				_autoX = (int)x + 20;
 		}
 		else if (state == HIDENOBJECT_TYPE_STAIR_ABOVE)
 		{
 			if (nx < 0)
-				_autoX = x - 10;
+				_autoX = (int)x - 10;
 			else
-				_autoX = x + 40;											
+				_autoX = (int)x + 40;
 		}
 		else if (state == HIDENOBJECT_TYPE_SPECIAL)
 		{
-			_autoX = x + 5;
+			_autoX = (int)x + 5;
 		}
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

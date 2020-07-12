@@ -14,7 +14,7 @@ CKnife* CKnife::GetInstance()
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	
-	if (state == STATE_KNIFE_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		CGameObject::Update(dt);
 		if (start_attack == 0)
@@ -26,7 +26,7 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CollisionWithObject(dt, *coObjects);
 		if (GetTickCount() - start_attack > KNIFE_TIME)
 		{
-			state = STATE_KNIFE_HIDE;
+			state = STATE_SUBWEAPON_HIDE;
 			start_attack = 0;
 		}
 	}
@@ -35,7 +35,7 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKnife::Render()
 {
-	if (state == STATE_KNIFE_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		animations[0]->RenderTrend(x, y, nx);
 		DebugOut(L"Knife rendered\n");
@@ -47,18 +47,18 @@ void CKnife::SetPosition(float simon_x, float simon_y)
 {
 	if (nx < 0)
 	{
-		this->x = simon_x + 5;
+		this->x = simon_x ;
 	}
 	else
 	{
-		this->x = simon_x - 10;
+		this->x = simon_x +20;
 	}
-	this->y = simon_y;
+	this->y = simon_y+10;
 }
 
 void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_KNIFE_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		left = x;
 		top = y;
@@ -69,7 +69,7 @@ void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (STATE_KNIFE_HIDE)
+	if (STATE_SUBWEAPON_HIDE)
 		return;
 
 	RECT rect1, rect2;
@@ -100,7 +100,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					torch->isStrock = true;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_KNIFE_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 				}
 			}
 		}
@@ -118,7 +118,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
-					this->state = STATE_KNIFE_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 				}
 			}
 		}

@@ -7,6 +7,9 @@
 #include "Sprites.h"
 #include"Utils.h"
 
+#define MAP_CELL_SIZE	32
+
+
 
 using namespace std;
 
@@ -14,11 +17,14 @@ class CMap
 {
 	
 private:
-	int _column;
-	int _row;
+	int _column_max;
+	int _row_max;
 	int index;
 	int align;
 	int TileMap[51][51];
+
+	//int cell_row_max;
+	//int cell_column_max;
 	static CMap* __instance;
 public:
 	static CMap* GetInstance();
@@ -27,7 +33,7 @@ public:
 	void SetValueInMap(int row, int column,int index,int align);
 	int getTile(int x, int y);
 	void LoadMap(wstring filePathTxt);
-	void DrawMap();
-	int GetColumn() { return _column; }
+	void DrawMap(int cam_x,int cam_y);
+	int GetColumn() { return _column_max; }
 };
 #endif 

@@ -14,6 +14,9 @@
 
 #define ANIMATION_EFFECT_FIRE 800
 
+#define STATE_SUBWEAPON_HIDE	0
+#define STATE_SUBWEAPON_APPEAR	1
+
 class CWeapon;
 typedef CWeapon* LPWEAPON;
 

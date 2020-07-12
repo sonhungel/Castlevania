@@ -7,9 +7,12 @@
 #include"Effect.h"
 
 #define TIME_EFFECT_HIT_ENEMY	200
-#define TIME_EFFECT_DIE_ENEMY	400
-#define STATE_ENEMY_EXIST	1
+#define TIME_EFFECT_DIE_ENEMY	300
+
 #define STATE_ENEMY_NOT_EXIST	0
+#define STATE_ENEMY_EXIST	1
+#define STATE_ENEMY_ITEM_EXIST	2
+#define STATE_ENEMY_ITEM_NOT_EXIST	3
 
 class CEnemy :public CGameObject
 {

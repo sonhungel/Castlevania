@@ -91,7 +91,7 @@
 # type 	x   y    type_item    ani_item
 #10	1000	320	65	715
 # ====== hunch back ======
-11	864	300	65	715
+#11	864	300	65	715
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	130	45	5
@@ -99,7 +99,7 @@
 # type	x	y	width	height	state	trendX	trendY
 # 1: stairAbove	2:stair below
 # stair 1
-3	285	260	50	3	2	-1	-1
+3	285	265	50	3	2	-1	-1
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend

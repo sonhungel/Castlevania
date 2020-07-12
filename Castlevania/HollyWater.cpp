@@ -17,7 +17,7 @@ CHollyWater::CHollyWater()
 {
 	type = eType::WEAPON_HOLLYWATER;
 	AddAnimation(HOLLYWATER_ANI_ID);
-	state = STATE_HOLLYWATER_HIDE;
+	state = STATE_SUBWEAPON_HIDE;
 	start_attack = 0;
 
 	effect = new CEffect(HOLLYWATER_EFFECT_ANI_ID, this->x, this->y);
@@ -26,7 +26,7 @@ CHollyWater::CHollyWater()
 
 void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state == STATE_HOLLYWATER_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		effect->SetPosition(this->x, this->y);
 
@@ -94,7 +94,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (GetTickCount() - start_attack > HOLLYWATER_TIME)
 		{
-			state = STATE_HOLLYWATER_HIDE;
+			state = STATE_SUBWEAPON_HIDE;
 			start_attack = 0;
 
 			isBroke = false;
@@ -104,7 +104,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CHollyWater::Render()
 {
-	if (state == STATE_HOLLYWATER_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		if (isBroke == true)
 		{
@@ -125,15 +125,15 @@ void CHollyWater::SetPosition(float simon_x, float simon_y)
 		this->x = simon_x + 5;
 	}
 	else {
-		this->x = simon_x + 10;
+		this->x = simon_x + 25;
 	}
 
-	this->y = simon_y;
+	this->y = simon_y+10;
 }
 
 void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (state == STATE_HOLLYWATER_HIDE)
+	if (state == STATE_SUBWEAPON_HIDE)
 		return;
 
 	RECT rect1, rect2;
@@ -166,7 +166,7 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					torch->isStrock = true;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_HOLLYWATER_APPEAR;
+					this->state = STATE_SUBWEAPON_APPEAR;
 				//	this->isBroke = true;
 				}
 			}
@@ -185,7 +185,7 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
-					this->state = STATE_HOLLYWATER_APPEAR;
+					this->state = STATE_SUBWEAPON_APPEAR;
 					this->isBroke = true;
 				}
 			}
@@ -196,7 +196,7 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 void CHollyWater::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_HOLLYWATER_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		left = x;
 		top = y;
@@ -209,7 +209,7 @@ void CHollyWater::SetState(int st)
 {
 	// Xử lý tương tự axe
 	this->state = st;
-	if (st == STATE_HOLLYWATER_APPEAR)
+	if (st == STATE_SUBWEAPON_APPEAR)
 	{
 		vx = nx * HOLLYWATER_SPEED_X;
 		vy = -HOLLYWATER_SPEED_Y;

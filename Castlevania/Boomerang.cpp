@@ -17,14 +17,14 @@ CBoomerang::CBoomerang()
 {
 	type = eType::WEAPON_BOOMERANG;
 	AddAnimation(BOOMERANG_ANI_ID);
-	state = STATE_BOOMERANG_HIDE;
+	state = STATE_SUBWEAPON_HIDE;
 	start_attack = 0;
 	turn = 0;
 }
 
 void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (this->state == STATE_BOOMERANG_APPEAR )
+	if (this->state == STATE_SUBWEAPON_APPEAR )
 	{
 
 		CGameObject::Update(dt);
@@ -36,7 +36,7 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vx -= BOOMERANG_SLOW_DOWN_X;
 		if (GetTickCount() - start_attack > BOOMERANG_TIME)
 		{
-			state = STATE_BOOMERANG_HIDE;
+			state = STATE_SUBWEAPON_HIDE;
 			vx = nx * BOOMERANG_SPEED;
 			start_attack = 0;
 			animations[0]->ResetFrame();
@@ -44,13 +44,12 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		if ((x < x_left && vx < 0) || (x > x_right && vx > 0))
 		{
-			DebugOut(L"Vao dc IF\n");
 			nx = -nx;
 			vx = nx*BOOMERANG_SPEED;
 			turn++;
 		}
 		if (turn >= 2)
-			state == STATE_BOOMERANG_HIDE;
+			state == STATE_SUBWEAPON_HIDE;
 		if(turn<2)
 			CollisionWithObject(dt, *coObjects);
 	}
@@ -66,18 +65,18 @@ void CBoomerang::SetPosition(float simon_x, float simon_y)
 {
 	if (nx < 0)
 	{
-		this->x = simon_x + 5;
+		this->x = simon_x ;
 	}
 	else {
-		this->x = simon_x - 10;
+		this->x = simon_x + 20;
 	}
 
-	this->y = simon_y;
+	this->y = simon_y+5;
 }
 
 void CBoomerang::Render()
 {
-	if (state == STATE_BOOMERANG_APPEAR && turn < 2)
+	if (state == STATE_SUBWEAPON_APPEAR && turn < 2)
 	{
 		animations[0]->RenderTrend(x, y, nx);
 		//DebugOut(L"BOOMERANG rendered\n");
@@ -86,7 +85,7 @@ void CBoomerang::Render()
 
 void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_BOOMERANG_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		left = x;
 		top = y;
@@ -97,7 +96,7 @@ void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bo
 
 void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (state==STATE_BOOMERANG_HIDE)
+	if (state==STATE_SUBWEAPON_HIDE)
 		return;
 	RECT rect1, rect2;
 
@@ -128,7 +127,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					torch->isStrock = true;
 					vx = vy = 0;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_BOOMERANG_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 					start_attack = 0;
 				}
 			}
@@ -148,7 +147,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
 					vx = vy = 0;
-					this->state = STATE_BOOMERANG_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 					start_attack = 0;
 				}
 			}
@@ -164,7 +163,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 		rect2.bottom = (int)b2;
 		if (CGame::GetInstance()->isCollision(rect1, rect2))
 		{
-			this->state = STATE_BOOMERANG_HIDE;
+			this->state = STATE_SUBWEAPON_HIDE;
 			vx = vy = 0;
 			start_attack = 0;
 		}
@@ -174,7 +173,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 void CBoomerang::SetState(int st)
 {
 	this->state = st;
-	if (st == STATE_BOOMERANG_APPEAR)
+	if (st == STATE_SUBWEAPON_APPEAR)
 	{
 		vx = nx * BOOMERANG_SPEED;
 		turn = 0;

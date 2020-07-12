@@ -3,7 +3,7 @@
 0	textures\texture_full.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# ==================SIMON====================
+#=============SIMON====================
 # idle left
 10001	670	1	705	65	0
 # walk left
@@ -35,7 +35,7 @@
 10121	848	131	889	196	0
 10122	900	131	954	196	0
 # hurt
-10104	670	70	705	131	0
+10104	675	70	715	131	0
 #die
 10200	591	30	657	65	0
 # transition left

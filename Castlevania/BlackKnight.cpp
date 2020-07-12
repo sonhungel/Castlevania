@@ -22,10 +22,11 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				delete effectDie;
 				effectDie = NULL;
+				state = STATE_ENEMY_ITEM_EXIST;
 			}
-			else
-				state = STATE_ENEMY_BLACK_KNIGHT_ITEM_EXIST;
-			if (state == STATE_ENEMY_BLACK_KNIGHT_ITEM_EXIST)
+			
+				
+			if (state == STATE_ENEMY_ITEM_EXIST)
 			{
 				item->Update(dt, coObjects);
 			}
@@ -120,7 +121,7 @@ void CBlackKnight::Render()
 		effectHit->SetPosition(x, y);
 		effectHit->Render();
 	}
-	if (state == STATE_ENEMY_BLACK_KNIGHT_ITEM_EXIST)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		if (item != NULL)
 		{
@@ -131,19 +132,17 @@ void CBlackKnight::Render()
 
 void CBlackKnight::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_ENEMY_BLACK_KNIGHT_EXIST)
+	if (state == STATE_ENEMY_EXIST)
 	{
 		left = x;
 		top = y;
 		right = x + ENEMY_BLACK_KNIGHT_WIDTH;
 		bottom = y + ENEMY_BLACK_KNIGHT_HEIGHT;
 	}
-	else if (state == STATE_ENEMY_BLACK_KNIGHT_ITEM_EXIST)
+	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);
 	}
-	//DebugOut(L"BBOX knight : %d, %d\n", (int)(right-left), (int)(bottom-top));
-	//DebugOut(L"Vi tri knight : %d, %d\n", (int)this->x, (int)this->y);
 
 }

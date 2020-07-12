@@ -18,13 +18,13 @@ CAxe::CAxe()
 {
 	type = eType::WEAPON_AXE;
 	AddAnimation(AXE_ANI_ID);
-	state = STATE_AXE_HIDE;
+	state = STATE_SUBWEAPON_HIDE;
 	start_attack = 0;
 }
 
 void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (this->state == STATE_AXE_APPEAR)
+	if (this->state == STATE_SUBWEAPON_APPEAR)
 	{
 		CGameObject::Update(dt);
 		if (start_attack == 0)
@@ -38,7 +38,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (GetTickCount() - start_attack > AXE_TIME)
 		{
-			state = STATE_AXE_HIDE;
+			state = STATE_SUBWEAPON_HIDE;
 			start_attack = 0;
 			animations[0]->ResetFrame();
 		}
@@ -52,15 +52,15 @@ void CAxe::SetPosition(float simon_x, float simon_y)
 		this->x = simon_x ;
 	}
 	else {
-		this->x = simon_x + 10;
+		this->x = simon_x + 25;
 	}
 
-	this->y = simon_y;
+	this->y = simon_y+5;
 }
 
 void CAxe::Render()
 {
-	if (state == STATE_AXE_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		animations[0]->RenderTrend(x, y, nx);
 
@@ -70,7 +70,7 @@ void CAxe::Render()
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_AXE_APPEAR)
+	if (state == STATE_SUBWEAPON_APPEAR)
 	{
 		left = x;
 		right = x + AXE_WIDTH;
@@ -81,7 +81,7 @@ void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (state==STATE_AXE_HIDE)
+	if (state==STATE_SUBWEAPON_HIDE)
 		return;
 	RECT rect1, rect2;
 
@@ -112,7 +112,7 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					torch->isStrock = true;
 					vx = vy = 0;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_AXE_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 					start_attack = 0;
 				}
 			}
@@ -132,7 +132,7 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
 					vx = vy = 0;
-					this->state = STATE_AXE_HIDE;
+					this->state = STATE_SUBWEAPON_HIDE;
 					start_attack = 0;
 				}
 			}
@@ -143,7 +143,7 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 void CAxe::SetState(int st)
 {
 	this->state = st;
-	if (st == STATE_AXE_APPEAR)
+	if (st == STATE_SUBWEAPON_APPEAR)
 	{
 		vx = nx * AXE_SPEED_X;
 		vy = -AXE_SPEED_Y;

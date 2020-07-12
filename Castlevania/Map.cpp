@@ -2,6 +2,7 @@
 #include "fstream"
 #include"Game.h"
 #include"Utils.h"
+#include"Define.h"
 
 CMap* CMap::__instance = NULL;
 
@@ -17,8 +18,8 @@ CMap::CMap()
 }
 void CMap::SetValueInMap(int row, int column,int index,int align)
 {
-	this->_column = column;
-	this->_row = row;
+	this->_column_max = column;
+	this->_row_max = row;
 	this->index = index;
 	this->align = align;
 }
@@ -34,9 +35,9 @@ void CMap::LoadMap(wstring filePathTxt)
 	}
 	// If the file opened correctly then call load methods
 
-	for (int i = 0; i < _row; i++)
+	for (int i = 0; i < _row_max; i++)
 	{
-		for (int j = 0; j < _column; j++)
+		for (int j = 0; j < _column_max; j++)
 		{
 			inFile >> TileMap[i][j];
 		}
@@ -46,20 +47,28 @@ void CMap::LoadMap(wstring filePathTxt)
 
 int CMap::getTile(int x, int y)
 {
+
 	return TileMap[x][y];
 }
 
 
-void CMap::DrawMap()
+void CMap::DrawMap(int cam_x,int cam_y)
 {
+	int top = (int)(cam_y) / MAP_CELL_SIZE;
+
+	int left = (int)(cam_x) / MAP_CELL_SIZE;
+	int right = (int)(cam_x + SCREEN_HEIGHT) / MAP_CELL_SIZE;
+
 	CSprites* sprites = CSprites::GetInstance();
 
-	for (int i = 0; i < _row; i++)
+	for (int row = top; row < _row_max ; row++)
 	{
-		for (int j = 0; j < _column; j++)
+		for (int column = left; column < right+2 ; column++)	// hệ số +2 sử dụng để fix lỗi logic k vẽ đủ map vì nhất định cell size map phải bằng 32
 		{
-			sprites->Get(getTile(i, j)+index)->Draw(32 * j, 32 * i + align, 255);
-			
+			if (row <= _row_max && row >= 0 && column < _column_max && column >= 0)	
+			{
+				sprites->Get(getTile(row, column) + index)->Draw(32 * column, 32 * row + align, 255);
+			}
 		}
 	}
 	sprites = NULL;

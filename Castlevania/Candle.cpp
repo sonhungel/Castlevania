@@ -3,7 +3,7 @@
 #include"ItemNormal.h"
 #include"ItemMoney.h"
 
-CCandle::CCandle(int type, int ani_id, float _x, float _y)
+CCandle::CCandle(int typeitem, int ani_id, float _x, float _y)
 {
 	this->type == eType::CANDLE;
 	this->x = _x;
@@ -20,15 +20,15 @@ CCandle::CCandle(int type, int ani_id, float _x, float _y)
 	effectDie = new CEffect(DEATH_EFFECT_ANI_ID, this->x, this->y);
 	effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
-	if (type == eType::ITEM_SMALLHEART)
+	if (typeitem == eType::ITEM_SMALLHEART)
 		item = new CItemSmallHeart(x, y);
-	else if (type == eType::ITEM_RED_MONEY ||
-		type == eType::ITEM_YELLOW_MONEY ||
-		type == eType::ITEM_PURPLE_MONEY ||
-		type == eType::ITEM_BLUE_MONEY)
-		item = new CItemMoney(x, y, type, ani_id);
+	else if (typeitem == eType::ITEM_RED_MONEY ||
+		typeitem == eType::ITEM_YELLOW_MONEY ||
+		typeitem == eType::ITEM_PURPLE_MONEY ||
+		typeitem == eType::ITEM_BLUE_MONEY)
+		item = new CItemMoney(x, y, typeitem, ani_id);
 	else
-		item = new CItemNormal(x, y, type, ani_id); //
+		item = new CItemNormal(x, y, typeitem, ani_id); //
 }
 
 void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

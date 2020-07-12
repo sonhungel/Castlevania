@@ -71,6 +71,11 @@
 #define JUMP_TIME			0
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
+#define ID_SUB_WEAPON_IN_SIMON_KNIFE		0
+#define ID_SUB_WEAPON_IN_SIMON_AXE			1
+#define ID_SUB_WEAPON_IN_SIMON_BOOMERANG	2
+#define ID_SUB_WEAPON_IN_SIMON_HOLLYWATER	3
+
 class CSimon : public CGameObject
 {
 	static CSimon* __instance;
@@ -83,6 +88,8 @@ class CSimon : public CGameObject
 	DWORD attack_start;
 
 	CWhip* whip;
+
+	vector<CWeapon*> listSubWeapon;
 
 	// Các biến sử dụng cho logic thang
 	int isCanOnStair;	// 0 is idle, 1 is go UP, -1 is go DOWN
@@ -127,19 +134,16 @@ public:
 	
 	void CollisionWithItem( vector<LPGAMEOBJECT>& listObj); // các item như knife,heart, whipupgrade
 
-	void CollisionWithBrick(DWORD dt, vector<LPGAMEOBJECT>& listBrick, float min_tx0, float min_ty0, int nx0, int ny0,
+	void CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0,float rdy0);
 
-	void CollisionWithTorch(DWORD dt, vector<LPGAMEOBJECT>& listTorch, float min_tx0, float min_ty0, int nx0, int ny0, 
-																		float rdx0, float rdy0);
-	void CollisionWithCandle(DWORD dt, vector<LPGAMEOBJECT>& listCandle, float min_tx0, float min_ty0, int nx0, int ny0,
-																		float rdx0, float rdy0);
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);// dùng cho kết thúc thang
 
 	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx, float min_ty, int nx, int ny,
 																		float rdx, float rdy);
-	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj, float min_tx0, float min_ty0, int nx0, int ny0,
-																	float rdx0, float rdy0);
+	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj);
+
+	void CollisionWithObjectHaveItem(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetTrend() { return nx; } // for the weapon
 
@@ -161,5 +165,7 @@ public:
 
 	int GetWeapon() { return subWeapon; }
 	void SetWeapon(int wp) { subWeapon = wp; }
+
+	void LoadSubWeapon(int subwp);
 };
 #endif
