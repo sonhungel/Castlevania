@@ -98,8 +98,10 @@ class CSimon : public CGameObject
 	bool isAutoGo;
 	int _stairTrend;	// -1 = left, 1 = right
 
-	float new_x;
-	float new_y;
+
+	bool isSimonOnAir;
+	//float new_x;
+	//float new_y;
 
 	//=====scene=========
 	int idScene_current;
@@ -144,8 +146,10 @@ public:
 	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj);
 
 	void CollisionWithObjectHaveItem(DWORD dt, vector<LPGAMEOBJECT>& listObj);
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	int GetTrend() { return nx; } // for the weapon
+
+	int GetTrend() { return nx; } 
 
 	void IsCanOnStair(vector<LPGAMEOBJECT>& listObj);	// bùng cho việc bắt đầu leo lên thang 
 

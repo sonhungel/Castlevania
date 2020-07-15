@@ -9,7 +9,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float cam_x, cam_y;
 	game->GetCamPos(cam_x, cam_y);
 
-	if (this->blood > 0 && this->x >= cam_x)
+	if (this->blood > 0 && this->x >= cam_x && this->x <= cam_x + SCREEN_WIDTH)
 	{
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
@@ -89,7 +89,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				if (abs(target->x - x) > DISTANCE_WALK)
 				{
-					if (isJumping == false)
+					if (isJump == false)
 					{
 						nx = 1;
 					}
@@ -101,7 +101,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (abs(target->x - x) > DISTANCE_WALK)
 				{
 
-					if (isJumping == false)
+					if (isJump == false)
 					{
 						nx = -1;
 					}
@@ -111,7 +111,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (rand() % 60 <3)	// random hunch back jump tỉ lệ 0.05
 			{
-				if (isJumping == false && (abs(target->x - x) < DISTANCE_WALK))
+				if (isJump == false && (abs(target->x - x) < DISTANCE_WALK))
 				{
 					SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
 				}
@@ -189,7 +189,7 @@ void CHunchBack::SetStateTemp(int _state)
 	else if (_state == STATE_ENEMY_HUNCHBACK_JUMP)
 	{
 		this->stateTemp = _state;
-		isJumping = true;
+		isJump = true;
 		vy = -HUNCHBACK_SPEED_Y;
 	}
 }
@@ -239,13 +239,20 @@ void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
 					if (e->ny == -1)
 					{
 						vy = 0;
-						if (isJumping == true)
+						if (isJump == true)
 						{
-							isJumping = false;
+							isJump = false;
 						}
 					}
 					else
+					{
+						if (isJump == true)
+						{
+							if (e->obj->y < target->y)
+								SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+						}
 						y += dy;
+					}
 				}
 			}
 		}

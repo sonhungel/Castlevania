@@ -4,10 +4,9 @@
 
 void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGame* game = CGame::GetInstance();
 	float x_simon, y_simon;
 	float cam_x, cam_y;
-	game->GetCamPos(cam_x, cam_y);
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
 	target->GetPosition(x_simon, y_simon);
 	if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2(target->x, target->y)) < DISTANCE_ACTIVE)
@@ -34,6 +33,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (item != NULL)		// => có item 
 			{
+				item->SetPosition(this->x, this->y);
 				if (GetTickCount() - dt_die > TIME_EFFECT_DIE_ENEMY) // 100 is time default
 				{
 					delete effectDie;
@@ -45,7 +45,6 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
-					item->SetPosition(this->x, this->y);
 					item->Update(dt, coObjects);
 				}
 			}
@@ -76,15 +75,11 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (this->y <= bottomLimit)
 		{
 			y += dx;
-			vy = 0;
 		}
-		else
-			this->vy += ENEMY_BAT_SPEED_Y * dt;
 		x += dx;
-		//DebugOut(L"Vi tri BAT : %d, %d\n", (int)this->x, (int)this->y);
-		
+
+		DebugOut(L"Vi tri BAT : %f, %f\n", this->vx, this->vy);
 	}
-	game = NULL;
 }
 
 void CBat::Render()

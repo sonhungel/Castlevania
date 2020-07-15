@@ -165,9 +165,9 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				rect2.bottom = (int)b2;
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
-					enemy->isStrock = true;
-					//bl_knight->blood--;
-					//bl_knight->SetState(STATE_ENEMY_BLACK_KNIGHT_NOT_EXIST);
+					if(enemy->blood>1)
+						enemy->isStrock = true;
+					// bên trong enemey sẽ tự bộng từ blood qua cờ isStrock 
 				}
 				
 			}

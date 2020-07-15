@@ -5,8 +5,8 @@
 #define ENEMY_HUNCHBACK_WIDTH	34
 #define ENEMY_HUNCHBACK_HEIGHT	34
 
-#define HUNCHBACK_SPEED_X 0.15f
-#define HUNCHBACK_SPEED_Y 0.4f
+#define HUNCHBACK_SPEED_X 0.13f
+#define HUNCHBACK_SPEED_Y 0.5f
 
 #define ENEMY_HUNCHBACK_ANI_ID_WAIT			1005
 #define ENEMY_HUNCHBACK_ANI_ID_JUMP			1006
@@ -26,7 +26,7 @@ class CHunchBack :public CEnemy
 {
 	LPGAMEOBJECT target;		//==> this is simon
 
-	bool isJumping = false;
+	bool isJump = false;
 	bool isWalk = false;
 
 	bool isWait;

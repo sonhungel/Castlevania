@@ -127,6 +127,7 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BlackKnight.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Bone.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BreakBrick.h" />
     <ClInclude Include="Brick.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Raven.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Simon.h" />
+    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Torch.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BlackKnight.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BreakBrick.cpp" />
     <ClCompile Include="Brick.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="Raven.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Torch.cpp" />

@@ -82,6 +82,9 @@
     <Filter Include="GameObject\Enemy\Base Enemy">
       <UniqueIdentifier>{3a03a1e3-49da-4813-a81f-8ffa7ff1fdaf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemy\Bone Of Skeleton">
+      <UniqueIdentifier>{0b2db78e-d341-434e-8b2e-072bf6b80c7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -207,6 +210,12 @@
     <ClInclude Include="Raven.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>GameObject\Enemy\Bone Of Skeleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -328,6 +337,12 @@
     </ClCompile>
     <ClCompile Include="Raven.cpp">
       <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>GameObject\Enemy\Bone Of Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

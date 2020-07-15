@@ -24,6 +24,7 @@
 #include"Ghost.h"
 #include"HunchBack.h"
 #include"Raven.h"
+#include"Skeleton.h"
 
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
@@ -229,6 +230,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CRaven(x, y, type_item, ani_item, simon);
 		listEnemy.push_back(obj);
 		//objects.push_back(obj);
+	}
+		break;
+	case OBJECT_TYPE_ENEMY_SKELETON:
+	{
+		int type_item = atoi(tokens[3].c_str());
+		int ani_item = atoi(tokens[4].c_str());
+		obj = new CSkeleton(x, y, type_item, ani_item, simon);
+		listEnemy.push_back(obj);
 	}
 		break;
 	default:
