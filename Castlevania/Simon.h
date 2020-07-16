@@ -15,6 +15,7 @@
 #define SIMON_TREND_RIGHT		1
 #define SIMON_TREND_LEFT		-1
 #define SIMON_PER_STEP	8
+#define SIMON_ONE_STEP	16
 #define SIMON_SPEED_ON_STAIR	1.23f
 
 #define MAX_BLOOD	16
@@ -97,11 +98,10 @@ class CSimon : public CGameObject
 	bool isBeingOnStair;
 	bool isAutoGo;
 	int _stairTrend;	// -1 = left, 1 = right
-
+	float walkOnStairHeight;	// đo chiều cao khi di chuyển trên thang phục vụ cho phần di chuyển 16 điểm
+	int walkOnStiarCount;		
 
 	bool isSimonOnAir;
-	//float new_x;
-	//float new_y;
 
 	//=====scene=========
 	int idScene_current;

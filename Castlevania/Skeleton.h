@@ -23,9 +23,10 @@
 
 class CSkeleton :public CEnemy
 {
-	bool isJump, isCanJump;
+	bool isJump, wasTouchBrick;
 
-	CBone* bone;
+	vector<LPGAMEOBJECT> listBone;
+
 	LPGAMEOBJECT target;
 
 	int state_temp; // chỉ dùng bên trong skeleton
@@ -63,8 +64,6 @@ public:
 	
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	CBone * GetBone() {	return bone;}
-
-	void Collision(vector<LPGAMEOBJECT>* coObjects);
+	vector<LPGAMEOBJECT> GetListBone() { return listBone; }
 
 };

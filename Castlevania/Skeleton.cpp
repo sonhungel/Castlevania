@@ -30,6 +30,7 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 					state = STATE_ENEMY_ITEM_EXIST;
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
+					item->SetPosition(x, y);
 					item->Update(dt, coObjects);
 				}
 			}
@@ -54,18 +55,104 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 			}
 		}
 #pragma endregion
-
+#pragma region Shot_Bone
 		if (x >= target->x)
 			nx = -1;
 		else
 			nx = 1;
-
-		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2(target->x, target->y))<DISTANCE_SKELETON_ACTIVE)
+		for (UINT i = 0;i < listBone.size();i++)
 		{
-			if (state_temp == STATE_ENEMY_SKELETON_IDLE)
+			if (listBone.at(i)->blood <= 0)
+			{
+				delete listBone.at(i);
+				listBone.erase(listBone.begin() + i);	// Xóa những bone đã đi ra khỏi screen
+			}
+		}
+
+		if(rand() % 150 < 3)	// random để bắn xương, có thể tùy chỉ theo ý thích
+		{
+			LPGAMEOBJECT bone;
+			bone = new CBone(this->x, this->y, this->nx);
+			listBone.push_back(bone);
+		}
+
+		for (UINT i = 0;i < listBone.size();i++)
+		{
+			listBone.at(i)->Update(dt);
+		}
+#pragma endregion
+
+#pragma region LogicMove
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
+
+		if (state_temp == STATE_ENEMY_SKELETON_IDLE)
+		{
+			if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2(target->x, target->y))<DISTANCE_SKELETON_ACTIVE)
 				SetSkeletonState( STATE_ENEMY_SKELETON_ACTIVE);
 		}
-		Collision(coObjects);
+		
+//===============COLLISION ============================================================
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+		CalcPotentialCollisions(&listBrick, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+
+			if (wasTouchBrick)
+				isJump = true;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny = 0, rdx = 0, rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			x += min_tx * dx + nx * 0.3f;
+			y += min_ty * dy + ny * 0.2f;		// hệ số phía sau sẽ có tác động tới skeleton jump
+												// => hệ số càng cao nhảy càng nhiều
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<CBrick*>(e->obj))
+				{
+					
+					if (e->ny == -1)
+					{
+						vy = 0;
+						wasTouchBrick = true;	// Chỉ có thể jump khi skeleton ở phía trên brick
+					}
+					else
+						y += dy;
+				
+
+					if (e->nx != 0)
+					{
+						vx = -vx;
+					}
+				}
+			}
+		}
+
+		// clean up collision events
+		for (UINT i = 0; i < coEvents.size(); i++)
+			delete coEvents[i];
+		listBrick.clear();
+//===========================================================================================
 
 		CGameObject::Update(dt);
 		vy += ENEMY_SKELETON_GRAVITY * dt;
@@ -73,25 +160,34 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 		if (isJump)
 		{
 			vy = -ENEMY_SKELETON_SPEED_Y;
-			isJump = isCanJump = false;
+			isJump = wasTouchBrick = false;
 		}
 
 		// skeleton hoạt động theo cách di chuyển trong 1 khoảng nhất định từ simon nhưng sẽ k va chạm với simon để có thể bắn bone
 
 		if (abs(x - target->x) > DISTANCE_SKELETON_WALK_TO_SIMON)	// Tiến tới simon
 		{
-			vx = ENEMY_SKELETON_SPEED_X * nx;
+				vx = ENEMY_SKELETON_SPEED_X * nx;
 		}
 		if (abs(x - target->x) < DISTANCE_SKELETON_WALK_OUT_OF_SIMON)	// Chuyển động tránh xa simon khi simon tiến lại gần
 			//	=> vx sẽ phải đảo ngược lại 
 		{
-			vx = -ENEMY_SKELETON_SPEED_X * nx;
+			if (coEvents.size() > 0)	// tránh trường hợp skeleton chưa va chạm với brick đã flip hướng
+				vx = -ENEMY_SKELETON_SPEED_X * nx;
 		}
+#pragma endregion
 	}
+
 }
 
 void CSkeleton::Render()
 {
+	for (UINT i = 0;i < listBone.size();i++)
+	{
+		listBone.at(i)->Render();
+		DebugOut(L"so luong bone trong List :%d\n",(int)listBone.size());
+	}
+
 	if (blood > 1 && animations.size() > 0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
@@ -145,72 +241,4 @@ void CSkeleton::GetBoundingBox(float & left, float & top, float & right, float &
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);
 	}
-}
-
-void CSkeleton::Collision(vector<LPGAMEOBJECT>* coObjects)
-{
-	vector<LPGAMEOBJECT> listBrick;
-
-	for (UINT i = 0; i < coObjects->size(); i++)
-	{
-		if (dynamic_cast<CBrick*>(coObjects->at(i)))
-		{
-			listBrick.push_back(coObjects->at(i));
-		}
-	}
-	item->SetPosition(x, y);
-
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-	CalcPotentialCollisions(&listBrick, coEvents);
-
-	if (coEvents.size() == 0)
-	{
-		x += dx;
-		y += dy;
-
-		if (isCanJump)
-			isJump = true;
-	}
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny = 0, rdx = 0, rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		x += min_tx * dx + nx * 0.3f;
-		y += min_ty * dy + ny * 0.2f;
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj))
-			{
-				if (e->ny != 0)
-				{
-					if (e->ny == -1)
-					{
-						vy = 0;
-						isCanJump = true;
-					}
-					else
-						y += dy;
-				}
-
-				if (e->nx != 0)
-				{
-					vx = -vx;
-				}
-			}
-		}
-	}
-
-	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++)
-		delete coEvents[i];
-	listBrick.clear();
 }

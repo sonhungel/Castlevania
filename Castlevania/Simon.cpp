@@ -31,7 +31,6 @@ CSimon* CSimon::GetInstance()
 CSimon::CSimon()
 {
 	whip = CWhip::GetInstance();
-	
 
 	listSubWeapon.push_back(CKnife::GetInstance());		// knife 0
 	listSubWeapon.push_back(CAxe::GetInstance());		// axe 1
@@ -42,9 +41,6 @@ CSimon::CSimon()
 
 	untouchable_start = 0;
 	trans_start = 0;
-	stair_start = 0;
-	
-	//isSimonOnAir = false;
 
 	subWeapon = eType::WEAPON_AXE;
 
@@ -75,7 +71,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			trans_start = 0;
 		}
 	}
-	 if (isAutoGo)
+	if (isAutoGo)
 	{
 		CalculateAutoGo();
 		if (abs(auto_x - x) > 0.5f)
@@ -116,9 +112,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					x = x + SIMON_PER_STEP;
 				}
 			}
-			//animations[ANI_SIMON_GO_UP]->ResetFrame();
-			//animations[ANI_SIMON_GO_DOWN]->ResetFrame();
-			
 		}
 		return;
 	}
@@ -131,22 +124,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		if (GetTickCount() - attack_start > ATTACK_TIME_WAIT)
 			isCanAttack = true;
-	}
-	if (stair_start > 0)
-	{
-		if (GetTickCount() - stair_start > TIME_FOR_ONE_STEP)
-		{
-			stair_start = 0;
-			if (isBeingOnStair)
-			{
-				if ((_stairTrend == -1 && nx == 1) || (_stairTrend == 1 && nx == -1))
-					SetState(STATE_SIMON_IDLE_UP);
-				else
-					SetState(STATE_SIMON_IDLE_DOWN);
-			}
-			animations[ANI_SIMON_GO_UP]->ResetFrame();
-			animations[ANI_SIMON_GO_DOWN]->ResetFrame();
-		}
 	}
 	
 	else 
@@ -366,8 +343,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (dynamic_cast<CPlatform*>(e->obj))
 				{
-					CPlatform* plf = dynamic_cast<CPlatform*>(e->obj);
-					CollisionWithPlatform(dt, plf, min_tx, min_ty, nx, ny, rdx, rdy);
+					CollisionWithPlatform(dt, e->obj, min_tx, min_ty, nx, ny, rdx, rdy);
 				}
 			}
 		}
@@ -378,7 +354,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -789,7 +765,6 @@ void CSimon::CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, flo
 		}
 	}
 	
-	
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
@@ -1129,5 +1104,4 @@ void CSimon::LoadSubWeapon(int subwp)
 		listSubWeapon[IDSubWeaponInVector]->SetState(STATE_SUBWEAPON_APPEAR);
 		listSubWeapon[IDSubWeaponInVector]->SetPosition(this->x, this->y);
 	}
-	
 }

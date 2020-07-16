@@ -100,7 +100,6 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				if (abs(target->x - x) > DISTANCE_WALK)
 				{
-
 					if (isJump == false)
 					{
 						nx = -1;

@@ -40,6 +40,5 @@ public:
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	bool CheckOutCam();
 };
 

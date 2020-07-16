@@ -2,11 +2,10 @@
 
 void CBone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 {
-	if (blood > 0 && state == STATE_BONE_APPEAR)
+	if (blood > 0 )
 	{
-		if (CheckOutCam() == true)
+		if (this->y >= SCREEN_HEIGHT)
 		{
-			this->state = STATE_BONE_HIDE;
 			this->blood = 0;
 		}
 
@@ -21,7 +20,7 @@ void CBone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 
 void CBone::Render()
 {
-	if (blood > 0 && state == STATE_BONE_APPEAR)
+	if (this->blood > 0 )
 	{
 		animations[0]->RenderTrend(x, y, nx);
 		RenderBoundingBox();
@@ -36,9 +35,3 @@ void CBone::GetBoundingBox(float & left, float & top, float & right, float & bot
 	bottom = y + BONE_HEIGHT;
 }
 
-bool CBone::CheckOutCam()
-{
-	if (this->y >= SCREEN_HEIGHT)
-		return true;
-	return false;
-}
