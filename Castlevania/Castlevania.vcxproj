@@ -137,6 +137,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectBrick.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyZone.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Ghost.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectBrick.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyZone.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Ghost.cpp" />

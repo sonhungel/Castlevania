@@ -85,6 +85,9 @@
     <Filter Include="GameObject\Enemy\Bone Of Skeleton">
       <UniqueIdentifier>{0b2db78e-d341-434e-8b2e-072bf6b80c7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemy\Enemy Zone">
+      <UniqueIdentifier>{7a308f32-43d9-4db9-a02d-df1b09ff93f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -216,6 +219,9 @@
     <ClInclude Include="Bone.h">
       <Filter>GameObject\Enemy\Bone Of Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyZone.h">
+      <Filter>GameObject\Enemy\Enemy Zone</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -343,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="Bone.cpp">
       <Filter>GameObject\Enemy\Bone Of Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyZone.cpp">
+      <Filter>GameObject\Enemy\Enemy Zone</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
