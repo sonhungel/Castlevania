@@ -33,18 +33,17 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (item != NULL)		// => có item 
 			{
-				item->SetPosition(this->x, this->y);
+				
 				if (GetTickCount() - dt_die > TIME_EFFECT_DIE_ENEMY) // 100 is time default
 				{
 					delete effectDie;
 					effectDie = NULL;
 					state = STATE_ENEMY_ITEM_EXIST;
 				}
-				else
-					effectDie->SetPosition(x, y);
 
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
+					item->SetPosition(this->x, this->y);
 					item->Update(dt, coObjects);
 				}
 			}
@@ -78,7 +77,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		x += dx;
 
-		DebugOut(L"Vi tri BAT : %f, %f\n", this->vx, this->vy);
+		DebugOut(L"toc do Bat : %f, %f\n", this->vx, this->vy);
 	}
 }
 
@@ -95,7 +94,7 @@ void CBat::Render()
 	}
 	else if (effectDie != NULL)
 	{
-		
+		effectDie->SetPosition(x, y);
 		effectDie->Render();
 	}
 	if (isStrock == true)

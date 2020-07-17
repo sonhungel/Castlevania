@@ -76,6 +76,13 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			nx = -nx;
 			vx = nx * ENEMY_BLACK_KNIGHT_SPEED;
 		}
+
+		if (target->GetState() == STATE_SIMON_JUMP)
+		{
+			int sign = (target->x - this->x) / abs(target->x - this->x);
+			nx = sign;
+			vx = ENEMY_BLACK_KNIGHT_SPEED * nx;;
+		}
 		
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;

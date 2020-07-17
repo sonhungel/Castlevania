@@ -16,7 +16,7 @@
 #define SIMON_TREND_LEFT		-1
 #define SIMON_PER_STEP	8
 #define SIMON_ONE_STEP	16
-#define SIMON_SPEED_ON_STAIR	1.23f
+#define SIMON_SPEED_ON_STAIR	0.07f
 
 #define MAX_BLOOD	16
 
@@ -65,7 +65,7 @@
 #define SIMON_UNTOUCHABLE_TIME		1500
 #define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 
-#define ATTACK_TIME			100
+#define ATTACK_TIME			370
 #define ATTACK_TIME_WAIT	1000
 
 #define TRANSITION_TIME		400
@@ -84,9 +84,9 @@ class CSimon : public CGameObject
 	bool untouchable;
 	DWORD untouchable_start;
 	DWORD trans_start; // Simon nhấp nháy
-	DWORD stair_start;
 
 	DWORD attack_start;
+	DWORD attack_start_temp;
 
 	CWhip* whip;
 
@@ -98,8 +98,9 @@ class CSimon : public CGameObject
 	bool isBeingOnStair;
 	bool isAutoGo;
 	int _stairTrend;	// -1 = left, 1 = right
-	float walkOnStairHeight;	// đo chiều cao khi di chuyển trên thang phục vụ cho phần di chuyển 16 điểm
-	int walkOnStiarCount;		
+
+	float x_new = 0;
+	float y_new = 0;
 
 	bool isSimonOnAir;
 
@@ -155,6 +156,13 @@ public:
 
 	void SetBeingOnStair(bool onStair) { this->isBeingOnStair = onStair; }
 	void SetStairTrend(int stairTrend) { this->_stairTrend = stairTrend; }
+	void SetSimonOnAir(bool onAir) 
+	{
+		if (onAir)
+			isSimonOnAir = true;
+		else
+			isSimonOnAir = false;
+	}
 
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }

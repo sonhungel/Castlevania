@@ -16,15 +16,18 @@ class CBlackKnight :public CEnemy
 {
 private:
 
+	LPGAMEOBJECT target;
 	int x_left, x_right;
 public:
-	CBlackKnight(float _x, float _y, int _typeitem, int ani_id, int x_l, int x_r) :CEnemy(_x,_y)	// type for item, ani_id_item
+	CBlackKnight(float _x, float _y, int _typeitem, int ani_id, int x_l, int x_r,LPGAMEOBJECT _target) :CEnemy(_x,_y)	// type for item, ani_id_item
 	{
 		this->type = eType::ENEMY_BLACK_KNIGHT;
 		AddAnimation(ENEMY_BLACK_KNIGHT_ANI_ID);
 		this->blood = 3;	// tại sao blood lại phải = 3 khi đánh 2 cái là die, 
 								//vì cần blood =1 để xét item, và blood =0 để loại obj khỏi coObject
 		this->state = STATE_ENEMY_EXIST;
+
+		this->target = _target;
 
 		dt_die = 0;
 		dt_strock = 0;

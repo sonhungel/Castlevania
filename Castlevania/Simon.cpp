@@ -63,14 +63,7 @@ CSimon::CSimon()
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (trans_start > 0)
-	{
-		vx = 0;
-		if (GetTickCount() - trans_start > TRANSITION_TIME)
-		{
-			trans_start = 0;
-		}
-	}
+	
 	if (isAutoGo)
 	{
 		CalculateAutoGo();
@@ -118,14 +111,27 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (attack_start > 0)
 	{
-		if (GetTickCount() - attack_start < ATTACK_TIME)
+		if (GetTickCount() - attack_start > ATTACK_TIME)
 		{
 			attack_start = 0;
 		}
-		if (GetTickCount() - attack_start > ATTACK_TIME_WAIT)
-			isCanAttack = true;
 	}
-	
+	if (attack_start_temp > 0)
+	{
+		if (GetTickCount() - attack_start_temp > ATTACK_TIME_WAIT)
+		{
+			isCanAttack = true;
+			attack_start_temp = 0;
+		}
+	}
+	if (trans_start > 0)
+	{
+		vx = 0;
+		if (GetTickCount() - trans_start > TRANSITION_TIME)
+		{
+			trans_start = 0;
+		}
+	}
 	else 
 	{ 
 		vector<LPGAMEOBJECT> listCoObjects;
@@ -171,14 +177,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (_stairTrend == -1)	// stair left
 				{
 					nx = -1;
-					dx = -SIMON_SPEED_ON_STAIR;
-					dy = SIMON_SPEED_ON_STAIR;
+					vx = -SIMON_SPEED_ON_STAIR;
+					vy = SIMON_SPEED_ON_STAIR;
 				}
 				else  // stair right
 				{
 					nx = 1;
-					dx = SIMON_SPEED_ON_STAIR;
-					dy = SIMON_SPEED_ON_STAIR;
+					vx = SIMON_SPEED_ON_STAIR;
+					vy = SIMON_SPEED_ON_STAIR;
 				}
 			}
 			else if (state == STATE_SIMON_GO_UP)
@@ -186,26 +192,33 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (_stairTrend == -1)	// stair left
 				{
 					nx = 1;
-					dx = SIMON_SPEED_ON_STAIR;
-					dy = -SIMON_SPEED_ON_STAIR;
+					vx = SIMON_SPEED_ON_STAIR;
+					vy = -SIMON_SPEED_ON_STAIR;
 				}
 				else  // stair right
 				{
 					nx = -1;
-					dx = -SIMON_SPEED_ON_STAIR;
-					dy = -SIMON_SPEED_ON_STAIR;
+					vx = -SIMON_SPEED_ON_STAIR;
+					vy = -SIMON_SPEED_ON_STAIR;
 				}
 			}
 			else
 			{
-				dx = 0;
-				dy = 0;
+				vx = 0;
+				vy = 0;
 			}
 		}
 		else
 		{
-			CGameObject::Update(dt);
 			vy += SIMON_GRAVITY * dt;
+		}
+		
+		CGameObject::Update(dt);
+		
+		if (isBeingOnStair == true)	// tránh trường hợp va chạm gạch khi đang trên thang
+		{
+			x += dx;
+			y += dy;
 		}
 
 		if (listHideObject.size() > 0)
@@ -214,10 +227,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (state == STATE_SIMON_SIT_ATTACK || 
 			state == STATE_SIMON_STAND_ATTACK||
-			state==STATE_SIMON_GO_DOWN_ATTACK||
-			state==STATE_SIMON_GO_UP_ATTACK)
+			state == STATE_SIMON_GO_DOWN_ATTACK||
+			state == STATE_SIMON_GO_UP_ATTACK)
 		{
-			whip->SetPosition(x, y);
+			//whip->SetPosition(x, y);
 			whip->SetTrend(nx);
 			whip->CollisionWithObject(dt, listCoObjectForWhip);
 		}
@@ -279,11 +292,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 		// turn off collision when die 
-
 		CalcPotentialCollisions(&listCoObjects, coEvents);
 
 		// No collision occured, proceed normally
-		if (coEvents.size() == 0)
+		if (coEvents.size() == 0 && isBeingOnStair == false)
 		{
 			x += dx;
 			y += dy;
@@ -296,12 +308,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-			if (isBeingOnStair == true)	// tránh trường hợp va chạm gạch khi đang trên thang
-			{
-				x += dx;
-				y += dy;
-			}
 
 			//
 			// Collision logic with objects
@@ -381,7 +387,7 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_IDLE)
 	{
-		if(isBeingOnStair==false&&isSimonOnAir==false)
+		if (isBeingOnStair == false && isSimonOnAir == false)
 			ani = ANI_SIMON_IDLE;
 	}
 	else if (state == STATE_SIMON_SIT)
@@ -401,12 +407,14 @@ void CSimon::Render()
 	else if (state == STATE_SIMON_STAND_ATTACK)
 	{
 		ani = ANI_SIMON_STANDING_ATTACKING;
+		whip->SetPosition(x, y);
 		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame());
 		whip->Render();
 	}
 	else if (state == STATE_SIMON_SIT_ATTACK)
 	{
 		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame());
+		whip->SetPosition(x, y);
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		whip->Render();
 	}
@@ -415,6 +423,7 @@ void CSimon::Render()
 		if (isBeingOnStair)
 		{
 			ani = ANI_SIMON_GO_DOWN_ATTACK;
+			whip->SetPosition(x, y);
 			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame());
 			whip->Render();
 		}
@@ -424,6 +433,7 @@ void CSimon::Render()
 		if (isBeingOnStair)
 		{
 			ani = ANI_SIMON_GO_UP_ATTACK;
+			whip->SetPosition(x, y);
 			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame());
 			whip->Render();
 		}
@@ -467,7 +477,7 @@ void CSimon::Render()
 	{
 		if (vx == 0)
 		{
-			if(state!=STATE_SIMON_SIT_ATTACK||state!=STATE_SIMON_STAND_ATTACK&&state!=STATE_SIMON_ATTACK_SUBWEAPON)
+			if(state!=STATE_SIMON_SIT_ATTACK||state!=STATE_SIMON_STAND_ATTACK&&state!=STATE_SIMON_ATTACK_SUBWEAPON&&isBeingOnStair==false)
 				ani = ANI_SIMON_IDLE;
 		}
 		else
@@ -476,7 +486,12 @@ void CSimon::Render()
 				ani = ANI_SIMON_WALKING;
 		}
 	}
-	if (isSimonOnAir&&state != STATE_SIMON_HURT)
+	if (isSimonOnAir&&state != STATE_SIMON_HURT &&
+		state != STATE_SIMON_ATTACK_SUBWEAPON &&
+		state != STATE_SIMON_GO_DOWN_ATTACK &&
+		state != STATE_SIMON_GO_UP_ATTACK &&
+		state != STATE_SIMON_STAND_ATTACK &&
+		state != STATE_SIMON_SIT_ATTACK)
 		ani = ANI_SIMON_JUMPING;
 
 	int alpha = 255;
@@ -494,19 +509,20 @@ void CSimon::Render()
 
 void CSimon::SetState(int state)
 {
-	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (trans_start > 0)
+
+	//if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
+	//{
+	//}
+	if (trans_start > 0)
 	{
 	}
 	else if (isAutoGo)
@@ -542,7 +558,7 @@ void CSimon::SetState(int state)
 			vx = 0;
 			break;
 		case STATE_SIMON_JUMP:
-			if (vy == 0) {
+			if (vy == 0 && isBeingOnStair == false) {
 				vy = -SIMON_JUMP_SPEED_Y;
 				isSimonOnAir = true;
 				//vx = 0;
@@ -555,28 +571,33 @@ void CSimon::SetState(int state)
 			break;
 		case STATE_SIMON_STAND_ATTACK:
 			attack_start = GetTickCount();
+			attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
 		case STATE_SIMON_SIT_ATTACK:
 			attack_start = GetTickCount();
+			attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
 		case STATE_SIMON_GO_UP_ATTACK:
 			attack_start = GetTickCount();
+			attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_GO_DOWN_ATTACK:
 			attack_start = GetTickCount();
+			attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_ATTACK_SUBWEAPON:
 			attack_start = GetTickCount();
+			attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
@@ -584,9 +605,6 @@ void CSimon::SetState(int state)
 
 			if (isBeingOnStair)
 			{
-				if (stair_start == 0)
-				{
-				}
 				break;
 			}
 			if (isCanOnStair != 1)

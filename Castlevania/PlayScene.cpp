@@ -183,7 +183,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int x_left= atoi(tokens[5].c_str());
 		int x_right= atoi(tokens[6].c_str());
 
-		obj = new CBlackKnight(x, y, type_item, ani_item, x_left, x_right);
+		obj = new CBlackKnight(x, y, type_item, ani_item, x_left, x_right,simon);
 
 		objects.push_back(obj);
 	}
@@ -461,7 +461,7 @@ void CPlayScene::Render()
 	float cx, cy;
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
-	//map->DrawMap(cx,cy);
+	map->DrawMap(cx,cy);
 	HUD->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
@@ -596,7 +596,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	{
 		simon->SetState(STATE_SIMON_SIT_ATTACK);
 	}
-	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT)
+	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT&&simon->IsBeingOnStair()==false)
 		simon->SetState(STATE_SIMON_JUMP);
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{
