@@ -24,10 +24,8 @@ protected:
 	CBoard* HUD;
 	CGrid* grid;
 
-	CGrid *gridforEnemy;
-
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render
 
 	vector<LPGAMEOBJECT> listEnemy;
 

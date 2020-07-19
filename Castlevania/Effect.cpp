@@ -8,7 +8,7 @@ void CEffect::Render()
 	if (animations.size() > 0)
 	{
 		animations[0]->Render(x, y);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 }
 

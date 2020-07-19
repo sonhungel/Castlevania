@@ -69,7 +69,7 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		item->SetPosition(x, y);
 		CGameObject::Update(dt);
 		x += dx;
-		this->vy += GRAVITY_ITEM * dt;
+		this->vy += ENEMY_GRAVITY * dt;
 
 		if ((x < x_left && vx < 0) || (x > x_right && vx > 0))
 		{

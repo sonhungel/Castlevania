@@ -151,7 +151,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PLATFORM:
 	{
 		int ani_id = atoi(tokens[3].c_str());
-		obj = new CPlatform(ani_id);
+		int x_left = atoi(tokens[4].c_str());
+		int x_right = atoi(tokens[5].c_str());
+		obj = new CPlatform(ani_id,x_left,x_right);
 		obj->SetPosition(x, y);
 		objects.push_back(obj);
 	}
@@ -313,8 +315,6 @@ void CPlayScene::Load()
 	map = CMap::GetInstance();
 	HUD = CBoard::GetInstance();
 
-	
-
 	CGame::GetInstance()->tagSwitchScene = -1;
 
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n",sceneFilePath );
@@ -379,6 +379,8 @@ void CPlayScene::UnLoad()
 
 	coObjects.clear();
 
+	listEnemy.clear();
+
 
 	delete grid;
 	grid = NULL;
@@ -391,37 +393,16 @@ void CPlayScene::Update(DWORD dt)
 
 	// ==> update simon riêng
 
-
 	coObjects.clear();
-	CGame* game = CGame::GetInstance();
+
 	float cx, cy;
-
-	
-	//cy -= game->GetScreenHeight() / 2;
-
-	//vector<LPGAMEOBJECT> coObjects;
-
-	//for (size_t i = 1; i < objects.size(); i++)
-	//{
-	//	coObjects.push_back(objects[i]);
-	//}
 
 	grid->ResetOnCamera(objects);
 
-	game->GetCamPos(cx, cy);
+	CGame::GetInstance()->GetCamPos(cx, cy);
 
 	grid->GetListObject(coObjects,cx,cy);	// Lấy những obj ở trong cam
-	/*
-	for (int i = 0; i < coObjects.size(); i++)
-	{
-		if (coObjects.at(i)->getType() == eType::ENEMY_BAT
-			 ||coObjects.at(i)->getType() == eType::ENEMY_BLACK_KNIGHT
-			|| coObjects.at(i)->getType() == eType::ENEMY_ZOMBIE)
-		{
-			listEnemy.push_back(coObjects.at(i));
-		}
-	}
-	*/
+
 
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
@@ -430,7 +411,6 @@ void CPlayScene::Update(DWORD dt)
 
 	simon->Update(dt, &coObjects);
 
-	//simon->CollisionWithEnemy(dt, listEnemy);
 	for (int i = 0; i < listEnemy.size(); i++)
 	{
 			listEnemy[i]->Update(dt, &coObjects);
@@ -447,13 +427,13 @@ void CPlayScene::Update(DWORD dt)
 	// K có scene ngầm dưới lòng đất nên k cần xây dựng limit cam Y
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	HUD->Update(dt,&coObjects);
+	HUD->Update(dt);
 
-	if (game->tagSwitchScene != -1)
+	if (CGame::GetInstance()->tagSwitchScene != -1)
 	{
-		CGame::GetInstance()->SwitchScene(game->tagSwitchScene);
+		CGame::GetInstance()->SwitchScene(CGame::GetInstance()->tagSwitchScene);
 	}
-	game = NULL;
+	//game = NULL;
 }
 
 void CPlayScene::Render()
@@ -461,8 +441,9 @@ void CPlayScene::Render()
 	float cx, cy;
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
-	map->DrawMap(cx,cy);
+	//map->DrawMap(cx,cy);
 	HUD->Render();
+	
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
 
@@ -495,6 +476,7 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 				simon->SetState(STATE_SIMON_UP);
 		}
 		break;
+		
 	}
 }
 
@@ -532,6 +514,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_Q:
 		HUD->ChangeWeapon();
+		break;
+	case DIK_W:
+		CWhip::GetInstance()->setUpLevel();
 		break;
 	case DIK_A:
 		simon->blood = 0;
@@ -579,6 +564,12 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState(STATE_SIMON_GO_UP);
 			simon->isGoUp = true;
 		break;
+	case DIK_LEFT:
+		simon->SetTrend(SIMON_TREND_LEFT);
+		break;
+	case DIK_RIGHT:
+		simon->SetTrend(SIMON_TREND_RIGHT);
+		break;
 	}
 
 }
@@ -587,6 +578,8 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
+	if (simon->isSimonOnAir == true)
+		return;
 
 	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true)
 	{
@@ -598,7 +591,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	}
 	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT&&simon->IsBeingOnStair()==false)
 		simon->SetState(STATE_SIMON_JUMP);
-	else if (game->IsKeyDown(DIK_RIGHT))
+	else if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN))
 	{
 		if(simon->IsBeingOnStair())
 		{
@@ -611,13 +604,18 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 				simon->SetState(STATE_SIMON_GO_UP);
 			}
 		}
-		else if (simon->GetState() != STATE_SIMON_SIT && simon->GetState() != STATE_SIMON_SIT_ATTACK)
+		else
 		{
-			simon->SetState(STATE_SIMON_WALKING_RIGHT);
+			if (simon->GetState() == STATE_SIMON_SIT||simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			{
+				simon->SetState(STATE_SIMON_UP);
+			}
+			else
+				simon->SetState(STATE_SIMON_WALKING_RIGHT);
 		}
 		simon->SetTrend(SIMON_TREND_RIGHT);
 	}
-	else if (game->IsKeyDown(DIK_LEFT))
+	else if (game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_DOWN))
 	{
 		if (simon->IsBeingOnStair())
 		{
@@ -630,9 +628,14 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 				simon->SetState(STATE_SIMON_GO_UP);
 			}
 		}
-		else if (simon->GetState() != STATE_SIMON_SIT && simon->GetState() != STATE_SIMON_SIT_ATTACK)
+		else
 		{
-			simon->SetState(STATE_SIMON_WALKING_LEFT);
+			if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			{
+				simon->SetState(STATE_SIMON_UP);
+			}
+			else
+				simon->SetState(STATE_SIMON_WALKING_LEFT);
 		}
 		simon->SetTrend(SIMON_TREND_LEFT);
 	}
@@ -640,7 +643,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	{
 		simon->SetState(STATE_SIMON_GO_UP);
 	}
-	else if (game->IsKeyDown(DIK_DOWN))
+	else if (game->IsKeyDown(DIK_DOWN)&&!game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_RIGHT))
 	{
 		simon->SetState(STATE_SIMON_GO_DOWN);
 	}

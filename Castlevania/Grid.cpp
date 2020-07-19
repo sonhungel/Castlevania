@@ -26,15 +26,14 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>& ListObj, float cam_x, float cam_
 	int left = (int)(cam_x ) / GRID_CELL_WIDTH;
 	int right = (int)(cam_x + SCREEN_HEIGHT ) / GRID_CELL_WIDTH;
 
-	for (int row = top; row <= bottom+1; row++)
+	for (int row = top; row <= bottom; row++)
 	{
-		for (int column = left; column <= right+1; column++)
+		for (int column = left; column <= right; column++)
 		{
 			if (row <= GRID_ROW_MAX && row >= 0 && column <= GRID_COLUMN_MAX && column >= 0)
 			{
 				for (UINT i = 0; i < cells[row][column].size(); i++)
 				{
-				
 					if (cells[row][column].at(i)->blood > 0)	// Loại trừ các obj đã destroy
 					{
 						if (cells[row][column].at(i)->isOnCamera == false)	// bỏ qua nếu obj đã xuất hiện trên cam

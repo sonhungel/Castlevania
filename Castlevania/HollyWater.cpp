@@ -51,12 +51,11 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			x += vx * dt;
 			vy += GRAVITY * dt;
-			//y += vy * dt;
 		}
 		else
 		{
-			vy += GRAVITY * dt;
-			//y += vy * dt;
+			//vy += GRAVITY * dt;
+			vy = 0;
 		}
 
 		vector<LPCOLLISIONEVENT> coEvents;

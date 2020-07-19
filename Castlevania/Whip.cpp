@@ -20,7 +20,7 @@ CWhip* CWhip::GetInstance()
 CWhip::CWhip()
 {
 	type = eType::WEAPON_WHIP;
-	_level = 3;
+	_level = 1;
 	AddAnimation(WHIP_LEVEL_1_ID);
 	AddAnimation(WHIP_LEVEL_2_ID); // level 2
 	AddAnimation(WHIP_LEVEL_3_ID);	// level 3
@@ -33,23 +33,23 @@ void CWhip::SetPosition(float x, float y)
 	{
 		if (nx < 0)
 		{
-			this->x = x - 49;
+			this->x = x - 47;
 		}
 		else {
-			this->x = x - 10;
+			this->x = x - 7;
 		}
 	}
 	else if (_level == 3)
 	{
 		if (nx < 0)
 		{
-			this->x = x - 75;
+			this->x = x - 80;
 		}
 		else {
-			this->x = x - 10;
+			this->x = x -7;
 		}
 	}
-	this->y = y+8;
+	this->y = y + 8;
 }
 
 void CWhip::Render()
@@ -84,18 +84,37 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		return;
 	if (_level == 1 || _level == 2)
 	{
-		left = x;
-		right = x + WHIPNORMAL_WIDTH;
-		top = y+17;
-		bottom = y  + WHIPNORMAL_HEIGHT;
+		if (nx > 0)
+		{
+			left = x + 40;
+			right = x + WHIPNORMAL_WIDTH;
+			top = y + 5;
+			bottom = y + WHIPNORMAL_HEIGHT;
+		}
+		else
+		{
+			left = x ;
+			right = x + WHIPNORMAL_WIDTH-40;
+			top = y + 5;
+			bottom = y + WHIPNORMAL_HEIGHT;
+		}
 	}
-
 	else
 	{
-		left = x;
-		right = x + 145;
-		top = y+10;
-		bottom = y + 35;
+		if (nx > 0)
+		{
+			left = x+40;
+			right = x + WHIPLONG_WIDTH;
+			top = y+5;
+			bottom = y + WHIPNORMAL_HEIGHT;
+		}
+		else
+		{
+			left = x;
+			right = x + WHIPLONG_WIDTH-40;
+			top = y+5;
+			bottom = y + WHIPNORMAL_HEIGHT;
+		}
 	}
 }
 

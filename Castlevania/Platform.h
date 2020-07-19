@@ -16,13 +16,13 @@ class CPlatform :public CGameObject
 	float x_left;
 	float x_right;
 public:
-	CPlatform(int ani_id) {
+	CPlatform(int ani_id,float _x_left,float _x_right) {
 		this->blood = 1;
 		AddAnimation(ani_id);
 		vx = PLATFORM_SPEED_X;
 		vy = 0;
-		x_left = X_LEFT_LIMIT;
-		x_right = X_RIGHT_LIMIT;
+		x_left = _x_left;
+		x_right = _x_right;
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);

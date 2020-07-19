@@ -14,6 +14,8 @@
 #define STATE_ENEMY_ITEM_EXIST	2
 #define STATE_ENEMY_ITEM_NOT_EXIST	3
 
+#define ENEMY_GRAVITY	0.002f
+
 class CEnemy :public CGameObject
 {
 private:

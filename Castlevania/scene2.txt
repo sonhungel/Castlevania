@@ -57,7 +57,7 @@
 #ENEMY
 #===black knight=======
 # type 	x   y    type_item    ani_item    x_left   x_right
-7	120	169	  65	715	115	260
+#7	120	169	  65	715	115	260
 #===Bat =============
 # type 	x   y    type_item    ani_item
 9	90	100	  65	715
@@ -69,17 +69,17 @@
 # type	x	y	width	height	state	trendX	trendY
 # 1: stairAbove	2:stair below
 # stair 1
-3	215	424	30	5	2	1	-1
-3	335	227	50	10	1	-1	1
+3	200	421	45	5	2	1	-1
+3	330	227	55	10	1	-1	1
 # stair 2
-3	147	234	30	5	2	1	-1
+3	132	231	45	5	2	1	-1
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend	x	y
 0	0	1	1	32	290
 #======= simon back map before===========
 # type1	beingOnstair	stairTrend	nx	x	y
-1	1	-1	-1	290	18
+1	1	-1	-1	261	37
 [CAMERA]
 # XLeft	XRight
 0	0

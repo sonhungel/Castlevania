@@ -104,14 +104,14 @@
 # type	x	y	width	height	state	trendX	trendY
 # 1: stairAbove	2:stair below
 # stair 1
-3	175	130	60	10	1	1	1
-3	250	264	50	3	2	-1	-1
+3	200	130	30	10	1	-1	-1
+3	270	262	30	5	2	1	1
 # stair 2
-3	555	195	60	10	1	1	1
-3	705	393	40	3	2	-1	-1
+3	590	195	30	10	1	-1	-1
+3	720	390	30	6	2	1	1
 # stair 3
-3	1365	329	15	3	2	1	-1
-3	1425	195	50	10	1	-1	1
+3	1350	326	20	5	2	1	-1
+3	1420	195	50	10	1	-1	1
 
 # type 	x	y	type item
 
@@ -120,7 +120,7 @@
 [SETUP]
 #==============simon=============
 # type 	beingOnstair	stairTrend
-0	0	1	1	11	135
+0	0	1	1	11	100
 #======= simon back map before===========
 # type1	beingOnstair	stairTrend	nx	x	y
 #1	1	1	1	153	51

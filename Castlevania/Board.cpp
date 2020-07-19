@@ -12,11 +12,6 @@ CBoard* CBoard::GetInstance()
 
 void CBoard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//for (int i = 0; i < listWeapon.size(); i++)
-	//{
-		//CKnife::GetInstance()->Update(dt, coObjects);
-		//listWeapon.at(i)->Update(dt,coObjects);
-	//}
 	if (isStop)
 	{
 		return;

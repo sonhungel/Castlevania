@@ -62,7 +62,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		CGameObject::Update(dt);
 
-		this->vy += SIMON_GRAVITY * dt;
+		this->vy += ENEMY_GRAVITY * dt;
 
 		if (x >= target->x)
 			nx = -1;
@@ -184,11 +184,17 @@ void CHunchBack::SetStateTemp(int _state)
 			vx = HUNCHBACK_SPEED_X;
 		else
 			vx = -HUNCHBACK_SPEED_X;
+		if (isOnGround)
+		{
+			vy = -HUNCHBACK_SPEED_Y / 2;
+			isOnGround = false;
+		}
 	}
 	else if (_state == STATE_ENEMY_HUNCHBACK_JUMP)
 	{
 		this->stateTemp = _state;
 		isJump = true;
+		isOnGround = false;
 		vy = -HUNCHBACK_SPEED_Y;
 	}
 }
@@ -238,6 +244,7 @@ void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
 					if (e->ny == -1)
 					{
 						vy = 0;
+						isOnGround = true;
 						if (isJump == true)
 						{
 							isJump = false;

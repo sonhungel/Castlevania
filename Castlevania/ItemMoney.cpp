@@ -15,7 +15,7 @@ void CItemMoney::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		if (isEated == true)
 		{
-			effect->SetPosition(this->x, this->y-20);
+			
 			if(dt_effection==0)
 				dt_effection = GetTickCount();
 		}
@@ -26,10 +26,14 @@ void CItemMoney::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				state = STATE_ITEM_NOT_EXSIST;
 			}
 		}
-		CGameObject::Update(dt);
+		
 
-			// Simple fall down
-		vy += GRAVITY_ITEM * dt;
+		
+		if (isEated == false)// Simple fall down
+			vy += GRAVITY_ITEM * dt;
+		else
+			vy = 0;
+		CGameObject::Update(dt);
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -38,7 +42,7 @@ void CItemMoney::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 			// No collision occured, proceed normally
-		if (coEvents.size() == 0)
+		if (coEvents.size() == 0 && isEated == false)
 		{
 			x += dx;
 			y += dy;
@@ -62,31 +66,33 @@ void CItemMoney::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 
-	//DebugOut(L"Vi tri item money : %d, %d\n", (int)this->x, (int)this->y);
+	//DebugOut(L"Vi tri effect : %d, %d\n", effect->x, effect->y);
 }
 
 void CItemMoney::Render()
 {
-	if (state == STATE_ITEM_EXSIST)
-	{
+	//if (state == STATE_ITEM_EXSIST)
+	//{
 		if (isEated==false)
 		{
 			animations[0]->Render(x, y);
 		}
 		else
 		{
+			effect->SetPosition(this->x, this->y - 60);
 			effect->Render();
+			//DebugOut(L"RENDER EFFECT ITEM:\n");
 		}
-	}
+	//}
 }
 
 void CItemMoney::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	//if (state == STATE_ITEM_EXSIST && dt_effection == 0)
-	//{
+	if (state == STATE_ITEM_EXSIST && dt_effection == 0)
+	{
 		left = x;
 		right = x + ITEM_MONEY_WIDTH;
 		top = y;
 		bottom = y + ITEM_MONEY_HEIGHT;
-	//}
+	}
 }

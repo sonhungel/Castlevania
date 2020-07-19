@@ -7,8 +7,9 @@
 #include"Textures.h"
 
 //===================DEFINE===========
-#define WHIPNORMAL_HEIGHT 40
+#define WHIPNORMAL_HEIGHT 20
 #define WHIPNORMAL_WIDTH 115
+#define WHIPLONG_WIDTH	147
 
 #define ANI_WHIP_LEVEL_1	0
 #define ANI_WHIP_LEVEL_2	1

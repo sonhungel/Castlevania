@@ -5,11 +5,11 @@
 #include"Utils.h"
 #include"Define.h"
 
-#define GRID_ROW_MAX		20
-#define GRID_COLUMN_MAX		50
+#define GRID_ROW_MAX		2
+#define GRID_COLUMN_MAX		7
 
-#define GRID_CELL_WIDTH		32//SCREEN_WIDTH
-#define GRID_CELL_HEIGHT	32//SCREEN_HEIGHT
+#define GRID_CELL_WIDTH		265//SCREEN_WIDTH
+#define GRID_CELL_HEIGHT	256//SCREEN_HEIGHT
 
 using namespace std;
 

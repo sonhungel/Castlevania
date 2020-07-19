@@ -29,6 +29,8 @@ class CHunchBack :public CEnemy
 	bool isJump = false;
 	bool isWalk = false;
 
+	bool isOnGround = true;
+
 	bool isWait;
 
 	int stateTemp;				// state này để phân chia các animation, các vx,vy cho từng 

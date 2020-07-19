@@ -9,9 +9,9 @@
 #include"HidenObject.h"
 #include"Define.h"
 
-#define SIMON_WALKING_SPEED		0.3f
-#define SIMON_JUMP_SPEED_Y		0.6f
-#define SIMON_GRAVITY			0.002f
+#define SIMON_WALKING_SPEED		0.15f
+#define SIMON_JUMP_SPEED_Y		0.5f
+#define SIMON_GRAVITY			0.005f
 #define SIMON_TREND_RIGHT		1
 #define SIMON_TREND_LEFT		-1
 #define SIMON_PER_STEP	8
@@ -102,8 +102,6 @@ class CSimon : public CGameObject
 	float x_new = 0;
 	float y_new = 0;
 
-	bool isSimonOnAir;
-
 	//=====scene=========
 	int idScene_current;
 	int idScene_next;
@@ -118,6 +116,8 @@ class CSimon : public CGameObject
 public:
 	static CSimon* GetInstance();
 	CSimon();
+
+	bool isSimonOnAir;
 
 	bool isCanAttack;
 
@@ -145,6 +145,8 @@ public:
 	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx, float min_ty, int nx, int ny,
 																		float rdx, float rdy);
 	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj);
+
+	void CollisionWithPortal(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 
 	void CollisionWithObjectHaveItem(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 

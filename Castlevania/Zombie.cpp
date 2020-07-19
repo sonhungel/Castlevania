@@ -65,7 +65,7 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		item->SetPosition(x, y);
 		CGameObject::Update(dt);
-		x += dx;
+
 		this->vy += ENEMY_ZOMBIE_GRAVITY * dt;
 
 		vector<LPCOLLISIONEVENT> coEvents;
@@ -77,10 +77,20 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (coEvents.size() == 0)
 		{
 			y += dy;
+			x += dx;
 		}
 		else
 		{
-			vy = vy = 0;
+			float min_tx, min_ty, nx = 0, ny = 0, rdx = 0, rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;		
+
+			if (ny != 0)
+				vy = 0;
+			
 		}
 
 		// clean up collision events
@@ -88,7 +98,7 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			delete coEvents[i];
 		listBrick.clear();
 	}
-	DebugOut(L"Vi tri ZOMBIE : %d, %d\n", (int)this->x, (int)this->y);
+	//DebugOut(L"Vi tri ZOMBIE : %d, %d\n", (int)this->x, (int)this->y);
 #pragma endregion
 }
 
