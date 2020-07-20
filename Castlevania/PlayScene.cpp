@@ -104,9 +104,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TORCH: 
 	{
 		float item = atoi(tokens[4].c_str());
-		float ani_item = atoi(tokens[5].c_str());
 
-		obj = new CTorch(item,ani_item,x,y);
+		obj = new CTorch(item,x,y);
 
 		int animation_id = atoi(tokens[3].c_str());
 		obj->AddAnimation(animation_id);
@@ -168,9 +167,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANDLE:
 	{
 		int item = atoi(tokens[4].c_str());
-		int ani_item = atoi(tokens[5].c_str());
 
-		obj = new CCandle(item, ani_item, x, y);
+		obj = new CCandle(item, x, y);
 
 		int animation_id = atoi(tokens[3].c_str());
 		obj->AddAnimation(animation_id);
@@ -181,11 +179,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ENEMY_BLACK_KNIGHT:
 	{
 		int type_item= atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
-		int x_left= atoi(tokens[5].c_str());
-		int x_right= atoi(tokens[6].c_str());
 
-		obj = new CBlackKnight(x, y, type_item, ani_item, x_left, x_right,simon);
+		int x_left= atoi(tokens[4].c_str());
+		int x_right= atoi(tokens[5].c_str());
+
+		obj = new CBlackKnight(x, y, type_item,x_left, x_right,simon);
 
 		objects.push_back(obj);
 	}
@@ -193,43 +191,41 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ENEMY_BAT:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
 
-		obj = new CBat(x, y, type_item, ani_item,simon);
+		obj = new CBat(x, y, type_item,simon);
 		objects.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_ZOMBIE:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
+		int trend = atoi(tokens[4].c_str());
 
-		int trend = atoi(tokens[5].c_str());
-		obj = new CZombie(x,y,type_item,ani_item,trend);
+		obj = new CZombie(x,y,type_item,trend);
 		objects.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_GHOST:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
-		obj = new CGhost(x, y, type_item, ani_item, simon);
+
+		obj = new CGhost(x, y, type_item,simon);
 		objects.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_HUNCH_BACK:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
-		obj = new CHunchBack(x, y, type_item, ani_item, simon);
+
+		obj = new CHunchBack(x, y, type_item, simon);
 		listEnemy.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_RAVEN:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
-		obj = new CRaven(x, y, type_item, ani_item, simon);
+
+		obj = new CRaven(x, y, type_item,simon);
 		listEnemy.push_back(obj);
 		//objects.push_back(obj);
 	}
@@ -237,8 +233,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ENEMY_SKELETON:
 	{
 		int type_item = atoi(tokens[3].c_str());
-		int ani_item = atoi(tokens[4].c_str());
-		obj = new CSkeleton(x, y, type_item, ani_item, simon);
+
+		obj = new CSkeleton(x, y, type_item,simon);
 		listEnemy.push_back(obj);
 	}
 		break;
@@ -557,12 +553,22 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetState(STATE_SIMON_STAND_ATTACK);
 		break;
 	case DIK_DOWN:
-		simon->SetState(STATE_SIMON_GO_DOWN);
+	{
+		if (simon->isSimonOnAir == false)
+		{
+			simon->SetState(STATE_SIMON_GO_DOWN);
 			simon->isGoDown = true;
+		}
+	}
 		break;
 	case DIK_UP:
-		simon->SetState(STATE_SIMON_GO_UP);
+	{
+		if (simon->isSimonOnAir == false)
+		{
+			simon->SetState(STATE_SIMON_GO_UP);
 			simon->isGoUp = true;
+		}
+	}
 		break;
 	case DIK_LEFT:
 		simon->SetTrend(SIMON_TREND_LEFT);

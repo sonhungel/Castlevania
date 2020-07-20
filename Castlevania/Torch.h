@@ -35,7 +35,7 @@ class CTorch:public CGameObject
 public:
 	bool isStrock;
 
-	CTorch(int typeitem,int ani_id,float _x, float _y); // type item, ani_id item vì ani_id Torch đã parse bằng txt
+	CTorch(int typeitem,float _x, float _y); // type item, ani_id item vì ani_id Torch đã parse bằng txt
 	~CTorch()
 	{
 		CGameObject::~CGameObject();

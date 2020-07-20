@@ -33,7 +33,7 @@ private:
 	LPGAMEOBJECT target;		//==> this is simon
 
 public:
-	CBat(float _x, float _y, int _typeitem, int ani_id,LPGAMEOBJECT _target) :CEnemy(_x, _y)
+	CBat(float _x, float _y, int _typeitem,LPGAMEOBJECT _target) :CEnemy(_x, _y)
 	{
 		this->type = eType::ENEMY_BAT;
 
@@ -66,9 +66,9 @@ public:
 			_typeitem == eType::ITEM_YELLOW_MONEY ||
 			_typeitem == eType::ITEM_PURPLE_MONEY ||
 			_typeitem == eType::ITEM_BLUE_MONEY)
-			item = new CItemMoney(x, y, _typeitem, ani_id);
+			item = new CItemMoney(x, y, _typeitem);
 		else
-			item = new CItemNormal(x, y, _typeitem, ani_id);
+			item = new CItemNormal(x, y, _typeitem);
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

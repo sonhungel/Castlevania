@@ -19,7 +19,7 @@ private:
 	LPGAMEOBJECT target;
 	int x_left, x_right;
 public:
-	CBlackKnight(float _x, float _y, int _typeitem, int ani_id, int x_l, int x_r,LPGAMEOBJECT _target) :CEnemy(_x,_y)	// type for item, ani_id_item
+	CBlackKnight(float _x, float _y, int _typeitem, int x_l, int x_r,LPGAMEOBJECT _target) :CEnemy(_x,_y)	// type for item, ani_id_item
 	{
 		this->type = eType::ENEMY_BLACK_KNIGHT;
 		AddAnimation(ENEMY_BLACK_KNIGHT_ANI_ID);
@@ -48,9 +48,9 @@ public:
 			_typeitem == eType::ITEM_YELLOW_MONEY ||
 			_typeitem == eType::ITEM_PURPLE_MONEY ||
 			_typeitem == eType::ITEM_BLUE_MONEY)
-			item = new CItemMoney(x, y, _typeitem, ani_id);
+			item = new CItemMoney(x, y, _typeitem);
 		else
-			item = new CItemNormal(x, y, _typeitem, ani_id); //
+			item = new CItemNormal(x, y, _typeitem); //
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

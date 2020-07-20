@@ -15,14 +15,12 @@
 1	224	237	32	32	497
 1	256	237	32	32	497
 1	288	237	32	224	497
-
 1	384	237	32	32	497
 1	416	237	32	32	497
 1	448	237	32	32	497
 1	480	237	32	32	497
 1	512	237	32	224	497
 1	544	237	32	32	497
-
 1	576	301	32	32	497
 1	608	301	32	32	497
 1	640	365	32	32	497
@@ -37,24 +35,22 @@
 1	896	301	32	32
 1	960	13	32	288
 # CANDLE
-# type 	x	y	ani_id_Torch	type item	ani_id_Item
-# type 1: item whipUpgrade, 2: item knife, 3: item heart
-# l?u ý type item ph?i t??ng ?ng v?i animation_item, xem trong item.h
-5	917	100	502	55	704
-5	790	100	502	55	704
-5	665	100	502	55	704
-5	543	100	502	56	705
-5	405	100	502	55	704
-5	270	100	502	57	706
-5	150	100	502	56	705
+# type 	x	y	ani_id_Torch	type item
+5	917	100	502	55
+5	790	100	502	55
+5	665	100	502	55
+5	543	100	502	56
+5	405	100	502	55
+5	270	100	502	57
+5	150	100	502	56
 #ENEMY
 #===black knight=======
-# type 	x   y    type_item    ani_item    x_left   x_right
-#7	677	288	65	715	641	672
-#7	200	170	65	715	195	295
+# type 	x   y    type_item     x_left   x_right
+#7	677	288	65	641	672
+#7	200	170	65	195	295
 #===bat=======
-# type 	x   y    type_item    ani_item
-#9	595	95	65	715
+# type 	x   y    type_item
+#9	595	95	65
 # --- SCENE PORTAL ----
 # type	x	y	scene_id
 50	0	200	4

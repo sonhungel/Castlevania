@@ -72,6 +72,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else
 		{
+			isBeingOnStair = true;
 			isAutoGo = false;
 			
 			if (isCanOnStair == 1)
@@ -360,7 +361,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	
-	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
+	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -561,7 +562,6 @@ void CSimon::SetState(int state)
 			if (vy == 0 && isBeingOnStair == false) {
 				vy = -SIMON_JUMP_SPEED_Y;
 				isSimonOnAir = true;
-				//vx = 0;
 			}
 			break;
 		case STATE_SIMON_UP:
@@ -700,7 +700,7 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 				subWeapon = eType::WEAPON_AXE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			else if (listObj.at(i)->getType() == eType::ITEM_BOONGMERANG)
+			else if (listObj.at(i)->getType() == eType::ITEM_BOOMERANG)
 			{
 				if (trans_start == 0)
 					trans_start = GetTickCount();
@@ -1107,7 +1107,6 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 
 void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 {
-	CGame* game = CGame::GetInstance();
 	RECT rect, rect1;
 	float l, t, r, b;
 	float l1, t1, r1, b1;
@@ -1147,15 +1146,15 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_STAIR_ABOVE)
 				{
 					isCanOnStair = -1;
-					game = NULL;
 					return;
 				}
+				
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_STAIR_BELOW)
 				{
 					isCanOnStair = 1;
-					game = NULL;
 					return;
 				}
+				
 				if (hidenObj->GetState() == HIDENOBJECT_TYPE_SPECIAL)
 				{
 					if (isGoDown)
@@ -1168,8 +1167,12 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 						_stairTrend = -1;
 						isCanOnStair = 1;
 					}
-					game = NULL;
 					return;
+				}
+				else
+				{
+					isGoDown = false;
+					isGoUp = false;
 				}
 			}
 		}
@@ -1179,7 +1182,6 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 	isGoUp = false;
 	auto_x = -1;
 	isCanOnStair = 0;
-	game = NULL;
 	return;
 }
 

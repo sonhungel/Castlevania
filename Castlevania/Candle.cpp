@@ -3,7 +3,7 @@
 #include"ItemNormal.h"
 #include"ItemMoney.h"
 
-CCandle::CCandle(int typeitem, int ani_id, float _x, float _y)
+CCandle::CCandle(int typeitem,float _x, float _y)
 {
 	this->type == eType::CANDLE;
 	this->x = _x;
@@ -26,9 +26,9 @@ CCandle::CCandle(int typeitem, int ani_id, float _x, float _y)
 		typeitem == eType::ITEM_YELLOW_MONEY ||
 		typeitem == eType::ITEM_PURPLE_MONEY ||
 		typeitem == eType::ITEM_BLUE_MONEY)
-		item = new CItemMoney(x, y, typeitem, ani_id);
+		item = new CItemMoney(x, y, typeitem);
 	else
-		item = new CItemNormal(x, y, typeitem, ani_id); //
+		item = new CItemNormal(x, y, typeitem); //
 }
 
 void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

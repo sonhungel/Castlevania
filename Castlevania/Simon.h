@@ -126,10 +126,6 @@ public:
 	bool isGoUp; // set simon ở vị trí thang đặc biệt
 	bool isGoDown;
 	
-
-	// Biến liên quan đến scene
-
-
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
@@ -168,6 +164,7 @@ public:
 
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }
+	int GetIsCanOnStair() { return isCanOnStair; }
 	void CalculateAutoGo();	// xác định lại hướng simon cần di chuyển để phù hợp cho vị trí auto go
 
 	bool IsAttacking() { if (attack_start > 0)return true; return false; }

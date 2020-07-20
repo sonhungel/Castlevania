@@ -38,7 +38,7 @@ class CHunchBack :public CEnemy
 	void SetStateTemp(int _state);	// chỉ chạy bên trong hunchback
 
 public:
-	CHunchBack(float _x, float _y, int _typeitem, int ani_id, LPGAMEOBJECT _target) :CEnemy(_x, _y)
+	CHunchBack(float _x, float _y, int _typeitem,LPGAMEOBJECT _target) :CEnemy(_x, _y)
 	{
 		type = eType::ENEMY_HUNCH_BACK;
 		this->target = _target;
@@ -71,9 +71,9 @@ public:
 			_typeitem == eType::ITEM_YELLOW_MONEY ||
 			_typeitem == eType::ITEM_PURPLE_MONEY ||
 			_typeitem == eType::ITEM_BLUE_MONEY)
-			item = new CItemMoney(x, y, _typeitem, ani_id);
+			item = new CItemMoney(x, y, _typeitem);
 		else
-			item = new CItemNormal(x, y, _typeitem, ani_id);
+			item = new CItemNormal(x, y, _typeitem);
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

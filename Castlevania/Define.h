@@ -32,10 +32,10 @@ enum eType
 	WEAPON_WHIP=44,
 
 	//TYPE ITEM	 
-	ITEM_KNIFE = 51,			// 701
-	ITEM_WHIPUPGRADE = 52,		// 700
-	ITEM_HEARTBIG = 53,			// 702
-	ITEM_AXE = 54,				// 703
+	ITEM_KNIFE = 51,			// 701	
+	ITEM_WHIPUPGRADE = 52,		// 700	
+	ITEM_HEARTBIG = 53,			// 702	
+	ITEM_AXE = 54,				// 703	
 	ITEM_SMALLHEART = 55,		// 704	// đặc biệt vì có di chuyển zic zac
 	ITEM_RED_MONEY = 56,		// 705	// có effect
 	ITEM_YELLOW_MONEY = 57,		// 706	// có effect
@@ -46,9 +46,9 @@ enum eType
 	ITEM_III = 64,				// 712
 	ITEM_HOLLYWATTER = 62,		// 713
 	ITEM_BOSSBALL = 61,			// 714
-	ITEM_BOONGMERANG = 65,		// 715
+	ITEM_BOOMERANG = 65,		// 715
 	ITEM_VASE = 66,				// 716
-	ITEM_BLUE_MONEY=67,			// 717
+	ITEM_BLUE_MONEY=67,			// 717	// có effect
 
 
 	// ENEMY

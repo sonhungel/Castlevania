@@ -38,7 +38,7 @@ public:
 			if (nx < 0)
 				_autoX = (int)x - 10;
 			else
-				_autoX = (int)x + 40;
+				_autoX = (int)x -35;
 		}
 		else if (state == HIDENOBJECT_TYPE_SPECIAL)
 		{

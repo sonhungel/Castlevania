@@ -13,7 +13,7 @@
 class CZombie :public CEnemy
 {
 public:
-	CZombie(float _x, float _y, int _typeitem, int ani_id, int _trend) :CEnemy(_x, _y) // type for item, ani_id_item
+	CZombie(float _x, float _y, int _typeitem, int _trend) :CEnemy(_x, _y) // type for item, ani_id_item
 	{
 		this->type = eType::ENEMY_ZOMBIE;
 
@@ -36,9 +36,9 @@ public:
 			_typeitem == eType::ITEM_YELLOW_MONEY ||
 			_typeitem == eType::ITEM_PURPLE_MONEY ||
 			_typeitem == eType::ITEM_BLUE_MONEY)
-			item = new CItemMoney(x, y, _typeitem, ani_id);
+			item = new CItemMoney(x, y, _typeitem);
 		else
-			item = new CItemNormal(x, y, _typeitem, ani_id);
+			item = new CItemNormal(x, y, _typeitem);
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

@@ -3,7 +3,7 @@
 #include"ItemNormal.h"
 #include"ItemMoney.h"
 
-CTorch::CTorch(int typeitem, int ani_id,float _x, float _y) : CGameObject()
+CTorch::CTorch(int typeitem,float _x, float _y) : CGameObject()
 {
 	this->type = eType::TORCH;
 	this->x = _x;
@@ -26,9 +26,9 @@ CTorch::CTorch(int typeitem, int ani_id,float _x, float _y) : CGameObject()
 		typeitem == eType::ITEM_YELLOW_MONEY ||
 		typeitem == eType::ITEM_PURPLE_MONEY ||
 		typeitem == eType::ITEM_BLUE_MONEY)
-		item = new CItemMoney(x,y,typeitem,ani_id);
+		item = new CItemMoney(x,y,typeitem);
 	else
-		item = new CItemNormal(x, y, typeitem, ani_id); //
+		item = new CItemNormal(x, y, typeitem); //
 }
 
 void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

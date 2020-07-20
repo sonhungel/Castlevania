@@ -36,7 +36,7 @@ void CItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		vx = vy = 0;
+		vy = vx = 0;
 	}
 
 	// clean up collision events
