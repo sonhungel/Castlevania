@@ -85,11 +85,11 @@
 # ENEMY
 # ===== ghost ==========
 # type 	x   y    type_item 
-#10	1000	320	65
+10	1000	320	65
 # ====== hunch back ======
-#11	864	300	65
+11	864	300	65
 # ====== Skeleton ========
-#12	67	260	65
+12	67	260	65
 
 # --- SCENE PORTAL ----
 # type	x	y	scene_id

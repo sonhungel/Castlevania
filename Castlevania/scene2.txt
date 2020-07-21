@@ -51,7 +51,7 @@
 #ENEMY
 #===black knight=======
 # type 	x   y    type_item     x_left   x_right
-#7	120	169	  65	115	260
+7	120	169	  65	115	260
 #===Bat =============
 # type 	x   y    type_item
 9	90	100	  65

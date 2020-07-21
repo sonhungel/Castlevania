@@ -124,6 +124,11 @@ public:
 
 	int GetBlood() { return blood; }
 	virtual void Hurt() { blood -=1; }
+
+	void ClearAnimations()		// cần cảnh giác
+	{
+		animations.clear();
+	}
 	~CGameObject();
 };
 

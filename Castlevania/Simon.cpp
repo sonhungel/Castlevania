@@ -18,7 +18,7 @@
 #include"Bat.h"
 #include"BlackKnight.h"
 #include"Enemy.h"
-
+#include"Board.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -224,7 +224,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (isSimonOnAir)
 				vy += SIMON_GRAVITY * 0.3 * dt;
 			else
-				vy += SIMON_GRAVITY * dt;
+				vy += SIMON_GRAVITY2 * dt;
 		}
 		
 		CGameObject::Update(dt);
@@ -272,7 +272,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else if (GetTickCount() - untouchable_start < SIMON_HURT_TIME && untouchable == true)
 		{
-			state = STATE_SIMON_HURT;
+			if(!isBeingOnStair)
+				state = STATE_SIMON_HURT;
 		}
 		else
 		{
@@ -372,7 +373,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	
-	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
+	DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
 	//DebugOut(L"Vi tri Y simon : %d\n",(int)this->y); 
 
 	//float l1, t1, r1, b1;
@@ -566,7 +567,7 @@ void CSimon::SetState(int state)
 			vx = 0;
 			break;
 		case STATE_SIMON_JUMP:
-			if (vy == 0 && isBeingOnStair == false) {
+			if (vy == 0 && isBeingOnStair == false&&isSimonOnGround) {
 				vy = -SIMON_JUMP_SPEED_Y;
 				isSimonOnAir = true;
 			}
@@ -682,8 +683,6 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 		{
 			if (listObj.at(i)->getType() == eType::ITEM_HEARTBIG) // item heart Big
 			{
-				if(trans_start==0)
-					trans_start = GetTickCount();
 				_heart += 10;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
@@ -696,37 +695,28 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_KNIFE)	// item knife
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
 				subWeapon = eType::WEAPON_KNIFE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_AXE)
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
 				subWeapon = eType::WEAPON_AXE;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_BOOMERANG)
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
 				subWeapon = eType::WEAPON_BOOMERANG;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_HOLLYWATTER)
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
 				subWeapon = eType::WEAPON_HOLLYWATER;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_SMALLHEART)
 			{
 				_heart += 5;
-				if (trans_start == 0)
-					trans_start = GetTickCount();
+
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_RED_MONEY||
@@ -736,25 +726,43 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 			{
 				CItemMoney* item = dynamic_cast<CItemMoney*>(listObj.at(i));
 				item->isEated = true;
-				//if (trans_start == 0)
-					//trans_start = GetTickCount();
+				if (item->getType() == eType::ITEM_RED_MONEY)
+					_score += 100;
+				else if (item->getType() == eType::ITEM_YELLOW_MONEY)
+					_score += 300;
+				else if (item->getType() == eType::ITEM_PURPLE_MONEY)
+					_score += 700;
+				else if (item->getType() == eType::ITEM_BLUE_MONEY)
+					_score += 10;
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_CLOCK)	// hoàn thiện sau
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
+				
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_CROSS)	// hoàn thiện sau
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
+				
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_VASE)	// hoàn thiện sau
 			{
-				if (trans_start == 0)
-					trans_start = GetTickCount();
+			
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			else if (listObj.at(i)->getType() == eType::ITEM_II)
+			{
+				CBoard::GetInstance()->SetNumber(2);
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			else if (listObj.at(i)->getType() == eType::ITEM_III)
+			{
+				CBoard::GetInstance()->SetNumber(3);
+				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
+			}
+			else if (listObj.at(i)->getType() == eType::ITEM_BOSSBALL)
+			{
+				this->blood = MAX_BLOOD;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 		}
@@ -785,9 +793,6 @@ void CSimon::CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, flo
 	if (min_ty <= min_ty0)
 		y += min_ty * dy + ny * 0.8f;
 
-	if (nx != 0)
-		vx = 0;
-
 	for (UINT i = 0; i < coEventsResult.size(); i++)
 	{
 		LPCOLLISIONEVENT e = coEventsResult[i];
@@ -799,6 +804,8 @@ void CSimon::CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, flo
 				{
 					isSimonOnAir = false;
 					isSimonOnGround = true;
+					if (state == STATE_SIMON_JUMP)
+						SetState(STATE_SIMON_UP);
 					vy = 0;
 				}
 				else
@@ -806,6 +813,8 @@ void CSimon::CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, flo
 					y += dy;
 				}
 			}
+			if (e->nx != 0)
+				vx = 0;
 		}
 	}
 	
@@ -905,25 +914,60 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];*/
 }
 
-void CSimon::CollisionWithPlatform(DWORD dt, LPGAMEOBJECT plf, float min_tx, float min_ty, int nx, int ny, float rdx, float rdy)
+void CSimon::CollisionWithPlatform(DWORD dt, LPGAMEOBJECT plf, float min_tx0, float min_ty0, int nx0, int ny0, float rdx0, float rdy0)
 {
-	y += min_ty * dy + ny * 0.8f;
-	
 
-	vx += plf->Getvx();
-	if (vx > plf->Getvx())
-		vx -= plf->Getvx();
-	dx = vx * dt;
+	vector<LPGAMEOBJECT> listObject;
+	listObject.push_back(plf);
 
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	if (ny == -1)
+	coEvents.clear();
+
+	CalcPotentialCollisions(&listObject, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0;
+	float rdy = 0;
+
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+	if (min_ty <= min_ty0)
+		y += min_ty * dy + ny * 0.8f;
+
+	for (UINT i = 0; i < coEventsResult.size(); i++)
 	{
-		isSimonOnAir = false;
-		isSimonOnGround = true;
-		this->vy = GRAVITY * dt;
-		x += dx;
-	}	
+		LPCOLLISIONEVENT e = coEventsResult[i];
+		
+		if (dynamic_cast<CPlatform*>(e->obj))
+		{
+			vx += e->obj->Getvx();
+			if (vx > e->obj->Getvx())
+				vx -= e->obj->Getvx();
+			dx = vx * dt;
 
+			if (e->ny == -1)
+			{
+				isSimonOnAir = false;
+				isSimonOnGround = true;
+				if (state == STATE_SIMON_JUMP)
+					SetState(STATE_SIMON_UP);
+				this->vy = 0; //GRAVITY * dt;
+
+				x += dx;
+			}
+			if (e->nx != 0)
+			{
+				vx = 0;
+			}
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	listObject.clear();
+	
 }
 
 void CSimon::CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj)
@@ -935,7 +979,7 @@ void CSimon::CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj)
 	coEvents.clear();
 		
 	// turn off collision when die 
-	if(state!=STATE_SIMON_DIE&& untouchable == 0&&!isBeingOnStair)
+	if(state!=STATE_SIMON_DIE&& untouchable == 0)//&&!isBeingOnStair)
 		CalcPotentialCollisions(&listObj, coEvents);
 	if (coEvents.size() > 0)
 	{
@@ -951,10 +995,12 @@ void CSimon::CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj)
 
 			if (e->obj->GetState() == STATE_ENEMY_EXIST)
 			{
-				this->nx = -nx0;
-
-				vx = nx0 * SIMON_WALKING_SPEED;
-				vy = -SIMON_JUMP_SPEED_Y;
+				if (!isBeingOnStair)
+				{
+					this->nx = -nx0;
+					vx = nx0 * SIMON_WALKING_SPEED;
+					vy = -SIMON_JUMP_SPEED_Y;
+				}
 
 				CGameObject::Update(dt);
 
@@ -1093,8 +1139,6 @@ void CSimon::CollisionWithObjectHaveItem(DWORD dt, vector<LPGAMEOBJECT>& listObj
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	//CGame *game = CGame::GetInstance();
-
 	left = this->x + 15;
 	top = this->y;
 	right = left + SIMON_WIDTH;
@@ -1106,14 +1150,13 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		bottom = this->y + SIMON_HEIGHT_DIE;
 	}
 	else if (state == STATE_SIMON_SIT
-		|| state == STATE_SIMON_SIT_ATTACK)
-		//|| (state == STATE_SIMON_GO_UP && state == STATE_SIMON_GO_DOWN))
+		|| state == STATE_SIMON_SIT_ATTACK
+		||state==STATE_SIMON_JUMP)
 	{
 		//if(state!=STATE_SIMON_UP)
 			bottom = this->y + SIMON_HEIGHT_SIT;
 	}
-	//else
-		//bottom = this->y + SIMON_HEIGHT_STAND;
+
 }
 
 void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
@@ -1237,7 +1280,8 @@ void CSimon::LoadSubWeapon(int subwp)
 	if (listSubWeapon[IDSubWeaponInVector]->GetState() == STATE_SUBWEAPON_HIDE)
 	{
 		listSubWeapon[IDSubWeaponInVector]->SetTrend(nx);
-		listSubWeapon[IDSubWeaponInVector]->SetState(STATE_SUBWEAPON_APPEAR);
 		listSubWeapon[IDSubWeaponInVector]->SetPosition(this->x, this->y);
+		if(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() >= 2)
+			listSubWeapon[IDSubWeaponInVector]->SetState(STATE_SUBWEAPON_APPEAR);
 	}
 }

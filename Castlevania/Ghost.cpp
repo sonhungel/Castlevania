@@ -134,6 +134,7 @@ void CGhost::GhostMoving()
 		{
 			autoGo = true;
 
+			srand((unsigned)time(0));
 			int signX = rand() & 1 ? -1 : 1;	// random -1, +1
 			int signY = rand() & 1 ? -1 : 1;
 

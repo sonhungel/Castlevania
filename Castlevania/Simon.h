@@ -12,6 +12,7 @@
 #define SIMON_WALKING_SPEED		0.15f
 #define SIMON_JUMP_SPEED_Y		0.5f
 #define SIMON_GRAVITY			0.005f
+#define SIMON_GRAVITY2			0.01f
 #define SIMON_TREND_RIGHT		1
 #define SIMON_TREND_LEFT		-1
 #define SIMON_PER_STEP	8
@@ -144,8 +145,8 @@ public:
 
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);// dùng cho kết thúc thang
 
-	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx, float min_ty, int nx, int ny,
-																		float rdx, float rdy);
+	void CollisionWithPlatform(DWORD dt, LPGAMEOBJECT listPlf, float min_tx0, float min_ty0, int nx0, int ny0,
+																			float rdx0, float rdy0);
 	void CollisionWithEnemy(DWORD dt,vector<LPGAMEOBJECT>& listObj);
 
 	void CollisionWithPortal(DWORD dt, vector<LPGAMEOBJECT>& listObj);

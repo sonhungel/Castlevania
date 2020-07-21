@@ -2,7 +2,7 @@
 #include "Enemy.h"
 
 #define ENEMY_ZOMBIE_WIDTH		32
-#define ENEMY_ZOMBIE_HEIGHT		62
+#define ENEMY_ZOMBIE_HEIGHT		63
 
 #define ENEMY_ZOMBIE_SPEED			0.05f
 #define ENEMY_ZOMBIE_GRAVITY		0.04f

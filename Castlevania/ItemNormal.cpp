@@ -95,8 +95,8 @@ void CItemNormal::LoadItem(int _type)
 	case eType::ITEM_VASE:
 	{
 		AddAnimation(ITEM_VASE_ANI_ID);
-		width = 32;
-		height = 42;
+		width = 27;
+		height = 34;
 	}
 	break;
 	default:

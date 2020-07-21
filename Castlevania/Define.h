@@ -37,9 +37,9 @@ enum eType
 	ITEM_HEARTBIG = 53,			// 702	
 	ITEM_AXE = 54,				// 703	
 	ITEM_SMALLHEART = 55,		// 704	// đặc biệt vì có di chuyển zic zac
-	ITEM_RED_MONEY = 56,		// 705	// có effect
-	ITEM_YELLOW_MONEY = 57,		// 706	// có effect
-	ITEM_PURPLE_MONEY = 58,		// 707	// có effect
+	ITEM_RED_MONEY = 56,		// 705	// có effect	100
+	ITEM_YELLOW_MONEY = 57,		// 706	// có effect	300
+	ITEM_PURPLE_MONEY = 58,		// 707	// có effect	700
 	ITEM_CLOCK = 59,			// 709
 	ITEM_CROSS = 60,			// 710
 	ITEM_II = 63,				// 711
@@ -48,7 +48,7 @@ enum eType
 	ITEM_BOSSBALL = 61,			// 714
 	ITEM_BOOMERANG = 65,		// 715
 	ITEM_VASE = 66,				// 716
-	ITEM_BLUE_MONEY=67,			// 717	// có effect
+	ITEM_BLUE_MONEY=67,			// 717	// có effect	1000
 
 
 	// ENEMY

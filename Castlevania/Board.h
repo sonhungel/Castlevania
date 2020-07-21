@@ -15,7 +15,8 @@ class CBoard
 	DWORD _count;
 	bool isStop;
 	CCode* code;
-	//vector<LPWEAPON> listWeapon;
+	int number;		// item II, item III
+	DWORD timeItem;
 	static CBoard* __instance;
 public:
 	CBoard()
@@ -24,8 +25,9 @@ public:
 		_count = GetTickCount();
 		isStop = false;
 		_weapon = 0;
-		//listWeapon.push_back(CKnife::GetInstance());
+		number = 0;
 		code = new CCode();
+		timeItem = 0;
 	}
 	~CBoard()
 	{
@@ -45,5 +47,10 @@ public:
 	}
 	void ChangeWeapon();
 
+	void SetNumber(int nb)
+	{
+		this->number = nb;
+		timeItem = GetTickCount();
+	}
 };
 

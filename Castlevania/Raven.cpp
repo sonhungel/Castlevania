@@ -110,7 +110,7 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else
 			{
-				ravenPosition += Rada(D3DXVECTOR2(simon->x, simon->y), ravenPosition, ENEMY_RAVEN_SPEED_BUFF);
+				ravenPosition += Rada(D3DXVECTOR2(simon->x, simon->y-ENEMY_RAVEN_HEIGHT+20), ravenPosition, ENEMY_RAVEN_SPEED_BUFF);
 			}
 
 			x = ravenPosition.x;
@@ -118,7 +118,7 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			CGameObject::Update(dt);
 
-			DebugOut(L"Vi tri RAVEN : %d, %d\n", (int)this->x, (int)this->y);
+			//DebugOut(L"Vi tri RAVEN : %d, %d\n", (int)this->x, (int)this->y);
 		}
 	}
 }
@@ -170,11 +170,12 @@ void CRaven::GetBoundingBox(float & left, float & top, float & right, float & bo
 
 void CRaven::RandomPositonFirst(D3DXVECTOR2 & targetFirst)
 {
+	srand((unsigned)time(0));
 	int signX = rand() & 1 ? -1 : 1;	// random -1, +1
-	int signY = rand() & 1 ? -1 : 1;
+	//int signY = rand() & 1 ? -1 : 1;
 
 	targetFirst.x = simon->x + signX * DISTANCE_FROM_SIMON_TO_TARGET_FIRST;
-	targetFirst.y = simon->y + signY * DISTANCE_FROM_SIMON_TO_TARGET_FIRST;
+	targetFirst.y = simon->y - ENEMY_RAVEN_HEIGHT+20; //+ signY * DISTANCE_FROM_SIMON_TO_TARGET_FIRST;
 }
 
 D3DXVECTOR2 CRaven::Rada(D3DXVECTOR2 raven, D3DXVECTOR2 target, float speedOfRaven)	// = quãng đường

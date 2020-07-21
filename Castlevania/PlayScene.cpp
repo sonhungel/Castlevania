@@ -437,7 +437,7 @@ void CPlayScene::Render()
 	float cx, cy;
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
-	//map->DrawMap(cx,cy);
+	map->DrawMap(cx,cy);
 	HUD->Render();
 	
 	for (int i = 0; i < coObjects.size(); i++)
@@ -485,8 +485,8 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	CBoard* HUD = CBoard::GetInstance();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	//if (simon->isSimonOnAir)
-	//	return;
+	if (simon->isSimonOnAir)
+		return;
 	//if (simon->GetState()==STATE_SIMON_SIT_ATTACK)
 		//return;
 	if (simon->IsAttacking())
@@ -668,7 +668,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 	{
 		simon->SetState(STATE_SIMON_GO_UP);
 	}
-	else if (game->IsKeyDown(DIK_DOWN)&&!game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_Z)&&!simon->IsAttacking())
+	else if (game->IsKeyDown(DIK_DOWN))
 	{
 		simon->SetState(STATE_SIMON_GO_DOWN);
 	}

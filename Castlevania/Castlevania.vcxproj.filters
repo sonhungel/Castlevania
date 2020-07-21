@@ -222,6 +222,9 @@
     <ClInclude Include="EnemyZone.h">
       <Filter>GameObject\Enemy\Enemy Zone</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -352,6 +355,9 @@
     </ClCompile>
     <ClCompile Include="EnemyZone.cpp">
       <Filter>GameObject\Enemy\Enemy Zone</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

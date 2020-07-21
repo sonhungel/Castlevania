@@ -21,6 +21,14 @@ void CBoard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		_time--;
 		_count = GetTickCount();
 	}
+	if (timeItem > 0)
+	{
+		if (GetTickCount() - timeItem >= 10000)
+		{
+			number = 0;
+			timeItem = 0;
+		}
+	}
 }
 
 void CBoard::Render()
@@ -58,6 +66,18 @@ void CBoard::Render()
 		else if (simon->GetWeapon() == eType::WEAPON_KNIFE)
 		{ 
 			sprites->Get(13001)->Draw(cx + 310, cy + 40);;
+		}
+	}
+
+	if (number != 0)
+	{
+		if (number== 2)
+		{
+			sprites->Get(13012)->Draw(cx + 450, cy + 35);
+		}
+		else if (number == 3)
+		{
+			sprites->Get(13014)->Draw(cx + 450, cy + 35);
 		}
 	}
 	game = NULL;
