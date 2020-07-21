@@ -23,8 +23,10 @@
 class CWhip :public CWeapon
 {
 	int _level; // level tượng trưng cho độ dài của Whip, 1 và 2 ngắn. 3 dài
+
 	static CWhip* __instance;
 public:
+
 	static CWhip* GetInstance();
 	CWhip();
 	void SetPosition(float x, float y);

@@ -457,22 +457,23 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+	if (simon->IsAttacking())
+		return;
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		if(!simon->IsBeingOnStair())
+		if (!simon->IsBeingOnStair())
 			simon->SetState(STATE_SIMON_UP);
 		break;
 	case DIK_Z:
 		if (simon->GetState() == STATE_SIMON_SIT_ATTACK)
-		{
-			if (game->IsKeyDown(DIK_DOWN))
-				simon->SetState(STATE_SIMON_SIT);
-			else
-				simon->SetState(STATE_SIMON_UP);
-		}
-		break;
-		
+	{
+		if (game->IsKeyDown(DIK_DOWN))
+			simon->SetState(STATE_SIMON_SIT);
+		else 
+			simon->SetState(STATE_SIMON_UP);
+	}
+	break;
 	}
 }
 
@@ -483,27 +484,30 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	CGame* game = CGame::GetInstance();
 	CBoard* HUD = CBoard::GetInstance();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
+	//if (simon->isSimonOnAir)
+	//	return;
+	//if (simon->GetState()==STATE_SIMON_SIT_ATTACK)
+		//return;
+	if (simon->IsAttacking())
+		return;
+
 	switch (KeyCode)
 	{
 	case DIK_2:
 		game->tagSwitchScene = 2;
-		//game->scene_next = 2;
 		break;
 	case DIK_3:
 		game->tagSwitchScene = 3;
-		//game->scene_next = 3;
 		break;
 	case DIK_4:
 		game->tagSwitchScene = 4;
-		//game->scene_next = 4;
 		break;
 	case DIK_5:
 		game->tagSwitchScene = 5;
-		//game->scene_next = 5;
 		break;
 	case DIK_6:
 		game->tagSwitchScene = 6;
-		//game->scene_next = 6;
 		break;
 
 	case DIK_X:
@@ -518,52 +522,69 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		simon->blood = 0;
 		break;
 	case DIK_Z:
-		if (game->IsKeyDown(DIK_DOWN) && simon->isCanAttack == true)
-			simon->SetState(STATE_SIMON_SIT_ATTACK);
-		else if (simon->IsBeingOnStair())
+	{
+		CWhip::GetInstance()->GetAnimation()->ResetFrame();
+		if (simon->IsBeingOnStair())
 		{
 			if (simon->GetStairTrend() == 1)
 			{
-				if (simon->GetTrend() == 1 && simon->isCanAttack == true)
+				if (simon->GetTrend() == 1)
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
-				else if (simon->GetTrend() == -1 && simon->isCanAttack == true)
+				else if (simon->GetTrend() == -1)
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
 			}
 			else if (simon->GetStairTrend() == -1)
 			{
-				if (simon->GetTrend() == 1 && simon->isCanAttack == true)
+				if (simon->GetTrend() == 1)
 				{
 					simon->SetState(STATE_SIMON_GO_UP_ATTACK);
 				}
-				else if (simon->GetTrend() == -1 && simon->isCanAttack == true)
+				else if (simon->GetTrend() == -1)
 				{
 					simon->SetState(STATE_SIMON_GO_DOWN_ATTACK);
 				}
 			}
 		}
-		else if (game->IsKeyDown(DIK_UP) && simon->isCanAttack == true)
+		else
 		{
-			simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
+			if (game->IsKeyDown(DIK_DOWN))
+			{
+				if (!simon->IsAttacking())
+					simon->SetState(STATE_SIMON_SIT_ATTACK);
+			}
+			else if (!game->IsKeyDown(DIK_DOWN))
+			{
+				if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+				{
+					simon->SetState(STATE_SIMON_UP);
+				}
+				else if ((simon->GetState() == STATE_SIMON_IDLE || simon->GetState() == STATE_SIMON_WALKING_LEFT || simon->GetState() == STATE_SIMON_WALKING_RIGHT) && !simon->IsAttacking())
+					simon->SetState(STATE_SIMON_STAND_ATTACK);
+			}
 		}
-		else if(simon->IsBeingOnStair()==false && simon->isCanAttack == true)
-			simon->SetState(STATE_SIMON_STAND_ATTACK);
+	}
 		break;
 	case DIK_DOWN:
 	{
-		if (simon->isSimonOnAir == false)
+		if (simon->isSimonOnAir == false&&!game->IsKeyDown(DIK_Z))
 		{
-			simon->SetState(STATE_SIMON_GO_DOWN);
+			if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			{
+				simon->SetState(STATE_SIMON_UP);
+			}
+			else
+				simon->SetState(STATE_SIMON_GO_DOWN);
 			simon->isGoDown = true;
 		}
 	}
 		break;
 	case DIK_UP:
 	{
-		if (simon->isSimonOnAir == false)
+		if (simon->isSimonOnAir == false && !game->IsKeyDown(DIK_Z))
 		{
 			simon->SetState(STATE_SIMON_GO_UP);
 			simon->isGoUp = true;
@@ -571,10 +592,12 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	}
 		break;
 	case DIK_LEFT:
-		simon->SetTrend(SIMON_TREND_LEFT);
+		if(!simon->IsAttacking())
+			simon->SetTrend(SIMON_TREND_LEFT);
 		break;
 	case DIK_RIGHT:
-		simon->SetTrend(SIMON_TREND_RIGHT);
+		if (!simon->IsAttacking())
+			simon->SetTrend(SIMON_TREND_RIGHT);
 		break;
 	}
 
@@ -584,20 +607,18 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
-	if (simon->isSimonOnAir == true)
-		return;
 
-	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true)
+	if (simon->isSimonOnAir == true||simon->IsAttacking())
+		return;
+	
+
+	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true && !simon->IsBeingOnStair())
 	{
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 	}
-	else if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z) && simon->isCanAttack == true)
-	{
-		simon->SetState(STATE_SIMON_SIT_ATTACK);
-	}
 	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT&&simon->IsBeingOnStair()==false)
 		simon->SetState(STATE_SIMON_JUMP);
-	else if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN))
+	else if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)&&!game->IsKeyDown(DIK_Z))
 	{
 		if(simon->IsBeingOnStair())
 		{
@@ -610,18 +631,17 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 				simon->SetState(STATE_SIMON_GO_UP);
 			}
 		}
-		else
+		else if (!simon->IsAttacking())
 		{
 			if (simon->GetState() == STATE_SIMON_SIT||simon->GetState() == STATE_SIMON_SIT_ATTACK)
 			{
 				simon->SetState(STATE_SIMON_UP);
 			}
-			else
+			else 
 				simon->SetState(STATE_SIMON_WALKING_RIGHT);
 		}
-		simon->SetTrend(SIMON_TREND_RIGHT);
 	}
-	else if (game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_DOWN))
+	else if (game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_Z))
 	{
 		if (simon->IsBeingOnStair())
 		{
@@ -634,22 +654,21 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 				simon->SetState(STATE_SIMON_GO_UP);
 			}
 		}
-		else
+		else if (!simon->IsAttacking())
 		{
 			if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
 			{
 				simon->SetState(STATE_SIMON_UP);
 			}
-			else
+			else 
 				simon->SetState(STATE_SIMON_WALKING_LEFT);
 		}
-		simon->SetTrend(SIMON_TREND_LEFT);
 	}
 	else if (game->IsKeyDown(DIK_UP))
 	{
 		simon->SetState(STATE_SIMON_GO_UP);
 	}
-	else if (game->IsKeyDown(DIK_DOWN)&&!game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_RIGHT))
+	else if (game->IsKeyDown(DIK_DOWN)&&!game->IsKeyDown(DIK_LEFT)&&!game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_Z)&&!simon->IsAttacking())
 	{
 		simon->SetState(STATE_SIMON_GO_DOWN);
 	}

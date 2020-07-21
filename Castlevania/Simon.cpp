@@ -59,10 +59,43 @@ CSimon::CSimon()
 	_live = 5;
 
 	isCanAttack = true;
+
+	//attack_start =0;
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	
+	if (attack_start > 0)
+	{
+		if (GetTickCount() - attack_start >=300)
+		{
+			attack_start = 0;
+			animations[ANI_SIMON_STANDING_ATTACKING]->SetFrame(-1);
+			animations[ANI_SIMON_SITTING_ATTACKING]->SetFrame(-1);
+			animations[ANI_SIMON_GO_DOWN_ATTACK]->SetFrame(-1);
+			animations[ANI_SIMON_GO_UP_ATTACK]->SetFrame(-1);
+			//whip->GetAnimation()->ResetFrame();
+			whip->GetAnimation()->SetFrame(-1);
+
+		}
+	}
+	if (attack_start_temp > 0)
+	{
+		if (GetTickCount() - attack_start_temp > ATTACK_TIME_WAIT)
+		{
+			isCanAttack = true;
+			attack_start_temp = 0;
+		}
+	}
+	if (trans_start > 0)
+	{
+		vx = 0;
+		if (GetTickCount() - trans_start > TRANSITION_TIME)
+		{
+			trans_start = 0;
+		}
+	}
 	if (isAutoGo)
 	{
 		CalculateAutoGo();
@@ -74,7 +107,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			isBeingOnStair = true;
 			isAutoGo = false;
-			
+
 			if (isCanOnStair == 1)
 			{
 				state = STATE_SIMON_GO_UP;
@@ -90,7 +123,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					x = x - SIMON_PER_STEP;
 				}
 			}
-			else if(isCanOnStair==-1)
+			else if (isCanOnStair == -1)
 			{
 				state = STATE_SIMON_GO_DOWN;
 				y = y + SIMON_PER_STEP;
@@ -109,30 +142,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
-	if (attack_start > 0)
-	{
-		if (GetTickCount() - attack_start > ATTACK_TIME)
-		{
-			isCanAttack = true;
-			attack_start = 0;
-		}
-	}
-	if (attack_start_temp > 0)
-	{
-		if (GetTickCount() - attack_start_temp > ATTACK_TIME_WAIT)
-		{
-			
-			attack_start_temp = 0;
-		}
-	}
-	if (trans_start > 0)
-	{
-		vx = 0;
-		if (GetTickCount() - trans_start > TRANSITION_TIME)
-		{
-			trans_start = 0;
-		}
-	}
 	else 
 	{ 
 		vector<LPGAMEOBJECT> listCoObjects;
@@ -226,7 +235,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			y += dy;
 		}
 
-		if (listHideObject.size() > 0 && isSimonOnAir == false)// dùng để bắt đầu thang, còn việc phát hiện va chạm swept AABB là để kết thúc thang
+		if (listHideObject.size() > 0 && isSimonOnGround)// dùng để bắt đầu thang, còn việc phát hiện va chạm swept AABB là để kết thúc thang
 		{
 			IsCanOnStair(listHideObject);
 		}
@@ -237,8 +246,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			state == STATE_SIMON_GO_DOWN_ATTACK||
 			state == STATE_SIMON_GO_UP_ATTACK)
 		{
-			//whip->SetPosition(x, y);
+			whip->SetPosition(x, y);
 			whip->SetTrend(nx);
+			//whip->Update(dt);
 			whip->CollisionWithObject(dt, listCoObjectForWhip);
 		}
 
@@ -310,6 +320,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// No collision occured, proceed normally
 		if (coEvents.size() == 0 && isBeingOnStair == false)
 		{
+			isSimonOnGround = false;
 			x += dx;
 			y += dy;
 		}
@@ -362,6 +373,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	
 	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
+	//DebugOut(L"Vi tri Y simon : %d\n",(int)this->y); 
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -411,7 +423,6 @@ void CSimon::Render()
 		whip->SetPosition(x, y);
 		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame());
 		whip->Render();
-		
 	}
 	else if (state == STATE_SIMON_SIT_ATTACK)
 	{
@@ -419,7 +430,6 @@ void CSimon::Render()
 		ani = ANI_SIMON_SITTING_ATTACKING;
 		whip->GetAnimation()->SetFrame(animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame());
 		whip->Render();
-		
 	}
 	else if (state == STATE_SIMON_GO_DOWN_ATTACK)
 	{
@@ -428,8 +438,8 @@ void CSimon::Render()
 			ani = ANI_SIMON_GO_DOWN_ATTACK;
 			whip->SetPosition(x, y);
 			whip->GetAnimation()->SetFrame(animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame());
-			whip->Render();
 			
+			whip->Render();
 		}
 	}
 	else if (state == STATE_SIMON_GO_UP_ATTACK)
@@ -508,31 +518,28 @@ void CSimon::Render()
 
 void CSimon::SetState(int state)
 {
-
-	if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
-	{
-	}
-	else if(animations[ANI_SIMON_SITTING]->GetCurrentFrame()>0)
-	{ }
-	else if (trans_start > 0)
+	//if (animations[ANI_SIMON_STANDING_ATTACKING]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_SITTING_ATTACKING]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_DOWN_ATTACK]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_UP_ATTACK]->GetCurrentFrame() > 0)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_UP]->GetCurrentFrame() > 1 && isBeingOnStair)
+	//{
+	//}
+	//else if (animations[ANI_SIMON_GO_DOWN]->GetCurrentFrame() > 1 && isBeingOnStair)
+	//{
+	//}
+	if (trans_start > 0)
 	{
 	}
 	else if (isAutoGo)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_UP]->GetCurrentFrame() > 1 && isBeingOnStair)
-	{
-	}
-	else if (animations[ANI_SIMON_GO_DOWN]->GetCurrentFrame() > 1 && isBeingOnStair)
 	{
 	}
 	else if (attack_start > 0)
@@ -566,49 +573,50 @@ void CSimon::SetState(int state)
 			break;
 		case STATE_SIMON_UP:
 		{
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			y -= 1;
-			//y -= 1; 
+			y -= 15;
 		}
 		case STATE_SIMON_IDLE:
 			vx = 0;
 			break;
 		case STATE_SIMON_STAND_ATTACK:
-			attack_start = GetTickCount();
-			attack_start_temp = GetTickCount();
+			if (attack_start == 0)
+				attack_start = GetTickCount();
+			if (attack_start_temp == 0)
+				attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
 		case STATE_SIMON_SIT_ATTACK:
-			attack_start = GetTickCount();
-			attack_start_temp = GetTickCount();
+			if (attack_start == 0)
+				attack_start = GetTickCount();
+			if (attack_start_temp == 0)
+				attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
 		case STATE_SIMON_GO_UP_ATTACK:
-			attack_start = GetTickCount();
-			attack_start_temp = GetTickCount();
+			if(attack_start==0)
+				attack_start = GetTickCount();
+			if(attack_start_temp==0)
+				attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_GO_DOWN_ATTACK:
-			attack_start = GetTickCount();
-			attack_start_temp = GetTickCount();
+			if (attack_start == 0)
+				attack_start = GetTickCount();
+			if (attack_start_temp == 0)
+				attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			vy = 0;
 			break;
 		case STATE_SIMON_ATTACK_SUBWEAPON:
-			attack_start = GetTickCount();
-			attack_start_temp = GetTickCount();
+			if (attack_start == 0)
+				attack_start = GetTickCount();
+			if (attack_start_temp == 0)
+				attack_start_temp = GetTickCount();
 			isCanAttack = false;
 			vx = 0;
 			break;
@@ -790,6 +798,7 @@ void CSimon::CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, flo
 				if (e->ny == -1)
 				{
 					isSimonOnAir = false;
+					isSimonOnGround = true;
 					vy = 0;
 				}
 				else
@@ -910,6 +919,7 @@ void CSimon::CollisionWithPlatform(DWORD dt, LPGAMEOBJECT plf, float min_tx, flo
 	if (ny == -1)
 	{
 		isSimonOnAir = false;
+		isSimonOnGround = true;
 		this->vy = GRAVITY * dt;
 		x += dx;
 	}	
@@ -1088,21 +1098,22 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = this->x + 15;
 	top = this->y;
 	right = left + SIMON_WIDTH;
+	bottom = this->y + SIMON_HEIGHT_STAND;
 
 	if (state == STATE_SIMON_DIE)
 	{
 		right = this->x + SIMON_WIDTH_DIE;
 		bottom = this->y + SIMON_HEIGHT_DIE;
 	}
-	else if (state == STATE_SIMON_SIT 
-		|| state == STATE_SIMON_SIT_ATTACK )
+	else if (state == STATE_SIMON_SIT
+		|| state == STATE_SIMON_SIT_ATTACK)
 		//|| (state == STATE_SIMON_GO_UP && state == STATE_SIMON_GO_DOWN))
 	{
-		if(state!=STATE_SIMON_UP)
+		//if(state!=STATE_SIMON_UP)
 			bottom = this->y + SIMON_HEIGHT_SIT;
 	}
-	else
-		bottom = this->y + SIMON_HEIGHT_STAND;
+	//else
+		//bottom = this->y + SIMON_HEIGHT_STAND;
 }
 
 void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)

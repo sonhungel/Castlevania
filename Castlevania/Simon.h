@@ -65,11 +65,11 @@
 #define SIMON_UNTOUCHABLE_TIME		1500
 #define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 
-#define ATTACK_TIME			370
+#define ATTACK_TIME			300
 #define ATTACK_TIME_WAIT	1000
 
-#define TRANSITION_TIME		400
-#define JUMP_TIME			0
+#define TRANSITION_TIME		500
+
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
 #define ID_SUB_WEAPON_IN_SIMON_KNIFE		0
@@ -112,12 +112,18 @@ class CSimon : public CGameObject
 	int _live;
 
 	int subWeapon;
+
+	bool isSimonOnGround;
+
+	//int SetFrameForWhip;
 	
 public:
 	static CSimon* GetInstance();
 	CSimon();
 
 	bool isSimonOnAir;
+
+	
 
 	bool isCanAttack;
 
@@ -167,7 +173,12 @@ public:
 	int GetIsCanOnStair() { return isCanOnStair; }
 	void CalculateAutoGo();	// xác định lại hướng simon cần di chuyển để phù hợp cho vị trí auto go
 
-	bool IsAttacking() { if (attack_start > 0)return true; return false; }
+	bool IsAttacking() 
+	{ 
+		if (attack_start > 0)
+			return true; 
+		return false; 
+	}
 
 	// function for score, bla bla.....
 	int GetScore() { return _score; }

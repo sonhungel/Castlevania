@@ -54,22 +54,16 @@ void CWhip::SetPosition(float x, float y)
 
 void CWhip::Render()
 {
-	animation = animations[_level - 1];
+	animation = animations[_level - 1];	
 	animation->RenderTrend(x, y, nx);
+
 	RenderBoundingBox();
 }
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vector<LPGAMEOBJECT> listObject;
-	// collision logic with item
-	for (UINT i=0; i < listObject.size(); i++)
-	{
-		LPGAMEOBJECT object = coObjects->at(i);
-		listObject.push_back(object);
-	}
-	//animations[_level - 1]->ResetFrame();
-	CollisionWithObject(dt, listObject);
+	animation = animations[_level - 1];
+	//DebugOut(L"Current frame WHIP : %d\n", (int)animation->GetCurrentFrame());
 }
 
 void CWhip::setUpLevel()
@@ -122,6 +116,10 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
 	if (animation->GetCurrentFrame() < 2)
 		return;
+	if (animation->GetCurrentFrame() == animation->GetLastFrame())
+	{
+
+	}
 
 	RECT rect1, rect2;
 
