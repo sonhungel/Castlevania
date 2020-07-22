@@ -2,8 +2,8 @@
 #include "Enemy.h"
 #include"Simon.h"
 
-#define BOSS_WIDTH  100
-#define BOSS_HEIGHT 50
+#define BOSS_WIDTH  30
+#define BOSS_HEIGHT 45
 
 #define BOSS_MAX_BLOOD  16
 
@@ -13,49 +13,45 @@
 #define STATE_BOSS_NOT_EXSIST		0
 #define STATE_BOSS_ITEM				1
 #define STATE_BOSS_ITEM_NOT_EXSIST 	2
-#define STATE_BOSS_SLEEP			3
-#define STATE_BOSS_FLY				4
 
-#define TIME_BOSS_ATTACK	10000
-#define TIME_BOSS_CHECK_FLY 3000
-#define TIME_BOSS_ATTACK2 300
+#define STATE_BOSS_IDLE				3
+#define STATE_BOSS_FLYING			4
+#define STATE_BOSS_ACTIVE			5
+#define STATE_BOSS_FLY_AWAY			6
 
-#define TIME_BOSS_CURVE 2000
+#define BOSS_ANI_ID_SLEEP	1010
+#define BOSS_ANI_ID_FLY		1011
 
-#define BOSS_RANDOM_X1 5430
-#define BOSS_RANDOM_Y1 210
-#define BOSS_RANDOM_X2 5150
-#define BOSS_RANDOM_Y2 210
-
-#define BOSS_SPEED_AUTO_FLY_X 0.4f
-#define BOSS_SPEED_AUTO_FLY_Y 0.3f
-
-#define BOSS_SPEED_STRAIGHT		0.3f
-
-#define TIME_RATE 0.00005f
-
-#define TYPE_FLY_STRAIGHT	1
-#define TYPE_FLY_CURVE	2
+#define BOSS_DEFAULT_TIME_TO_FLY		1000
+#define BOSS_FAST_TIME_TO_FLY			1000
+#define BOSS_STOP_TIME_WAITING			1500
+#define BOSS_ATTACK_TIME_WAITING		3000
 
 class CBoss : public CEnemy
 {
 	static CBoss* __instance;
 
-	DWORD start_attack;
+	bool isFlyToTarget = false;
+	bool isFlyToSimon = false;
 
-	DWORD start_fly;
-	DWORD start_curve;
+	float xCam;
 
-	// Cần 3 điểm để có thể hoạt động  Bézier curve											*p2
-	D3DXVECTOR2 position0;	//vị trí đầu							*p0                  ..
-	D3DXVECTOR2 position1;	// chọn lựa từ vị trí simon				  ..			   ..
-	D3DXVECTOR2 position2;	// vị trí di chuyện tới						..	      .  ..
-																		  //..*p1-simon	
+	int flyToSimonPercent;
 
-	int step;
-	int typeMove;	// loại chuyển động	thẳng hoặc curve	1 là bay thẳng, 2 là bay curve
+	D3DXVECTOR2 simonPostion;
 
-	D3DXVECTOR2 startPosition;	// vị trí ban đầu khi chưa đánh simon
+	// 3 vị trí cần thiết để xây dựng khả năng di chuyển theo quỹ đạo curve
+	D3DXVECTOR2 position0;
+	D3DXVECTOR2 position1;
+	D3DXVECTOR2 position2;
+
+	int startTimeWaiting = 0;
+	bool isStopWaiting = false;
+
+	bool dropItem = false;
+	bool isFlying = false;
+
+	DWORD attackTime;;
 
 public:
 
@@ -64,10 +60,14 @@ public:
 
 	CBoss(float _x, float _y):CEnemy(_x,_y)
 	{
-		this->type = eType::ENEMY_RAVEN;
+		this->type = eType::ENEMY_BOSS;
 
 		this->blood = BOSS_MAX_BLOOD + 1;	// thêm 1 để thể hiện trạng thái tồn tại	bên trong HUD phải trừ 1
-		this->state = STATE_BOSS_SLEEP;
+
+		SetState(STATE_BOSS_IDLE);
+
+		AddAnimation(BOSS_ANI_ID_SLEEP);
+		AddAnimation(BOSS_ANI_ID_FLY);
 
 		dt_die = 0;
 		dt_strock = 0;
@@ -81,29 +81,25 @@ public:
 		effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
 		item = new CItemNormal(x, y, ITEM_BOSSBALL);
-		
-		startPosition = D3DXVECTOR2(x, y);
 	
 		isActive = false;
+
+		isFlyToTarget = false;
+		isFlyToSimon = false;
+
+		startTimeWaiting = 0;
+		isStopWaiting = false;
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
+	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	//====== Logic move =============
-	// 4 hàm tượng trưng cho 4 trạng thái bay của boss 
-	// fly bình thường
-	// fly tấn công lao vào simon
-	// fly thẳng
-	// fly curve
-
-	void AutoFly(float next_x, float next_y);
-	void AutoAttack(float next_x, float next_y);
-	void FlyStraight(float next_x, float next_y);
-	void FlyCurve(float next_x, float next_y);
-	
-	void SetFly();
+	void startAttack() { attackTime = GetTickCount(); }
+	void FlyToTarget(DWORD dt, D3DXVECTOR2 target);
+	void Flying(DWORD dt);
+	void RandomNewPosition();
 
 	// tìm kiếm tại
 	// https://stackoverflow.com/questions/785097/how-do-i-implement-a-b%C3%A9zier-curve-in-c
@@ -114,7 +110,10 @@ public:
 		return n1 + (diff * perc);
 	}
 
-	void Reset();
+	D3DXVECTOR2 Rada(D3DXVECTOR2 boss, D3DXVECTOR2 target, float speedOfRaven);	// dò tìm đường đi và di chuyển
 
-	void BossActive() { isActive = true; }
+	void BossActive() {
+		isActive = true;
+		SetState(STATE_BOSS_ACTIVE);
+	}
 };

@@ -60,6 +60,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_ENEMY_HUNCH_BACK	11
 #define OBJECT_TYPE_ENEMY_SKELETON		12
 #define OBJECT_TYPE_ENEMY_RAVEN			13
+#define OBJECT_TYPE_BOSS				14
+#define OBJECT_TYPE_ENEMYZONE			15
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -238,6 +240,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listEnemy.push_back(obj);
 	}
 		break;
+	case OBJECT_TYPE_BOSS:
+	{
+		obj = CBoss::GetInstance();
+		obj->SetPosition(x, y);
+		boss = (CBoss*)obj;
+	}
+		break;
+	case OBJECT_TYPE_ENEMYZONE:
+	{
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		int numberOfZombie = atoi(tokens[5].c_str());
+		CEnemyZone *enemyzone=new CEnemyZone(x, y, width, height, numberOfZombie);
+		listEnemyZone.push_back(enemyzone);
+	}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -371,9 +389,14 @@ void CPlayScene::UnLoad()
 	for (int i = 0; i < listEnemy.size(); i++)
 		delete listEnemy[i];
 
+	for (int i = 0; i < listEnemyZone.size(); i++)
+		delete listEnemyZone[i];
+
 	objects.clear();
 
 	coObjects.clear();
+
+	listEnemyZone.clear();
 
 	listEnemy.clear();
 
@@ -399,19 +422,26 @@ void CPlayScene::Update(DWORD dt)
 
 	grid->GetListObject(coObjects,cx,cy);	// Lấy những obj ở trong cam
 
+	for (UINT i = 0; i < listEnemyZone.size(); i++)
+	{
+		listEnemyZone[i]->Update(dt);
+		listEnemyZone[i]->GetEnemy(coObjects);
+	}
 
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	simon->Update(dt, &coObjects);
-
 	for (int i = 0; i < listEnemy.size(); i++)
 	{
 			listEnemy[i]->Update(dt, &coObjects);
 	}
-	//listEnemy.clear();
+	
+	simon->Update(dt, &coObjects);
+
+	if (boss != NULL)
+		boss->Update(dt, &coObjects);
 
 
 	CSimon::GetInstance()->GetPosition(cx, cy);
@@ -429,7 +459,36 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SwitchScene(CGame::GetInstance()->tagSwitchScene);
 	}
-	//game = NULL;
+	
+	if (CGame::GetInstance()->tagCross == true)
+	{
+		KillAllEnemy();
+		CGame::GetInstance()->tagCross = false;
+	}
+
+	if (start_killAllEnemy > 0)
+	{
+		if (GetTickCount() - start_killAllEnemy > TIME_KILL_ALL_ENEMY)
+		{
+			start_killAllEnemy = 0;
+			CGame::GetInstance()->BACKGROUND_COLOR = BACKGROUND_COLOR_DEFAULT;
+		}
+		else
+		{
+			if ((GetTickCount() - start_killAllEnemy) % 4 == 0)
+			{
+				if (CGame::GetInstance()->BACKGROUND_COLOR == BACKGROUND_COLOR_DEFAULT)
+				{
+					CGame::GetInstance()->BACKGROUND_COLOR = BACKGROUND_COLOR_CROSS;
+				}
+				else
+				{
+					CGame::GetInstance()->BACKGROUND_COLOR = BACKGROUND_COLOR_DEFAULT;
+				}
+			}
+		}
+	}
+
 }
 
 void CPlayScene::Render()
@@ -442,6 +501,13 @@ void CPlayScene::Render()
 	
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
+
+	if (boss != NULL)
+		boss->Render();
+	for (UINT i = 0; i < listEnemyZone.size(); i++)
+	{
+		listEnemyZone[i]->Render();
+	}
 
 	simon->Render();
 
@@ -485,8 +551,8 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	CBoard* HUD = CBoard::GetInstance();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	if (simon->isSimonOnAir)
-		return;
+	//if (simon->isSimonOnAir)
+		//return;
 	//if (simon->GetState()==STATE_SIMON_SIT_ATTACK)
 		//return;
 	if (simon->IsAttacking())
@@ -519,7 +585,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		CWhip::GetInstance()->setUpLevel();
 		break;
 	case DIK_A:
-		simon->blood = 0;
+		CBoss::GetInstance()->BossActive();
+		break;
+	case DIK_D:
+		CGame::GetInstance()->tagCross = true;
 		break;
 	case DIK_Z:
 	{
@@ -551,7 +620,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		}
 		else
 		{
-			if (game->IsKeyDown(DIK_DOWN))
+			if (game->IsKeyDown(DIK_DOWN)||simon->isSimonOnAir)
 			{
 				if (!simon->IsAttacking())
 					simon->SetState(STATE_SIMON_SIT_ATTACK);

@@ -12,6 +12,10 @@
 #include"Simon.h"
 #include"Brick.h"
 #include"Torch.h"
+#include"Boss.h"
+#include"EnemyZone.h"
+
+#define TIME_KILL_ALL_ENEMY 1000
 
 
 class CPlayScene:public CScene
@@ -19,15 +23,20 @@ class CPlayScene:public CScene
 protected:
 	CSimon* simon;		
 	CMap* map;
+	CBoss* boss;
 	int _xLeft, _xRight;		// Set cứng cam cho mỗi scene
 
 	CBoard* HUD;
 	CGrid* grid;
 
+	DWORD start_killAllEnemy;
+
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render
 
 	vector<LPGAMEOBJECT> listEnemy;
+
+	vector<LPENEMYZONE> listEnemyZone;
 
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_SETUP(string line);
@@ -42,6 +51,8 @@ public:
 	virtual void UnLoad();
 	virtual void Update(DWORD dt);
 	virtual void Render();
+
+	void KillAllEnemy() { start_killAllEnemy = GetTickCount(); }
 
 	//friend class CPlayScenceKeyHandler;
 };

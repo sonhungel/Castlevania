@@ -1,6 +1,7 @@
 #include "EnemyZone.h"
 #include"Simon.h"
 #include"Game.h"
+#include"Zombie.h"
 
 void CEnemyZone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -9,6 +10,34 @@ void CEnemyZone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	x_leftCreateZombie = cam_x;
 	x_rightCreateZombie = cam_x + SCREEN_WIDTH;
+
+	if (IsCollisionWithSimon())
+	{
+		if (listEnemy.size() < numberOfEnemyMax)
+		{
+			//if (timeCreateEnemy == 0)
+			//{
+				if (timeCreateEnemy == 0)
+					timeCreateEnemy = GetTickCount();
+				else if(GetTickCount()-timeCreateEnemy>TIME_CREATE_ZOMBIE)
+				{
+					timeCreateEnemy = 0;
+					int sign = rand() & 1 ? -1 : 1;	// random -1, +1
+					if (sign == 1)
+					{
+						LPGAMEOBJECT obj = new CZombie(x_leftCreateZombie-ENEMY_ZOMBIE_WIDTH, CSimon::GetInstance()->y-20, eType::ITEM_SMALLHEART, sign);
+						listEnemy.push_back(obj);
+					}
+					else
+					{
+						LPGAMEOBJECT obj = new CZombie(x_rightCreateZombie, CSimon::GetInstance()->y-20, eType::ITEM_HEARTBIG, sign);
+						listEnemy.push_back(obj);
+					}
+				}
+			//}
+		}
+	}
+	//DebugOut(L"Vi tri simon : %d, %d\n", (int)this->x, (int)this->y);
 }
 
 void CEnemyZone::Render()
@@ -30,7 +59,7 @@ void CEnemyZone::GetEnemy(vector<LPGAMEOBJECT>& listObject)
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	for (UINT i = 0;i < listEnemy.size();i++)
 	{
-		if (listEnemy.at(i)->blood > 0 && listEnemy.at(i)->x >= cam_x && listEnemy.at(i)->x <= cam_x + SCREEN_WIDTH)
+		if (listEnemy.at(i)->blood > 0 && listEnemy.at(i)->x >= cam_x-ENEMY_ZOMBIE_WIDTH && listEnemy.at(i)->x <= cam_x + SCREEN_WIDTH && listEnemy.at(i)->y<=SCREEN_HEIGHT)
 			listObject.push_back(listEnemy.at(i));
 		else
 		{

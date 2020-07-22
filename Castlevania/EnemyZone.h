@@ -1,5 +1,11 @@
 ﻿#pragma once
 #include "GameObject.h"
+
+#define TIME_CREATE_ZOMBIE	2000
+
+class CEnemyZone;
+typedef CEnemyZone* LPENEMYZONE;
+
 class CEnemyZone :public CGameObject
 {
 	vector<LPGAMEOBJECT> listEnemy;
@@ -16,10 +22,8 @@ class CEnemyZone :public CGameObject
 
 	int numberOfEnemyMax;
 
-	int numberOfEnemyExist;
-
 public:
-	CEnemyZone(float _x, float _y, float _width, float _height, int time, int _numberEnemy)
+	CEnemyZone(float _x, float _y, float _width, float _height,int _numberEnemy)
 	{
 		this->x = _x;
 		this->y = _y;
@@ -28,6 +32,7 @@ public:
 		this->height = _height;
 
 		this->numberOfEnemyMax = _numberEnemy;
+		timeCreateEnemy = 0;
 	}
 	
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

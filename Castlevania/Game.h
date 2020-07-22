@@ -11,6 +11,7 @@
 #include <dinput.h>
 #include"KeyEventHandler.h"
 #include"Scene.h"
+#include"Define.h"
 
 #define KEYBOARD_BUFFER_SIZE 1024
 /*
@@ -66,6 +67,10 @@ public:
 	// demo5
 	int tagSwitchScene; // chỉ sử dụng khi switch scene và trở về trừ -1 khi đã load xong scene mới
 	bool tagGoBackScene;	// sử dụng khi từ scene 3 về 2 và scene 5 về 4
+
+	// -- hiệu ứng kill enemy
+	D3DCOLOR BACKGROUND_COLOR = BACKGROUND_COLOR_DEFAULT;
+	bool tagCross = false;
 
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }

@@ -20,7 +20,7 @@
 #define WINDOW_CLASS_NAME L"Window"
 #define MAIN_WINDOW_TITLE L"Castlevania 1986"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255,255,255)
+
 
 #define MAX_FRAME_RATE 120
 
@@ -211,7 +211,7 @@ void Render()
 	if (d3ddv->BeginScene())
 	{
 		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+		d3ddv->ColorFill(bb, NULL, CGame::GetInstance()->BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 

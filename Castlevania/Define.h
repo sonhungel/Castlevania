@@ -1,7 +1,12 @@
 ﻿#pragma once
 
+
 #define SCREEN_WIDTH 525
 #define SCREEN_HEIGHT 496	// 496
+
+#define BACKGROUND_COLOR_DEFAULT D3DCOLOR_XRGB(0, 0, 0)
+
+#define BACKGROUND_COLOR_CROSS D3DCOLOR_XRGB(200, 200, 200)
 
 enum eType
 {
@@ -40,11 +45,13 @@ enum eType
 	ITEM_RED_MONEY = 56,		// 705	// có effect	100
 	ITEM_YELLOW_MONEY = 57,		// 706	// có effect	300
 	ITEM_PURPLE_MONEY = 58,		// 707	// có effect	700
-	ITEM_CLOCK = 59,			// 709
-	ITEM_CROSS = 60,			// 710
+
 	ITEM_II = 63,				// 711
 	ITEM_III = 64,				// 712
 	ITEM_HOLLYWATTER = 62,		// 713
+
+	ITEM_CLOCK = 59,			// 709
+	ITEM_CROSS = 60,			// 710
 	ITEM_BOSSBALL = 61,			// 714
 	ITEM_BOOMERANG = 65,		// 715
 	ITEM_VASE = 66,				// 716
@@ -61,5 +68,6 @@ enum eType
 	ENEMY_SKELETON=75,
 	ENEMY_RAVEN=76,
 	ENEMY_BONE_SKELETON=77,
+	ENEMY_BOSS=80,
 	
 };

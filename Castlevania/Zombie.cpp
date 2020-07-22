@@ -66,6 +66,11 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		item->SetPosition(x, y);
 		CGameObject::Update(dt);
 
+		if (this->x >= X_LEFT_LIMIT)
+		{
+			nx = -1;
+			vx = -ENEMY_ZOMBIE_SPEED;
+		}
 		this->vy += ENEMY_ZOMBIE_GRAVITY * dt;
 
 		vector<LPCOLLISIONEVENT> coEvents;
