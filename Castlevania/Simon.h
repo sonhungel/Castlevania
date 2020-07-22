@@ -63,7 +63,7 @@
 #define SIMON_HEIGHT_DIE			33
 #define SIMON_WIDTH_DIE				60
 
-#define SIMON_UNTOUCHABLE_TIME		1500
+#define SIMON_UNTOUCHABLE_TIME		2500
 #define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 
 #define ATTACK_TIME			300
@@ -124,9 +124,9 @@ public:
 
 	bool isSimonOnAir;
 
-	
-
 	bool isCanAttack;
+
+	bool isKillAllEnemy;
 
 	int auto_x;
 
@@ -142,6 +142,9 @@ public:
 
 	void CollisionWithBrick(DWORD dt, LPGAMEOBJECT brick, float min_tx0, float min_ty0, int nx0, int ny0,
 																		float rdx0,float rdy0);
+
+	void CollisionWithBreakBrick(DWORD dt, LPGAMEOBJECT breakbrick, float min_tx0, float min_ty0, int nx0, int ny0,
+																	float rdx0, float rdy0);
 
 	void CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenObj);// dùng cho kết thúc thang
 

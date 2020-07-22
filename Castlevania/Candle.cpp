@@ -2,6 +2,7 @@
 #include"ItemSmallHeart.h"
 #include"ItemNormal.h"
 #include"ItemMoney.h"
+#include"Brick.h"
 
 CCandle::CCandle(int typeitem,float _x, float _y)
 {
@@ -33,6 +34,16 @@ CCandle::CCandle(int typeitem,float _x, float _y)
 
 void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
+
 	if (dt_die == 0)
 	{
 		if (state == STATE_CANDLE_NOT_EXIST)
@@ -51,7 +62,7 @@ void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				state = STATE_CANDLE_ITEM_EXIST;
 			}
 			if(state==STATE_CANDLE_ITEM_EXIST)
-				item->Update(dt, coObjects);
+				item->Update(dt, &listBrick);
 		}
 	}
 	if (item->state == STATE_ITEM_NOT_EXSIST)
@@ -95,7 +106,7 @@ void CCandle::Render()
 			item->Render();
 		}
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CCandle::GetBoundingBox(float& left, float& top, float& right, float& bottom)

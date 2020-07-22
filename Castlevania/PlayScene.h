@@ -34,7 +34,7 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render
 
-	vector<LPGAMEOBJECT> listEnemy;
+	vector<LPGAMEOBJECT> listEnemy;	// chứa những enemy như black night, bat ,bla bla... ngoại trừ zombie
 
 	vector<LPENEMYZONE> listEnemyZone;
 
@@ -53,6 +53,8 @@ public:
 	virtual void Render();
 
 	void KillAllEnemy() { start_killAllEnemy = GetTickCount(); }
+
+	void GetEnemyOnScreen(vector<LPGAMEOBJECT>& listObject);
 
 	//friend class CPlayScenceKeyHandler;
 };

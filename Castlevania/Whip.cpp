@@ -7,6 +7,7 @@
 #include"Brick.h"
 #include"Candle.h"
 #include"BlackKnight.h"
+#include"BreakBrick.h"
 
 
 CWhip* CWhip::__instance = NULL;
@@ -20,7 +21,7 @@ CWhip* CWhip::GetInstance()
 CWhip::CWhip()
 {
 	type = eType::WEAPON_WHIP;
-	_level = 1;
+	_level = 3;
 	AddAnimation(WHIP_LEVEL_1_ID);
 	AddAnimation(WHIP_LEVEL_2_ID); // level 2
 	AddAnimation(WHIP_LEVEL_3_ID);	// level 3
@@ -187,6 +188,22 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					// bên trong enemey sẽ tự bộng từ blood qua cờ isStrock 
 				}
 				
+			}
+		}
+		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
+		{
+			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
+			{
+				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
+				brick->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
+				{
+					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
+				}
 			}
 		}
 		

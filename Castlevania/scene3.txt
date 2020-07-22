@@ -47,8 +47,8 @@
 #ENEMY
 #===black knight=======
 # type 	x   y    type_item     x_left   x_right
-#7	677	288	65	641	672
-#7	200	170	65	195	295
+7	677	288	65	641	672
+7	200	170	65	195	295
 #===bat=======
 # type 	x   y    type_item
 9	595	95	65

@@ -8,6 +8,16 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	if (this->blood > 0 && this->x >= cam_x && this->x <= cam_x + SCREEN_WIDTH)
 	{
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
+
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
 		{
@@ -31,7 +41,7 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
 					item->SetPosition(x, y);
-					item->Update(dt, coObjects);
+					item->Update(dt, &listBrick);
 				}
 			}
 		}
@@ -69,29 +79,24 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
 			}
 		}
 
-		if(rand() % 150 < 3)	// random để bắn xương, có thể tùy chỉ theo ý thích
+		if (state == STATE_ENEMY_EXIST)
 		{
-			LPGAMEOBJECT bone;
-			bone = new CBone(this->x, this->y, this->nx);
-			listBone.push_back(bone);
+			if (rand() % 150 < 3)	// random để bắn xương, có thể tùy chỉ theo ý thích
+			{
+				LPGAMEOBJECT bone;
+				bone = new CBone(this->x, this->y, this->nx);
+				listBone.push_back(bone);
+			}
 		}
 
-		for (UINT i = 0;i < listBone.size();i++)
-		{
-			listBone.at(i)->Update(dt);
-		}
+		//for (UINT i = 0;i < listBone.size();i++)
+		//{
+		//	listBone.at(i)->Update(dt);
+		//}
 #pragma endregion
 
 #pragma region LogicMove
-		vector<LPGAMEOBJECT> listBrick;
 
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<CBrick*>(coObjects->at(i)))
-			{
-				listBrick.push_back(coObjects->at(i));
-			}
-		}
 
 		if (state_temp == STATE_ENEMY_SKELETON_IDLE)
 		{
@@ -240,5 +245,21 @@ void CSkeleton::GetBoundingBox(float & left, float & top, float & right, float &
 	{
 		item->GetPosition(x, y);
 		item->GetBoundingBox(left, top, right, bottom);
+	}
+}
+
+void CSkeleton::GetListBone(vector<LPGAMEOBJECT>& listObject)
+{
+	float cam_x, cam_y;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	for (UINT i = 0; i < listBone.size(); i++)
+	{
+		if (listBone.at(i)->blood > 0 )
+			listObject.push_back(listBone.at(i));
+		else
+		{
+			delete listBone.at(i);
+			listBone.erase(listBone.begin() + i);
+		}
 	}
 }

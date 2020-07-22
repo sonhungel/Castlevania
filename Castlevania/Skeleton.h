@@ -4,8 +4,8 @@
 
 #define ENEMY_SKELETON_ANI_ID	1009
 
-#define ENEMY_SKELETON_SPEED_X	0.13f
-#define ENEMY_SKELETON_SPEED_Y	0.45f
+#define ENEMY_SKELETON_SPEED_X	0.11f
+#define ENEMY_SKELETON_SPEED_Y	0.35f
 
 #define ENEMY_SKELETON_WIDTH	34
 #define ENEMY_SKELETON_HEIGHT	66
@@ -18,7 +18,7 @@
 #define DISTANCE_SKELETON_WALK_OUT_OF_SIMON	64
 #define DISTANCE_SKELETON_WALK_TO_SIMON		160	
 
-#define ENEMY_SKELETON_GRAVITY 0.0015f
+#define ENEMY_SKELETON_GRAVITY 0.0011f
 
 
 class CSkeleton :public CEnemy
@@ -64,6 +64,6 @@ public:
 	
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	vector<LPGAMEOBJECT> GetListBone() { return listBone; }
+	void GetListBone(vector<LPGAMEOBJECT>& listObject);
 
 };

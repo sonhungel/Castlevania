@@ -3,6 +3,15 @@
 
 void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
 #pragma region Xu_Ly_Hieu_Ung&Item
 	if (dt_die == 0)	// đo thời gian die
 	{
@@ -25,7 +34,7 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				state = STATE_ENEMY_ITEM_EXIST;
 			if (state == STATE_ENEMY_ITEM_EXIST)
 			{
-				item->Update(dt, coObjects);
+				item->Update(dt, &listBrick);
 			}
 		}
 	}
@@ -54,24 +63,19 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (blood > 1)
 	{
-		vector<LPGAMEOBJECT> listBrick;
 
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<CBrick*>(coObjects->at(i)))
-			{
-				listBrick.push_back(coObjects->at(i));
-			}
-		}
 		item->SetPosition(x, y);
 		CGameObject::Update(dt);
-
-		if (this->x >= X_LEFT_LIMIT)
-		{
-			nx = -1;
-			vx = -ENEMY_ZOMBIE_SPEED;
+		if (dt_die > 0)
+			vx = vy = 0;
+		else {
+			if (this->x >= X_LEFT_LIMIT)
+			{
+				nx = -1;
+				vx = -ENEMY_ZOMBIE_SPEED;
+			}
+			this->vy += ENEMY_ZOMBIE_GRAVITY * dt;
 		}
-		this->vy += ENEMY_ZOMBIE_GRAVITY * dt;
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;

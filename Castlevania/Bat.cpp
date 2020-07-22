@@ -1,6 +1,7 @@
 ﻿#include "Bat.h"
 #include"Utils.h"
 #include"Game.h"
+#include"Brick.h"
 
 void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -20,6 +21,15 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (isActive == true && this->blood > 0)
 	{
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
 		{
@@ -44,7 +54,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
 					item->SetPosition(this->x, this->y);
-					item->Update(dt, coObjects);
+					item->Update(dt, &listBrick);
 				}
 			}
 		}
@@ -75,7 +85,8 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			y += dx;
 		}
-		x += dx;
+		if(dt_die==0)
+			x += dx;
 
 		DebugOut(L"toc do Bat : %f, %f\n", this->vx, this->vy);
 	}

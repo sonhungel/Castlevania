@@ -2,6 +2,7 @@
 #include"ItemSmallHeart.h"
 #include"ItemNormal.h"
 #include"ItemMoney.h"
+#include"Brick.h"
 
 CTorch::CTorch(int typeitem,float _x, float _y) : CGameObject()
 {
@@ -33,6 +34,16 @@ CTorch::CTorch(int typeitem,float _x, float _y) : CGameObject()
 
 void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
+
 	if (dt_die == 0)	// đo thời gian die
 	{
 		if (state == STATE_TORCH_NOT_EXIST)
@@ -52,7 +63,7 @@ void CTorch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 
 			if(state==STATE_TORCH_ITEM_EXIST)
-				item->Update(dt, coObjects);
+				item->Update(dt, &listBrick);
 		}
 	}
 	if (item->state == STATE_ITEM_NOT_EXSIST)
@@ -96,7 +107,7 @@ void CTorch::Render()
 			item->Render();
 		}
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CTorch::GetBoundingBox(float& left, float& top, float& right, float& bottom)

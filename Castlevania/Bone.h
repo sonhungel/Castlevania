@@ -26,7 +26,7 @@ public:
 
 		AddAnimation(BONE_ANI_ID);
 
-		this->state = STATE_BONE_HIDE;
+		this->state = STATE_BONE_APPEAR;
 
 		this->nx = trend;
 

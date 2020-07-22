@@ -5,6 +5,16 @@
 
 void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
+
 #pragma region Xu_Ly_Hieu_Ung&Item
 	if (dt_die == 0)	// đo thời gian die
 	{
@@ -28,7 +38,7 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				
 			if (state == STATE_ENEMY_ITEM_EXIST)
 			{
-				item->Update(dt, coObjects);
+				item->Update(dt, &listBrick);
 			}
 		}
 	}
@@ -57,15 +67,7 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 #pragma region collision
 	if (blood>1)
 	{
-		vector<LPGAMEOBJECT> listBrick;
-
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<CBrick*>(coObjects->at(i)))
-			{
-				listBrick.push_back(coObjects->at(i));
-			}
-		}
+		
 		item->SetPosition(x, y);
 		CGameObject::Update(dt);
 		x += dx;
@@ -77,11 +79,14 @@ void CBlackKnight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vx = nx * ENEMY_BLACK_KNIGHT_SPEED;
 		}
 
-		if (target->GetState() == STATE_SIMON_JUMP)
+		if (x > x_left && x < x_right)
 		{
-			int sign = (target->x - this->x) / abs(target->x - this->x);
-			nx = sign;
-			vx = ENEMY_BLACK_KNIGHT_SPEED * nx;;
+			if (target->GetState() == STATE_SIMON_JUMP)
+			{
+				int sign = (target->x - this->x) / abs(target->x - this->x);
+				nx = sign;
+				vx = ENEMY_BLACK_KNIGHT_SPEED * nx;;
+			}
 		}
 		
 		vector<LPCOLLISIONEVENT> coEvents;

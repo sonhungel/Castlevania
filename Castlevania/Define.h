@@ -56,6 +56,7 @@ enum eType
 	ITEM_BOOMERANG = 65,		// 715
 	ITEM_VASE = 66,				// 716
 	ITEM_BLUE_MONEY=67,			// 717	// có effect	1000
+	ITEM_HIDEN=68,
 
 
 	// ENEMY

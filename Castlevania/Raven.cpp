@@ -1,7 +1,7 @@
 ﻿#include "Raven.h"
 #include"Game.h"
 #include"Define.h"
-
+#include"Brick.h"
 
 
 void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -11,6 +11,15 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	game->GetCamPos(cam_x, cam_y);
 	if (blood > 0 && this->x >= cam_x && this->x <= (cam_x + SCREEN_WIDTH))
 	{
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
 		{
@@ -33,7 +42,8 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					state = STATE_ENEMY_ITEM_EXIST;
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
-					item->Update(dt, coObjects);
+					item->SetPosition(x, y);
+					item->Update(dt, &listBrick);
 				}
 			}
 		}
@@ -112,10 +122,11 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				ravenPosition += Rada(D3DXVECTOR2(simon->x, simon->y-ENEMY_RAVEN_HEIGHT+20), ravenPosition, ENEMY_RAVEN_SPEED_BUFF);
 			}
-
-			x = ravenPosition.x;
-			y = ravenPosition.y;
-
+			if (dt_die == 0)
+			{
+				x = ravenPosition.x;
+				y = ravenPosition.y;
+			}
 			CGameObject::Update(dt);
 
 			//DebugOut(L"Vi tri RAVEN : %d, %d\n", (int)this->x, (int)this->y);

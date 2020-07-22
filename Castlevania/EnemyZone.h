@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "GameObject.h"
 
-#define TIME_CREATE_ZOMBIE	2000
+#define TIME_CREATE_ZOMBIE	1500
 
 class CEnemyZone;
 typedef CEnemyZone* LPENEMYZONE;

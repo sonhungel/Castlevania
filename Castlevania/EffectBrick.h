@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 
-#define EFFECT_BRICK_ANI_ID  830
 
 #define GRAVITY	0.002f
 

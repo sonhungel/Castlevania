@@ -62,6 +62,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 #define OBJECT_TYPE_ENEMY_RAVEN			13
 #define OBJECT_TYPE_BOSS				14
 #define OBJECT_TYPE_ENEMYZONE			15
+#define OBJECT_TYPE_HIDEN_ACTIVE		16
 
 #define	SETUP_TYPE_SIMON_NEXT_MAP	0
 #define	SETUP_TYPE_SIMON_BACK_MAP	1
@@ -162,7 +163,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BREAK_BRICK:
 	{
 		int ani_id = atoi(tokens[3].c_str());
-		obj = new CBreakBrick(x, y, ani_id);
+		int type_item = atoi(tokens[4].c_str());
+		int x_item= atoi(tokens[5].c_str());
+		int y_item= atoi(tokens[6].c_str());
+		obj = new CBreakBrick(x, y,x_item,y_item, ani_id,type_item);
 		objects.push_back(obj);
 	}
 		break;
@@ -187,7 +191,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = new CBlackKnight(x, y, type_item,x_left, x_right,simon);
 
-		objects.push_back(obj);
+		listEnemy.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_BAT:
@@ -195,15 +199,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type_item = atoi(tokens[3].c_str());
 
 		obj = new CBat(x, y, type_item,simon);
-		objects.push_back(obj);
+		listEnemy.push_back(obj);
 	}
 		break;
-	case OBJECT_TYPE_ENEMY_ZOMBIE:
+	case OBJECT_TYPE_HIDEN_ACTIVE:
 	{
-		int type_item = atoi(tokens[3].c_str());
-		int trend = atoi(tokens[4].c_str());
-
-		obj = new CZombie(x,y,type_item,trend);
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		int state = atoi(tokens[5].c_str());
+		obj = new CHidenObject(x, y, width, height, state);
 		objects.push_back(obj);
 	}
 		break;
@@ -212,7 +216,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type_item = atoi(tokens[3].c_str());
 
 		obj = new CGhost(x, y, type_item,simon);
-		objects.push_back(obj);
+		listEnemy.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_HUNCH_BACK:
@@ -229,7 +233,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = new CRaven(x, y, type_item,simon);
 		listEnemy.push_back(obj);
-		//objects.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_SKELETON:
@@ -400,6 +403,8 @@ void CPlayScene::UnLoad()
 
 	listEnemy.clear();
 
+	simon = NULL;		// 2 obj này không delete vì là singleton
+	boss = NULL;
 
 	delete grid;
 	grid = NULL;
@@ -428,16 +433,16 @@ void CPlayScene::Update(DWORD dt)
 		listEnemyZone[i]->GetEnemy(coObjects);
 	}
 
+	GetEnemyOnScreen(coObjects);
+
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	for (int i = 0; i < listEnemy.size(); i++)
-	{
-			listEnemy[i]->Update(dt, &coObjects);
-	}
+	// những enemy khác zombie được ghét từ trong này
 	
+
 	simon->Update(dt, &coObjects);
 
 	if (boss != NULL)
@@ -460,10 +465,17 @@ void CPlayScene::Update(DWORD dt)
 		CGame::GetInstance()->SwitchScene(CGame::GetInstance()->tagSwitchScene);
 	}
 	
-	if (CGame::GetInstance()->tagCross == true)
+	if (CSimon::GetInstance()->isKillAllEnemy == true)
 	{
 		KillAllEnemy();
-		CGame::GetInstance()->tagCross = false;
+		for (UINT i = 0; i < coObjects.size(); i++)
+		{
+			if (dynamic_cast<CEnemy*>(coObjects.at(i)))
+			{
+				coObjects.at(i)->blood = 0;
+			}
+		}
+		CSimon::GetInstance()->isKillAllEnemy = false;
 	}
 
 	if (start_killAllEnemy > 0)
@@ -511,8 +523,30 @@ void CPlayScene::Render()
 
 	simon->Render();
 
-	for (int i = 0; i < listEnemy.size(); i++)
-		listEnemy[i]->Render();
+}
+
+void CPlayScene::GetEnemyOnScreen(vector<LPGAMEOBJECT>& listObject)
+{
+	float cam_x, cam_y;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	for (UINT i = 0; i < listEnemy.size(); i++)
+	{
+		if (listEnemy.at(i)->blood > 0 && listEnemy.at(i)->x >= cam_x - ENEMY_ZOMBIE_WIDTH && listEnemy.at(i)->x <= cam_x + SCREEN_WIDTH && listEnemy.at(i)->y <= SCREEN_HEIGHT)
+		{
+			listObject.push_back(listEnemy.at(i));
+			if (dynamic_cast<CSkeleton*>(listEnemy.at(i)))
+			{
+				CSkeleton* skeleton = dynamic_cast<CSkeleton*>(listEnemy.at(i));
+				skeleton->GetListBone(listObject);
+			}
+		}
+		else if(listEnemy.at(i)->blood<=0|| listEnemy.at(i)->y > SCREEN_HEIGHT)
+		{
+			delete listEnemy.at(i);
+			listEnemy.erase(listEnemy.begin() + i);
+		}
+		
+	}
 }
 
 
@@ -588,7 +622,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		CBoss::GetInstance()->BossActive();
 		break;
 	case DIK_D:
-		CGame::GetInstance()->tagCross = true;
+		simon->isKillAllEnemy = true;
 		break;
 	case DIK_Z:
 	{
@@ -641,11 +675,11 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	{
 		if (simon->isSimonOnAir == false&&!game->IsKeyDown(DIK_Z))
 		{
-			if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
-			{
-				simon->SetState(STATE_SIMON_UP);
-			}
-			else
+			//if (simon->GetState() == STATE_SIMON_SIT || simon->GetState() == STATE_SIMON_SIT_ATTACK)
+			//{
+				//simon->SetState(STATE_SIMON_UP);
+			//}
+			//else
 				simon->SetState(STATE_SIMON_GO_DOWN);
 			simon->isGoDown = true;
 		}

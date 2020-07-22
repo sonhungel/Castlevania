@@ -70,7 +70,6 @@ public:
 
 	// -- hiệu ứng kill enemy
 	D3DCOLOR BACKGROUND_COLOR = BACKGROUND_COLOR_DEFAULT;
-	bool tagCross = false;
 
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }

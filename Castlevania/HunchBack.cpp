@@ -11,6 +11,15 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (this->blood > 0 && this->x >= cam_x && this->x <= cam_x + SCREEN_WIDTH)
 	{
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
 		{
@@ -33,11 +42,12 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					state = STATE_ENEMY_ITEM_EXIST;
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
-					item->Update(dt, coObjects);
+					
+					item->Update(dt, &listBrick);
 				}
 			}
 		}
-		if (item->GetState() == STATE_ITEM_NOT_EXSIST)
+		if (item != NULL && item->GetState() == STATE_ITEM_NOT_EXSIST)
 			this->blood = 0;
 		if (dt_strock == 0)			// đo thời gian effect
 		{
@@ -60,67 +70,83 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 #pragma region Collision
 
-		CGameObject::Update(dt);
+		
+		if (state != STATE_ENEMY_EXIST)
+			vx = 0;
 
 		this->vy += ENEMY_GRAVITY * dt;
+
+		CGameObject::Update(dt);
+
+
+
 
 		if (x >= target->x)
 			nx = -1;
 		else
 			nx = 1;
+		item->SetPosition(this->x, this->y);
 
-		if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2( target->x, target->y)) <= DISTANCE_ACTIVE_HUNCHBACK)
-			// Chờ simon vào bên trong phần distance Active
-		{
-			if (isWalk == false)
-			{
-				isWalk = true;
-				SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
-			}
-		}
-		Collision(coObjects);
+		Collision(&listBrick);
+
+		
+		
 #pragma endregion
 
 #pragma region Logic_move
 
-		if (stateTemp != STATE_ENEMY_HUNCHBACK_WAIT)
+		if (blood>1)
 		{
-			if (x < target->x)
+			if (CalculateDistance(D3DXVECTOR2(this->x, this->y), D3DXVECTOR2(target->x, target->y)) <= DISTANCE_ACTIVE_HUNCHBACK)
+				// Chờ simon vào bên trong phần distance Active
 			{
-				if (abs(target->x - x) > DISTANCE_WALK)
+				if (isWalk == false)
 				{
-					if (isJump == false)
-					{
-						nx = 1;
-					}
-					SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
-				}
-			}
-			else if (x > target->x)
-			{
-				if (abs(target->x - x) > DISTANCE_WALK)
-				{
-					if (isJump == false)
-					{
-						nx = -1;
-					}
-					SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
-				}
-			}
-
-			if (rand() % 60 <3)	// random hunch back jump tỉ lệ 0.05
-			{
-				if (isJump == false && (abs(target->x - x) < DISTANCE_WALK))
-				{
+					isWalk = true;
 					SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
 				}
 			}
+
+			if (stateTemp != STATE_ENEMY_HUNCHBACK_WAIT)
+			{
+				if (x < target->x)
+				{
+					if (abs(target->x - x) > DISTANCE_WALK)
+					{
+						if (isJump == false)
+						{
+							nx = 1;
+						}
+						SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
+					}
+				}
+				else if (x > target->x)
+				{
+					if (abs(target->x - x) > DISTANCE_WALK)
+					{
+						if (isJump == false)
+						{
+							nx = -1;
+						}
+						SetStateTemp(STATE_ENEMY_HUNCHBACK_WALK);
+					}
+				}
+
+				if (rand() % 60 < 3)	// random hunch back jump tỉ lệ 0.05
+				{
+					if (isJump == false && (abs(target->x - x) < DISTANCE_WALK))
+					{
+						SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+					}
+				}
+			}
 		}
-		//DebugOut(L"Vi tri Hunch Back : %d, %d\n", (int)this->x, (int)this->y);
-		//DebugOut(L"Mau cua Hunch Back : %d \n", this->blood);
-		//DebugOut(L"Hunch Back UPDATED \n");
 	} 
 #pragma endregion
+
+	//DebugOut(L"Vi tri HUNCHBACK : %d, %d\n", (int)this->x, (int)this->y);
+	//DebugOut(L"Vx, Vy HUNCHBACK : %d, %d\n", (int)this->vx, (int)this->vy);
+	DebugOut(L"state HUNCHBACK : %d\n", (int)this->state);
 	game = NULL;
 }
 
@@ -164,7 +190,7 @@ void CHunchBack::GetBoundingBox(float & left, float & top, float & right, float 
 	}
 	else if (state == STATE_ENEMY_ITEM_EXIST)
 	{
-		item->GetPosition(x, y);
+
 		item->GetBoundingBox(left, top, right, bottom);
 	}
 }
@@ -199,25 +225,14 @@ void CHunchBack::SetStateTemp(int _state)
 	}
 }
 
-void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
+void CHunchBack::Collision(vector<LPGAMEOBJECT>* listBrick)
 {
-	vector<LPGAMEOBJECT> listBrick;
-
-	for (UINT i = 0; i < coObjects->size(); i++)
-	{
-		if (dynamic_cast<CBrick*>(coObjects->at(i)))
-		{
-			listBrick.push_back(coObjects->at(i));
-		}
-	}
-	item->SetPosition(x, y);
-	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-	CalcPotentialCollisions(&listBrick, coEvents);
+	CalcPotentialCollisions(listBrick, coEvents);
 
 	if (coEvents.size() == 0)
 	{
@@ -254,10 +269,14 @@ void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (isJump == true)
 						{
-							if (e->obj->y < target->y)
-								SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+							if (state == STATE_ENEMY_EXIST)
+							{
+								if (e->obj->y < target->y)
+									SetStateTemp(STATE_ENEMY_HUNCHBACK_JUMP);
+								y += dy;
+							}
 						}
-						y += dy;
+						
 					}
 				}
 			}
@@ -267,5 +286,4 @@ void CHunchBack::Collision(vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
-	listBrick.clear();
 }

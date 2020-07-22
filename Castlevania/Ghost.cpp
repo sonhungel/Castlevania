@@ -2,6 +2,7 @@
 #include"Game.h"
 
 #include"Simon.h"
+#include"Brick.h"
 
 void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -15,6 +16,15 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (this->blood > 0)
 	{
+		vector<LPGAMEOBJECT> listBrick;
+
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			{
+				listBrick.push_back(coObjects->at(i));
+			}
+		}
 #pragma region Xu_Ly_Hieu_Ung&Item
 		if (dt_die == 0)	// đo thời gian die
 		{
@@ -37,7 +47,8 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					state = STATE_ENEMY_ITEM_EXIST;
 				if (state == STATE_ENEMY_ITEM_EXIST)
 				{
-					item->Update(dt, coObjects);
+					item->SetPosition(this->x, this->y);
+					item->Update(dt, &listBrick);
 				}
 			}
 		}
