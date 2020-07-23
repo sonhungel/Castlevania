@@ -1,9 +1,14 @@
 #pragma once
 #ifndef __WEAPON_H_
 #define __WEAPON_H_
+
+
+
 #include"GameObject.h"
 #include"Textures.h"
 #include"Effect.h"
+//#include"Enemy.h"
+//#include"BreakBrick.h"
 
 
 

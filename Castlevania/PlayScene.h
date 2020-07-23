@@ -31,7 +31,7 @@ protected:
 
 	DWORD start_killAllEnemy;
 
-	vector<LPGAMEOBJECT> objects;
+	//vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render
 
 	vector<LPGAMEOBJECT> listEnemy;	// chứa những enemy như black night, bat ,bla bla... ngoại trừ zombie

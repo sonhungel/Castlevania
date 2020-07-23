@@ -10,7 +10,7 @@
 
 #define ENEMY_ZOMBIE_ANI_ID			1000
 
-#define X_LEFT_LIMIT	890
+#define X_LEFT_LIMIT_SCENE	890
 
 class CZombie :public CEnemy
 {

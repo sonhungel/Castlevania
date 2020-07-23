@@ -26,6 +26,8 @@
 #include"Raven.h"
 #include"Skeleton.h"
 
+#define X_CAM_WHEN_BOSS_ACTIVE	1025
+
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id,filePath)
 {
@@ -86,6 +88,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
+	int grid_row = atoi(tokens[3].c_str());
+	int grid_column = atoi(tokens[4].c_str());
+
 	CGameObject* obj = NULL;
 
 	switch (object_type)
@@ -94,7 +99,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = CSimon::GetInstance();
 		
-		for (int i = 3; i < tokens.size(); i += 1)
+		for (int i = 5; i < tokens.size(); i += 1)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
@@ -106,80 +111,85 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_TORCH: 
 	{
-		float item = atoi(tokens[4].c_str());
+		float item = atoi(tokens[6].c_str());
 
 		obj = new CTorch(item,x,y);
 
-		int animation_id = atoi(tokens[3].c_str());
+		int animation_id = atoi(tokens[5].c_str());
 		obj->AddAnimation(animation_id);
 		
-		objects.push_back(obj); 
+		//objects.push_back(obj); 
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		int width = atoi(tokens[3].c_str());
-		int height = atoi(tokens[4].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
 		obj = new CBrick(width,height);
-		for (int i = 5; i < tokens.size(); i += 1)
+		for (int i = 7; i < tokens.size(); i += 1)
 		{
 			int animation_id = atoi(tokens[i].c_str());
 			obj->AddAnimation(animation_id);
 		}
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
-			
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_PORTAL:
 	{
-		int scene_id = atoi(tokens[3].c_str());
+		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal( scene_id);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_STAIR:
 	{
-		int width = atoi(tokens[3].c_str());
-		int height = atoi(tokens[4].c_str());
-		int state = atoi(tokens[5].c_str());
-		int nx = atoi(tokens[6].c_str());
-		int ny = atoi(tokens[7].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		int state = atoi(tokens[7].c_str());
+		int nx = atoi(tokens[8].c_str());
+		int ny = atoi(tokens[9].c_str());
 		obj = new CHidenObject(x, y, width,height,state, nx, ny);
-		objects.push_back(obj); 
+		//objects.push_back(obj); 
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_PLATFORM:
 	{
-		int ani_id = atoi(tokens[3].c_str());
-		int x_left = atoi(tokens[4].c_str());
-		int x_right = atoi(tokens[5].c_str());
+		int ani_id = atoi(tokens[5].c_str());
+		int x_left = atoi(tokens[6].c_str());
+		int x_right = atoi(tokens[7].c_str());
 		obj = new CPlatform(ani_id,x_left,x_right);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_BREAK_BRICK:
 	{
-		int ani_id = atoi(tokens[3].c_str());
-		int type_item = atoi(tokens[4].c_str());
-		int x_item= atoi(tokens[5].c_str());
-		int y_item= atoi(tokens[6].c_str());
+		int ani_id = atoi(tokens[5].c_str());
+		int type_item = atoi(tokens[6].c_str());
+		int x_item= atoi(tokens[7].c_str());
+		int y_item= atoi(tokens[8].c_str());
 		obj = new CBreakBrick(x, y,x_item,y_item, ani_id,type_item);
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
-		int item = atoi(tokens[4].c_str());
+		int item = atoi(tokens[6].c_str());
 
 		obj = new CCandle(item, x, y);
 
-		int animation_id = atoi(tokens[3].c_str());
+		int animation_id = atoi(tokens[5].c_str());
 		obj->AddAnimation(animation_id);
-
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_BLACK_KNIGHT:
@@ -204,11 +214,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_HIDEN_ACTIVE:
 	{
-		int width = atoi(tokens[3].c_str());
-		int height = atoi(tokens[4].c_str());
-		int state = atoi(tokens[5].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		int state = atoi(tokens[7].c_str());
 		obj = new CHidenObject(x, y, width, height, state);
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	case OBJECT_TYPE_ENEMY_GHOST:
@@ -245,18 +256,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BOSS:
 	{
-		obj = CBoss::GetInstance();
-		obj->SetPosition(x, y);
-		boss = (CBoss*)obj;
+		obj = new CBoss(x,y);
+		HUD->SetBossToHUD(obj);
+		listEnemy.push_back(obj);
 	}
 		break;
 	case OBJECT_TYPE_ENEMYZONE:
 	{
-		int width = atoi(tokens[3].c_str());
-		int height = atoi(tokens[4].c_str());
-		int numberOfZombie = atoi(tokens[5].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		int numberOfZombie = atoi(tokens[7].c_str());
 		CEnemyZone *enemyzone=new CEnemyZone(x, y, width, height, numberOfZombie);
 		listEnemyZone.push_back(enemyzone);
+		//grid->PushObjectToCell(obj, grid_row, grid_column);
 	}
 		break;
 	default:
@@ -331,6 +343,7 @@ void CPlayScene::Load()
 	_xLeft = _xRight = -1;
 	map = CMap::GetInstance();
 	HUD = CBoard::GetInstance();
+	grid = new CGrid();
 
 	CGame::GetInstance()->tagSwitchScene = -1;
 
@@ -379,15 +392,15 @@ void CPlayScene::Load()
 		}
 	}
 
-	grid = new CGrid(objects);
+	
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
 void CPlayScene::UnLoad()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	//for (int i = 0; i < objects.size(); i++)
+	//	delete objects[i];
 	
 	for (int i = 0; i < listEnemy.size(); i++)
 		delete listEnemy[i];
@@ -395,7 +408,7 @@ void CPlayScene::UnLoad()
 	for (int i = 0; i < listEnemyZone.size(); i++)
 		delete listEnemyZone[i];
 
-	objects.clear();
+	//objects.clear();
 
 	coObjects.clear();
 
@@ -404,7 +417,6 @@ void CPlayScene::UnLoad()
 	listEnemy.clear();
 
 	simon = NULL;		// 2 obj này không delete vì là singleton
-	boss = NULL;
 
 	delete grid;
 	grid = NULL;
@@ -421,7 +433,7 @@ void CPlayScene::Update(DWORD dt)
 
 	float cx, cy;
 
-	grid->ResetOnCamera(objects);
+	//grid->ResetOnCamera(objects);
 
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
@@ -445,10 +457,6 @@ void CPlayScene::Update(DWORD dt)
 
 	simon->Update(dt, &coObjects);
 
-	if (boss != NULL)
-		boss->Update(dt, &coObjects);
-
-
 	CSimon::GetInstance()->GetPosition(cx, cy);
 
 	cx -= SCREEN_WIDTH / 2 - 40;
@@ -457,7 +465,12 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < _xLeft) cx = _xLeft; if (cx >_xRight ) cx = _xRight;
 	// K có scene ngầm dưới lòng đất nên k cần xây dựng limit cam Y
 
+	if (CBoss::IsActive())
+		cx = X_CAM_WHEN_BOSS_ACTIVE;
+
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+
+	//DebugOut(L"Cam pos : %f\n", cx);
 	HUD->Update(dt);
 
 	if (CGame::GetInstance()->tagSwitchScene != -1)
@@ -514,8 +527,6 @@ void CPlayScene::Render()
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
 
-	if (boss != NULL)
-		boss->Render();
 	for (UINT i = 0; i < listEnemyZone.size(); i++)
 	{
 		listEnemyZone[i]->Render();
@@ -619,7 +630,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		CWhip::GetInstance()->setUpLevel();
 		break;
 	case DIK_A:
-		CBoss::GetInstance()->BossActive();
+		HUD->SetBossDeadth();
 		break;
 	case DIK_D:
 		simon->isKillAllEnemy = true;

@@ -68,7 +68,7 @@ public:
 	int blood;
 	int type;
 
-	bool isOnCamera;
+	//bool isOnCamera;
 
 	vector<LPANIMATION> animations;
 	LPANIMATION animation;

@@ -6,7 +6,7 @@
 #include"ItemSmallHeart.h"
 #include"Effect.h"
 
-#define TIME_EFFECT_HIT_ENEMY	200
+#define TIME_EFFECT_HIT_ENEMY	100
 #define TIME_EFFECT_DIE_ENEMY	300
 
 #define STATE_ENEMY_NOT_EXIST	0

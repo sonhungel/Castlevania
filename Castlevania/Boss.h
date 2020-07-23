@@ -3,17 +3,15 @@
 #include"Simon.h"
 
 #define BOSS_WIDTH  30
-#define BOSS_HEIGHT 45
+#define BOSS_HEIGHT 63
 
 #define BOSS_MAX_BLOOD  16
 
 #define BOSS_ANI_SLEEPING  0
 #define BOSS_ANI_FLYING	   1
 
-#define STATE_BOSS_NOT_EXSIST		0
-#define STATE_BOSS_ITEM				1
-#define STATE_BOSS_ITEM_NOT_EXSIST 	2
 
+// state temp
 #define STATE_BOSS_IDLE				3
 #define STATE_BOSS_FLYING			4
 #define STATE_BOSS_ACTIVE			5
@@ -27,9 +25,13 @@
 #define BOSS_STOP_TIME_WAITING			1500
 #define BOSS_ATTACK_TIME_WAITING		3000
 
+#define BOSS_EFFECT_DEATH	840
+#define BOSS_TIME_EFFECT_DEATH		2100
+
+#define BOSS_SPEED_Y 0.3f
+
 class CBoss : public CEnemy
 {
-	static CBoss* __instance;
 
 	bool isFlyToTarget = false;
 	bool isFlyToSimon = false;
@@ -52,11 +54,12 @@ class CBoss : public CEnemy
 	bool isFlying = false;
 
 	DWORD attackTime;;
+	int state_temp;
+
+	static bool isActive;
 
 public:
-
-	bool isActive;
-	static CBoss* GetInstance();
+	
 
 	CBoss(float _x, float _y):CEnemy(_x,_y)
 	{
@@ -64,10 +67,11 @@ public:
 
 		this->blood = BOSS_MAX_BLOOD + 1;	// thêm 1 để thể hiện trạng thái tồn tại	bên trong HUD phải trừ 1
 
-		SetState(STATE_BOSS_IDLE);
+		SetStateTemp(STATE_BOSS_IDLE);
 
 		AddAnimation(BOSS_ANI_ID_SLEEP);
 		AddAnimation(BOSS_ANI_ID_FLY);
+		this->state = STATE_ENEMY_EXIST;
 
 		dt_die = 0;
 		dt_strock = 0;
@@ -77,12 +81,10 @@ public:
 		isStrock = false;
 		nx = 1;
 
-		effectDie = new CEffect(DEATH_EFFECT_ANI_ID, this->x, this->y);
+		effectDie = new CEffect(BOSS_EFFECT_DEATH, this->x, this->y);
 		effectHit = new CEffect(HIT_EFFECT_ANI_ID, this->x, this->y);
 
-		item = new CItemNormal(x, y, ITEM_BOSSBALL);
-	
-		isActive = false;
+		item = new CItemNormal(x+35, y, ITEM_BOSSBALL);
 
 		isFlyToTarget = false;
 		isFlyToSimon = false;
@@ -93,7 +95,7 @@ public:
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
-	void SetState(int state);
+	void SetStateTemp(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	void startAttack() { attackTime = GetTickCount(); }
@@ -112,8 +114,13 @@ public:
 
 	D3DXVECTOR2 Rada(D3DXVECTOR2 boss, D3DXVECTOR2 target, float speedOfRaven);	// dò tìm đường đi và di chuyển
 
-	void BossActive() {
-		isActive = true;
-		SetState(STATE_BOSS_ACTIVE);
-	}
+	//void BossActive() {
+	//	isActive = true;
+	//	SetState(STATE_BOSS_ACTIVE);
+	//}
+
+	static void Active() { isActive= true; }
+	static void Stop() { isActive = false; }
+	static bool IsActive() { return isActive; }
+
 };

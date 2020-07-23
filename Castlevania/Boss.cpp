@@ -1,19 +1,27 @@
 ﻿#include "Boss.h"
 #include"time.h"
 #include"Game.h"
+#include"Brick.h"
 
 
 // 1150	100
-CBoss* CBoss::__instance = NULL;
 
-CBoss* CBoss::GetInstance()
-{
-	if (__instance == NULL) __instance = new CBoss(1150,100);
-	return __instance;
-}
+bool CBoss::isActive = false;
 
 void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isActive == false)
+		return;
+
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
+	}
 
 #pragma region Xu_Ly_Hieu_Ung&Item
 	if (dt_die == 0)	// đo thời gian die
@@ -27,16 +35,18 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (item != NULL)		// => có item 
 		{
-			if (GetTickCount() - dt_die > TIME_EFFECT_DIE_ENEMY) // 100 is time default
+			if (GetTickCount() - dt_die > BOSS_TIME_EFFECT_DEATH) // 100 is time default
 			{
 				delete effectDie;
 				effectDie = NULL;
-			}
-			else
 				state = STATE_ENEMY_ITEM_EXIST;
+			}
+			//else
+			
 			if (state == STATE_ENEMY_ITEM_EXIST)
 			{
-				item->Update(dt, coObjects);
+				//item->SetPosition(x, y);
+				item->Update(dt, &listBrick);
 			}
 		}
 	}
@@ -55,19 +65,65 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				isStrock = false;
 				dt_strock = 0;
-				blood--;
+				blood-=2;
 			}
 		}
 	}
 #pragma endregion
-
-	if(this->blood>1)
+	if (isActive == false)
 	{
-		if (state == STATE_BOSS_IDLE )
+		//DebugOut(L"FALSE active BOSS\n");
+	}
+	else
+	{
+		//DebugOut(L"TRUE active BOSS\n");
+	}
+
+	if (dt_die > 0)
+	{
+		if (state != STATE_ENEMY_ITEM_EXIST)
 		{
-			if (abs(CSimon::GetInstance()->x - this->x) < 100)
+			dy = BOSS_SPEED_Y * dt;
+
+			vector<LPCOLLISIONEVENT> coEvents;
+			vector<LPCOLLISIONEVENT> coEventsResult;
+
+			coEvents.clear();
+			CalcPotentialCollisions(&listBrick, coEvents);
+
+			if (coEvents.size() == 0)
 			{
-				SetState(STATE_BOSS_ACTIVE);
+				y += dy;
+				//x += dx;
+			}
+			else
+			{
+				float min_tx, min_ty, nx = 0, ny = 0, rdx = 0, rdy = 0;
+
+				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+
+				if (ny != 0)
+					vy = 0;
+
+			}
+
+			// clean up collision events
+			for (UINT i = 0; i < coEvents.size(); i++)
+				delete coEvents[i];
+			listBrick.clear();
+		}
+
+	}
+	else if(dt_die==0)
+	{
+		if (state_temp == STATE_BOSS_IDLE )
+		{
+			if (isActive==true)
+			{
+				SetStateTemp(STATE_BOSS_ACTIVE);
 			}
 			else return;
 		}
@@ -98,13 +154,15 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			FlyToTarget(dt, position0);
 		}
 	}
+	//DebugOut(L"Vi tri BOSS x,y :%f, %f\n",x,y);
+	DebugOut(L"STATE BOSS : %d\n", (int)state);
 }
 
 void CBoss::Render()
 {
 	if (blood > 1 && animations.size() > 0)
 	{
-		if (state == STATE_BOSS_IDLE)
+		if (state_temp == STATE_BOSS_IDLE)
 			animations[BOSS_ANI_SLEEPING]->RenderTrend(x, y, nx);
 		else 
 			animations[BOSS_ANI_FLYING]->RenderTrend(x, y, nx);
@@ -112,12 +170,12 @@ void CBoss::Render()
 	}
 	else if (effectDie != NULL)
 	{
-		effectDie->SetPosition(x, y);
+		effectDie->SetPosition(x+35, y);
 		effectDie->Render();
 	}
 	if (isStrock == true)
 	{
-		effectHit->SetPosition(x, y);
+		effectHit->SetPosition(x+35, y);
 		effectHit->Render();
 	}
 	if (state == STATE_ENEMY_ITEM_EXIST)
@@ -129,11 +187,12 @@ void CBoss::Render()
 	}
 }
 
-void CBoss::SetState(int state)
+void CBoss::SetStateTemp(int _state)
 {
-	CGameObject::SetState(state);
+	//CGameObject::SetState(state);
+	this->state_temp = _state;
 
-	switch (state)
+	switch (_state)
 	{
 	case STATE_BOSS_IDLE:
 		vx = 0;
@@ -158,7 +217,7 @@ void CBoss::SetState(int state)
 
 void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_BOSS_ITEM)
+	if (state == STATE_ENEMY_ITEM_EXIST)
 	{
 		item->GetBoundingBox(left, top, right, bottom);
 	}
@@ -204,8 +263,8 @@ void CBoss::RandomNewPosition()
 {
 
 	srand(time(NULL));
-	position0.x = rand() % (SCREEN_WIDTH - BOSS_WIDTH) + xCam;
-	position0.y = rand() % (SCREEN_HEIGHT - 160) + 80;
+	position0.x = rand() % (SCREEN_WIDTH - BOSS_WIDTH-80) + xCam;
+	position0.y = rand() % (SCREEN_HEIGHT - 160) + 40;
 }
 
 D3DXVECTOR2 CBoss::Rada(D3DXVECTOR2 boss, D3DXVECTOR2 target, float speedOfRaven)

@@ -5,6 +5,7 @@
 #include"Weapon.h"
 #include"Code.h"
 #include"Knife.h"
+#include"Boss.h"
 
 #define SUBWEAPON_KNIFE_ID 0 
 
@@ -18,6 +19,8 @@ class CBoard
 	int number;		// item II, item III
 	DWORD timeItem;
 	static CBoard* __instance;
+
+	LPGAMEOBJECT boss;
 public:
 	CBoard()
 	{
@@ -51,6 +54,14 @@ public:
 	{
 		this->number = nb;
 		timeItem = GetTickCount();
+	}
+
+	void SetBossToHUD(LPGAMEOBJECT _boss) { this->boss = _boss; }
+
+	void SetBossDeadth()
+	{
+		if (boss != NULL)
+			boss->blood = 1;
 	}
 };
 

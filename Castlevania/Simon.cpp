@@ -20,6 +20,7 @@
 #include"Enemy.h"
 #include"Board.h"
 #include"Bone.h"
+#include"Boss.h"
 
 CSimon* CSimon::__instance = NULL;
 
@@ -152,6 +153,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	else 
 	{ 
+		if (CBoss::IsActive())
+		{
+			if (x <= X_LEFT_LIMIT_WHEN_ACTIVE_BOSS)
+				x = X_LEFT_LIMIT_WHEN_ACTIVE_BOSS;
+		}
+
 		vector<LPGAMEOBJECT> listCoObjects;
 		vector<LPGAMEOBJECT> listHideObject;
 		vector<LPGAMEOBJECT> listCoObjectForWhip;
@@ -948,7 +955,8 @@ void CSimon::CollisionWithHidenObject(DWORD dt, vector<LPGAMEOBJECT>& listHidenO
 		{
 			if (CGame::GetInstance()->isCollision(rect1, rect2))
 			{
-
+				if (CBoss::IsActive() == false)
+					CBoss::Active();
 			}
 		}
 	}

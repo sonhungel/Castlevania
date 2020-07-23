@@ -3,6 +3,9 @@
 #include"Game.h"
 #include"Simon.h"
 #include"Candle.h"
+#include"BreakBrick.h"
+#include"Brick.h"
+#include"Enemy.h"
 
 CBoomerang* CBoomerang::__instance = NULL;
 
@@ -149,6 +152,42 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					vx = vy = 0;
 					this->state = STATE_SUBWEAPON_HIDE;
 					start_attack = 0;
+				}
+			}
+		}
+		if (dynamic_cast<CEnemy*>(listObj.at(i)))
+		{
+
+			if (listObj.at(i)->GetState() == STATE_ENEMY_EXIST)
+			{
+				CEnemy* enemy = dynamic_cast<CEnemy*>(listObj.at(i));
+				enemy->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
+				{
+					if (enemy->blood > 1)
+						enemy->isStrock = true;
+					// bên trong enemey sẽ tự bộng từ blood qua cờ isStrock 
+				}
+
+			}
+		}
+		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
+		{
+			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
+			{
+				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
+				brick->GetBoundingBox(l2, t2, r2, b2);
+				rect2.left = (int)l2;
+				rect2.top = (int)t2;
+				rect2.right = (int)r2;
+				rect2.bottom = (int)b2;
+				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
+				{
+					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
 				}
 			}
 		}

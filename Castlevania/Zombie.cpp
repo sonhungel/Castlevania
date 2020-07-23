@@ -69,7 +69,7 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (dt_die > 0)
 			vx = vy = 0;
 		else {
-			if (this->x >= X_LEFT_LIMIT)
+			if (this->x >= X_LEFT_LIMIT_SCENE)
 			{
 				nx = -1;
 				vx = -ENEMY_ZOMBIE_SPEED;

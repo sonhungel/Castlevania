@@ -206,7 +206,6 @@ void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				}
 			}
 		}
-		
 	}
 }
 

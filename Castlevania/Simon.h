@@ -78,6 +78,9 @@
 #define ID_SUB_WEAPON_IN_SIMON_BOOMERANG	2
 #define ID_SUB_WEAPON_IN_SIMON_HOLLYWATER	3
 
+
+#define X_LEFT_LIMIT_WHEN_ACTIVE_BOSS	1010
+
 class CSimon : public CGameObject
 {
 	static CSimon* __instance;

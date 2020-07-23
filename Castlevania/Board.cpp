@@ -47,6 +47,18 @@ void CBoard::Render()
 	code->DrawNumber(2, cx + 400, cy + 52, simon->GetLive());
 	code->DrawNumber(2, cx + 465, cy + 12, game->GetIDCurrentScene());
 
+	if (this->boss == NULL)
+	{
+		code->DrawBloodBar(cx + 111, cy + 50, 1, MAX_BLOOD);
+	}
+	else
+	{
+		int bossBlood = boss->GetBlood() - 1;
+		if (bossBlood <= 0)
+			bossBlood = 0;
+		code->DrawBloodBar(cx + 111, cy + 50, 1, bossBlood);
+	}
+
 	code->DrawBloodBar(cx + 110, cy + 30, 0, simon->GetBlood());
 
 	if (simon->GetWeapon() != -1)
