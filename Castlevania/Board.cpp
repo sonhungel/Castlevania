@@ -39,6 +39,7 @@ void CBoard::Render()
 	float cx, cy;
 	game->GetCamPos(cx, cy);
 	CSprites* sprites = CSprites::GetInstance();
+	
 	sprites->Get(50000)->Draw(cx-1, cy); //background
 
 	code->DrawNumber(4, cx + 295, cy + 12, _time);

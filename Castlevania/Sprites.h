@@ -52,6 +52,7 @@ public:
 	void CSprites::Clear();
 
 	static CSprites* GetInstance();
+	
 };
 
 #endif

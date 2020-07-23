@@ -129,6 +129,8 @@ public:
 
 	bool isCanAttack;
 
+	int isUseSubWeapon;
+
 	bool isKillAllEnemy;
 
 	int auto_x;

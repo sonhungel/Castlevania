@@ -36,7 +36,7 @@ public:
 	void setUpLevel();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
-	virtual CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
+	virtual CAnimation* GetAnimation() { if (animations.size() > 0)return animations[_level - 1]; }
 	
 };
 #endif 

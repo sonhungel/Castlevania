@@ -15,20 +15,18 @@
 
 class CBoomerang : public CWeapon
 {
-	static CBoomerang* __instance;
 	DWORD start_attack;
 
 	float x_left;	// giới hạn di chuyển
 	float x_right;
 	int turn;		// số lần quay đầu
 public:
-	static CBoomerang* GetInstance();
-	CBoomerang();
+	CBoomerang(float simon_x, float simon_y, int simon_trend);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
-	void SetPosition(float simon_x, float simon_y);
+
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void SetState(int st);
+
 };
 

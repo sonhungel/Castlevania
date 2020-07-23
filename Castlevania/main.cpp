@@ -320,7 +320,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->Init(hWnd);
 	game->InitKeyboard();
 
-	LoadResources();
+	//LoadResources();
 
 	game->Load(L"Scene_manager.txt");
 

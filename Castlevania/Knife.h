@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef __KNIFE_H_
 #define __KNIFE_H_
 
@@ -21,22 +21,34 @@
 
 class CKnife :public CWeapon
 {
-	static CKnife* __instance;
-	DWORD start_attack;
+
 public:
 
-	static CKnife* GetInstance();
-	CKnife()
+	CKnife(float simon_x, float simon_y, int simon_trend)
 	{
+
+		if (simon_trend< 0)
+		{
+			this->x = simon_x;
+		}
+		else
+		{
+			this->x = simon_x + 20;
+		}
+		this->y = simon_y + 10;
+
+		nx = simon_trend;
+		vx = KNIFE_SPEED * nx;
+
+		this->blood = 1;
 		type = eType::WEAPON_KNIFE;
-		vx = KNIFE_SPEED;
+
 		AddAnimation(KNIFE_ANI_ID);
-		start_attack = 0;
-		state = STATE_SUBWEAPON_HIDE;
 	}
+
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
-	void SetPosition(float simon_x, float simon_y);
+
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 };

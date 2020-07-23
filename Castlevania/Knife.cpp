@@ -6,75 +6,51 @@
 #include"Enemy.h"
 
 
-CKnife* CKnife::__instance = NULL;
-
-CKnife* CKnife::GetInstance()
-{
-	if (__instance == NULL) __instance = new CKnife();
-	return __instance;
-}
-
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
-	if (state == STATE_SUBWEAPON_APPEAR)
+	float cam_x, cam_y;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	if (this->x <cam_x || this->x>(cam_x + SCREEN_WIDTH-KNIFE_WIDTH))
 	{
-		CGameObject::Update(dt);
-		if (start_attack == 0)
-			start_attack = GetTickCount();
-		if (nx > 0)
-			this->x += dx;
-		else
-			this->x -= dx;
-		CollisionWithObject(dt, *coObjects);
-		if (GetTickCount() - start_attack > KNIFE_TIME)
-		{
-			state = STATE_SUBWEAPON_HIDE;
-			start_attack = 0;
-		}
+		blood = 0;
 	}
 	
+	if (blood>0)
+	{
+		CGameObject::Update(dt);
+
+		this->x += dx;
+		CollisionWithObject(dt, *coObjects);
+
+	}
+	DebugOut(L"Vi tri Knife :%f,%f\n", this->x,this->y);
 }
 
 void CKnife::Render()
 {
-	if (state == STATE_SUBWEAPON_APPEAR)
+	if (animations.size() > 0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
-		DebugOut(L"Knife rendered\n");
-		//RenderBoundingBox();
 	}
+	RenderBoundingBox();
 }
 
-void CKnife::SetPosition(float simon_x, float simon_y)
-{
-	if (nx < 0)
-	{
-		this->x = simon_x ;
-	}
-	else
-	{
-		this->x = simon_x +20;
-	}
-	this->y = simon_y+10;
-}
 
 void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_SUBWEAPON_APPEAR)
+	if (blood>0)
 	{
 		left = x;
 		top = y;
 		right = x + KNIFE_WIDTH;
 		bottom = y + KNIFE_HEIGHT;
 	}
+	else
+		left = top = right = bottom = 0;
 }
 
 void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (STATE_SUBWEAPON_HIDE)
-		return;
-
 	RECT rect1, rect2;
 
 	float l1, t1, r1, b1;
@@ -103,7 +79,8 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					torch->isStrock = true;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_SUBWEAPON_HIDE;
+					//this->state = STATE_SUBWEAPON_HIDE;
+					this->blood = 0;
 				}
 			}
 		}
@@ -121,7 +98,8 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				{
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
-					this->state = STATE_SUBWEAPON_HIDE;
+					//this->state = STATE_SUBWEAPON_HIDE;
+					this->blood = 0;
 				}
 			}
 		}
@@ -141,10 +119,12 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					if (enemy->blood > 1)
 						enemy->isStrock = true;
 					// bên trong enemey sẽ tự bộng từ blood qua cờ isStrock 
+					this->blood = 0;
 				}
 
 			}
 		}
+		/*
 		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
 		{
 			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
@@ -158,8 +138,9 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
 					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
+					this->blood = 0;
 				}
 			}
-		}
+		}*/
 	}
 }

@@ -11,7 +11,7 @@
 
 #define GRAVITY	0.002f
 
-#define HOLLYWATER_TIME		1500
+#define HOLLYWATER_TIME		1000
 
 #define HOLLYWATER_ANI_ID	604
 
@@ -20,21 +20,21 @@
 
 class CHollyWater : public CWeapon
 {
-	static CHollyWater* __instance;
+
 	DWORD start_attack;
 
 	CEffect* effect;
 
 	bool isBroke;
 public:
-	static CHollyWater* GetInstance();
-	CHollyWater();
+
+	CHollyWater(float simon_x, float simon_y, int simon_trend);
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
-	void SetPosition(float simon_x, float simon_y);
+
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void SetState(int st);
+
 };
 

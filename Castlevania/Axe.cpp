@@ -8,30 +8,40 @@
 #include"Brick.h"
 #include"Enemy.h"
 
-CAxe* CAxe::__instance = NULL;
 
-CAxe* CAxe::GetInstance()
+CAxe::CAxe(float simon_x, float simon_y, int simon_trend)
 {
-	if (__instance == NULL)
-		__instance = new CAxe();
-	return __instance;
-}
+	if (simon_trend < 0)
+	{
+		this->x = simon_x;
+	}
+	else {
+		this->x = simon_x + 25;
+	}
 
-CAxe::CAxe()
-{
+	this->y = simon_y + 5;
+
+	nx = simon_trend;
+
+	vx = nx * AXE_SPEED_X;
+	vy = -AXE_SPEED_Y;
+
+	this->blood = 1;
+
 	type = eType::WEAPON_AXE;
 	AddAnimation(AXE_ANI_ID);
-	state = STATE_SUBWEAPON_HIDE;
-	start_attack = 0;
 }
 
 void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (this->state == STATE_SUBWEAPON_APPEAR)
+	if (this->y > SCREEN_WIDTH)
+	{
+		blood = 0;
+	}
+
+	if (blood>0)
 	{
 		CGameObject::Update(dt);
-		if (start_attack == 0)
-			start_attack = GetTickCount();
 
 		x += vx * dt;
 		vy += GRAVITY * dt;
@@ -39,53 +49,36 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		CollisionWithObject(dt, *coObjects);
 
-		if (GetTickCount() - start_attack > AXE_TIME)
-		{
-			state = STATE_SUBWEAPON_HIDE;
-			start_attack = 0;
-			animations[0]->ResetFrame();
-		}
 	}
 }
 
-void CAxe::SetPosition(float simon_x, float simon_y)
-{
-	if (nx < 0)
-	{
-		this->x = simon_x ;
-	}
-	else {
-		this->x = simon_x + 25;
-	}
-
-	this->y = simon_y+5;
-}
 
 void CAxe::Render()
 {
-	if (state == STATE_SUBWEAPON_APPEAR)
+	if (animations.size()>0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
-
-		RenderBoundingBox();
 	}
+	RenderBoundingBox();
 }
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == STATE_SUBWEAPON_APPEAR)
+	if (blood > 0)
 	{
 		left = x;
 		right = x + AXE_WIDTH;
 		top = y;
 		bottom = y + AXE_HEIGHT;
 	}
+	else
+		left = top = right = bottom = 0;
 }
 
 void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	if (state==STATE_SUBWEAPON_HIDE)
-		return;
+	//if (state==STATE_SUBWEAPON_HIDE)
+	//	return;
 	RECT rect1, rect2;
 
 	float l1, t1, r1, b1;
@@ -115,8 +108,8 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					torch->isStrock = true;
 					vx = vy = 0;
 					torch->SetState(STATE_TORCH_NOT_EXIST);
-					this->state = STATE_SUBWEAPON_HIDE;
-					start_attack = 0;
+					//this->state = STATE_SUBWEAPON_HIDE;
+					this->blood = 0;
 				}
 			}
 		}
@@ -135,8 +128,8 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					candle->isStrock = true;
 					candle->SetState(STATE_CANDLE_NOT_EXIST);
 					vx = vy = 0;
-					this->state = STATE_SUBWEAPON_HIDE;
-					start_attack = 0;
+					//this->state = STATE_SUBWEAPON_HIDE;
+					this->blood = 0;
 				}
 			}
 		}
@@ -156,10 +149,12 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 					if (enemy->blood > 1)
 						enemy->isStrock = true;
 					// bên trong enemey sẽ tự bộng từ blood qua cờ isStrock 
+					this->blood = 0;
 				}
 
 			}
 		}
+		/*
 		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
 		{
 			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
@@ -173,18 +168,11 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
 				{
 					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
+					this->blood = 0;
 				}
 			}
-		}
+		}*/
 	}
 }
 
-void CAxe::SetState(int st)
-{
-	this->state = st;
-	if (st == STATE_SUBWEAPON_APPEAR)
-	{
-		vx = nx * AXE_SPEED_X;
-		vy = -AXE_SPEED_Y;
-	}
-}
+

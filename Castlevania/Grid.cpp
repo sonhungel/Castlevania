@@ -78,7 +78,7 @@ void CGrid::PushObjectToCell(LPGAMEOBJECT obj, int grid_row, int grid_column)
 	cells[grid_row][grid_column].push_back(obj);
 }
 
-void CGrid::ResetOnCamera(vector<LPGAMEOBJECT>& ListObj)
+void CGrid::ResetOnCamera(vector<LPGAMEOBJECT>& ListObj)// ngừng sử dụng
 {
 	for (int i = 0; i < ListObj.size(); i++)
 	{

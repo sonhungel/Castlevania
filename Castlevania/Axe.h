@@ -16,17 +16,16 @@
 
 class CAxe : public CWeapon
 {
-	static CAxe* __instance;
-	DWORD start_attack;
+
 public:
-	static CAxe* GetInstance();
-	CAxe();
+
+	CAxe(float simon_x, float simon_y, int simon_trend);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	void SetPosition(float simon_x,float simon_y);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj);
-	void SetState(int st);
+
 	CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };
 
