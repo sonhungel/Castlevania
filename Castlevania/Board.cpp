@@ -77,7 +77,11 @@ void CBoard::Render()
 		}
 		else if (simon->GetWeapon() == eType::WEAPON_KNIFE)
 		{ 
-			sprites->Get(13001)->Draw(cx + 310, cy + 40);;
+			sprites->Get(13001)->Draw(cx + 310, cy + 40);
+		}
+		else if (simon->GetWeapon() == eType::WEAPON_CLOCK)
+		{
+			sprites->Get(13008)->Draw(cx + 310, cy + 29);
 		}
 	}
 
@@ -116,6 +120,9 @@ void CBoard::ChangeWeapon()
 		simon->SetWeapon(eType::WEAPON_BOOMERANG);
 		break;
 	case eType::WEAPON_BOOMERANG:
+		simon->SetWeapon(eType::WEAPON_CLOCK);
+		break;
+	case eType::WEAPON_CLOCK:
 		simon->SetWeapon(eType::WEAPON_KNIFE);
 		break;
 	default:

@@ -416,7 +416,7 @@ void CPlayScene::UnLoad()
 
 	listEnemy.clear();
 
-	simon = NULL;		// 2 obj này không delete vì là singleton
+	simon = NULL;		//  obj này không delete vì là singleton
 
 	delete grid;
 	grid = NULL;

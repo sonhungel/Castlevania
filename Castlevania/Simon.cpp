@@ -755,17 +755,18 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_CLOCK)	// hoàn thiện sau
 			{
-				
+				//subWeapon = eType::WEAPON_CLOCK;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			else if (listObj.at(i)->getType() == eType::ITEM_CROSS)	// hoàn thiện sau
+			else if (listObj.at(i)->getType() == eType::ITEM_CROSS)	
 			{
 				isKillAllEnemy = true;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_VASE)	// hoàn thiện sau
 			{
-			
+				//untouchable = true;
+				//untouchable_start = GetTickCount();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_II)
@@ -1428,7 +1429,7 @@ void CSimon::CalculateAutoGo()
 
 void CSimon::LoadSubWeapon(int subwp)
 {
-	LPWEAPON subWeapon;
+	LPWEAPON subWeapon = NULL;
 
 	switch (subwp)
 	{
@@ -1453,5 +1454,6 @@ void CSimon::LoadSubWeapon(int subwp)
 	}
 	break;
 	}
-	listSubWeapon.push_back(subWeapon);
+	if(subWeapon!=NULL)
+		listSubWeapon.push_back(subWeapon);
 }

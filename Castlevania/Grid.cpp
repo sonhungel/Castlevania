@@ -28,7 +28,7 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>& ListObj, float cam_x, float cam_
 
 	for (int row = top; row < bottom; row++)
 	{
-		for (int column = left; column <= right; column++)
+		for (int column = left-1; column <= right; column++)
 		{
 			if (row <= GRID_ROW_MAX && row >= 0 && column <= GRID_COLUMN_MAX && column >= 0)//
 			{
