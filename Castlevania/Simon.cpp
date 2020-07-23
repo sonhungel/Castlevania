@@ -34,10 +34,6 @@ CSimon::CSimon()
 {
 	whip = CWhip::GetInstance();
 
-	//listSubWeapon.push_back(CKnife::GetInstance());		// knife 0
-	//listSubWeapon.push_back(CAxe::GetInstance());		// axe 1
-	//listSubWeapon.push_back(CBoomerang::GetInstance());	// boomerang 2
-	//listSubWeapon.push_back(CHollyWater::GetInstance());// hollywater 3
 	listSubWeapon.clear();
 	
 	untouchable = false;
@@ -64,8 +60,6 @@ CSimon::CSimon()
 	isCanAttack = true;
 
 	isKillAllEnemy = false;
-
-	isUseSubWeapon = 0;
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -73,26 +67,22 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	if (attack_start > 0)
 	{
-		if (GetTickCount() - attack_start >=ATTACK_TIME)
+		if (GetTickCount() - attack_start >=300)
 		{
 			attack_start = 0;
-			if (animations.size() > 0)
-			{
-				animations[ANI_SIMON_STANDING_ATTACKING]->ResetFrame();
-				animations[ANI_SIMON_STANDING_ATTACKING]->SetFrame(-1);
+			animations[ANI_SIMON_STANDING_ATTACKING]->ResetFrame();
+			animations[ANI_SIMON_STANDING_ATTACKING]->SetFrame(-1);
 
-				animations[ANI_SIMON_SITTING_ATTACKING]->ResetFrame();
-				animations[ANI_SIMON_SITTING_ATTACKING]->SetFrame(-1);
+			animations[ANI_SIMON_SITTING_ATTACKING]->ResetFrame();
+			animations[ANI_SIMON_SITTING_ATTACKING]->SetFrame(-1);
 
-				animations[ANI_SIMON_GO_DOWN_ATTACK]->ResetFrame();
-				animations[ANI_SIMON_GO_DOWN_ATTACK]->SetFrame(-1);
+			animations[ANI_SIMON_GO_DOWN_ATTACK]->ResetFrame();
+			animations[ANI_SIMON_GO_DOWN_ATTACK]->SetFrame(-1);
 
-				animations[ANI_SIMON_GO_UP_ATTACK]->ResetFrame();
-				animations[ANI_SIMON_GO_UP_ATTACK]->SetFrame(-1);
-			}
+			animations[ANI_SIMON_GO_UP_ATTACK]->ResetFrame();
+			animations[ANI_SIMON_GO_UP_ATTACK]->SetFrame(-1);
 			//whip->GetAnimation()->ResetFrame();
-			if(whip->animations.size()>0)
-				whip->GetAnimation()->SetFrame(-1);
+			whip->GetAnimation()->SetFrame(-1);
 
 		}
 	}
@@ -278,7 +268,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 #pragma region subweapon
 		if (state == STATE_SIMON_ATTACK_SUBWEAPON)
 		{
-			if (isUseSubWeapon==1)
+			if (isUseSubWeapon == 1)
 			{
 				if (subWeapon != -1)
 				{
@@ -286,14 +276,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					isUseSubWeapon = 0;
 				}
 			}
-			
 		}
 #pragma endregion
 
 		CollisionWithObjectHaveItem(dt, listCoObjectForWhip);
 		listCoObjectForWhip.clear();
 
-		for (UINT i = 0;i < listSubWeapon.size();i++)
+		for (UINT i = 0; i < listSubWeapon.size(); i++)
 		{
 			if (listSubWeapon.at(i)->blood <= 0)
 			{
@@ -326,7 +315,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (blood <= 0)
 			state = STATE_SIMON_DIE;
-
+		
 	
 		// Collsion
 #pragma region collsion
@@ -415,12 +404,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSimon::Render()
 {
-	
-	for (UINT i = 0;i < listSubWeapon.size();i++)
+	for (UINT i = 0; i < listSubWeapon.size(); i++)
 	{
 		//if(listSubWeapon.at(i)->blood>0)
-			listSubWeapon.at(i)->Render();
+		listSubWeapon.at(i)->Render();
 	}
+
 
 	int ani = 0;
 
@@ -536,9 +525,7 @@ void CSimon::Render()
 	int alpha = 255;
 	//if (untouchable) alpha = 128;
 	if (untouchable==true && (GetTickCount() - untouchable_start > SIMON_HURT_TIME)) alpha = 150;
-
-	if (animations.size() > 0)
-		animations[ani]->RenderTrend(x, y, nx,alpha);
+	animations[ani]->RenderTrend(x, y, nx,alpha);
 
 	RenderBoundingBox();
 
@@ -598,7 +585,7 @@ void CSimon::SetState(int state)
 			vx = 0;
 			break;
 		case STATE_SIMON_JUMP:
-			if (vy == 0 && isBeingOnStair == false&&isSimonOnGround) {
+			if (vy == 0 && isBeingOnStair == false && isSimonOnGround) {
 				vy = -SIMON_JUMP_SPEED_Y;
 				isSimonOnAir = true;
 			}
@@ -627,7 +614,7 @@ void CSimon::SetState(int state)
 			vx = 0;
 			break;
 		case STATE_SIMON_GO_UP_ATTACK:
-			if(attack_start==0)
+			if (attack_start == 0)
 				attack_start = GetTickCount();
 			//if(attack_start_temp==0)
 				//attack_start_temp = GetTickCount();

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #ifndef __KNIFE_H_
 #define __KNIFE_H_
 
@@ -18,7 +18,6 @@
 
 #define KNIFE_TIME 900
 #define KNIFE_ANI_ID	701
-
 class CKnife :public CWeapon
 {
 
@@ -27,7 +26,7 @@ public:
 	CKnife(float simon_x, float simon_y, int simon_trend)
 	{
 
-		if (simon_trend< 0)
+		if (simon_trend < 0)
 		{
 			this->x = simon_x;
 		}

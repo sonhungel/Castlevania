@@ -8,7 +8,6 @@
 #include"Brick.h"
 #include"Enemy.h"
 
-
 CAxe::CAxe(float simon_x, float simon_y, int simon_trend)
 {
 	if (simon_trend < 0)
@@ -39,7 +38,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		blood = 0;
 	}
 
-	if (blood>0)
+	if (blood > 0)
 	{
 		CGameObject::Update(dt);
 
@@ -55,7 +54,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CAxe::Render()
 {
-	if (animations.size()>0)
+	if (animations.size() > 0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
 	}
@@ -154,25 +153,5 @@ void CAxe::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 			}
 		}
-		/*
-		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
-		{
-			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
-			{
-				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
-				brick->GetBoundingBox(l2, t2, r2, b2);
-				rect2.left = (int)l2;
-				rect2.top = (int)t2;
-				rect2.right = (int)r2;
-				rect2.bottom = (int)b2;
-				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-				{
-					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
-					this->blood = 0;
-				}
-			}
-		}*/
 	}
 }
-
-

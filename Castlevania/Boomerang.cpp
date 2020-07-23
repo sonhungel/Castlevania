@@ -7,7 +7,6 @@
 #include"Brick.h"
 #include"Enemy.h"
 
-
 CBoomerang::CBoomerang(float simon_x, float simon_y, int simon_trend)
 {
 	if (simon_trend < 0)
@@ -43,12 +42,12 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
-	if (this->x <cam_x-BOOMERANG_WIDTH || this->x>cam_x + SCREEN_WIDTH)
+	if (this->x <cam_x - BOOMERANG_WIDTH || this->x>cam_x + SCREEN_WIDTH)
 	{
 		blood = 0;
 	}
 
-	if (blood>0 )
+	if (blood > 0)
 	{
 
 		CGameObject::Update(dt);
@@ -70,12 +69,12 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if ((x < x_left && vx < 0) || (x > x_right && vx > 0))
 		{
 			nx = -nx;
-			vx = nx*BOOMERANG_SPEED;
+			vx = nx * BOOMERANG_SPEED;
 			turn++;
 		}
 		if (turn >= 2)
 			blood = 0;
-		if(turn<2)
+		if (turn < 2)
 			CollisionWithObject(dt, *coObjects);
 	}
 
@@ -83,9 +82,9 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBoomerang::Render()
 {
-	if (blood>0 && turn < 2)
+	if (blood > 0 && turn < 2)
 	{
-		if(animations.size()>0)
+		if (animations.size() > 0)
 			animations[0]->RenderTrend(x, y, nx);
 		RenderBoundingBox();
 	}
@@ -93,7 +92,7 @@ void CBoomerang::Render()
 
 void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (blood>0)
+	if (blood > 0)
 	{
 		left = x;
 		top = y;
@@ -177,24 +176,7 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 			}
 		}
-		/*
-		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
-		{
-			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
-			{
-				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
-				brick->GetBoundingBox(l2, t2, r2, b2);
-				rect2.left = (int)l2;
-				rect2.top = (int)t2;
-				rect2.right = (int)r2;
-				rect2.bottom = (int)b2;
-				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-				{
-					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
-					this->blood = 0;
-				}
-			}
-		}*/
+
 	}
 	if (turn > 0)
 	{
@@ -211,4 +193,3 @@ void CBoomerang::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 		}
 	}
 }
-

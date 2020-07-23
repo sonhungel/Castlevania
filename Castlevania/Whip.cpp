@@ -22,10 +22,10 @@ CWhip::CWhip()
 {
 	type = eType::WEAPON_WHIP;
 	_level = 3;
-	//AddAnimation(WHIP_LEVEL_1_ID);
-	//AddAnimation(WHIP_LEVEL_2_ID); // level 2
-	//AddAnimation(WHIP_LEVEL_3_ID);	// level 3
-	//animation = animations[ANI_WHIP_LEVEL_1]; // whip level 1
+	AddAnimation(WHIP_LEVEL_1_ID);
+	AddAnimation(WHIP_LEVEL_2_ID); // level 2
+	AddAnimation(WHIP_LEVEL_3_ID);	// level 3
+	animation = animations[ANI_WHIP_LEVEL_1]; // whip level 1
 }
 
 void CWhip::SetPosition(float x, float y)
@@ -55,11 +55,8 @@ void CWhip::SetPosition(float x, float y)
 
 void CWhip::Render()
 {
-	if (animations.size() > 0)
-	{
-		animation = animations[_level - 1];
-		animation->RenderTrend(x, y, nx);
-	}
+	animation = animations[_level - 1];	
+	animation->RenderTrend(x, y, nx);
 
 	RenderBoundingBox();
 }
@@ -118,9 +115,12 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CWhip::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 {
-	animation = animations[_level - 1];
 	if (animation->GetCurrentFrame() < 2)
 		return;
+	if (animation->GetCurrentFrame() == animation->GetLastFrame())
+	{
+
+	}
 
 	RECT rect1, rect2;
 

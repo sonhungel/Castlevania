@@ -6,9 +6,6 @@
 #include"BreakBrick.h"
 #include"Brick.h"
 #include"Enemy.h"
-
-
-
 CHollyWater::CHollyWater(float simon_x, float simon_y, int simon_trend)
 {
 	if (simon_trend < 0)
@@ -43,7 +40,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		blood = 0;
 	}
-	if (this->blood>0)
+	if (this->blood > 0)
 	{
 		effect->SetPosition(this->x, this->y);
 
@@ -61,7 +58,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		CGameObject::Update(dt);
 
-		
+
 
 		if (isBroke == false)
 		{
@@ -124,13 +121,13 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CHollyWater::Render()
 {
-	if (blood>0)
+	if (blood > 0)
 	{
 		if (isBroke == true)
 		{
 			effect->Render();
 		}
-		else if(animations.size()>0)
+		else if (animations.size() > 0)
 		{
 			animations[0]->RenderTrend(x, y, nx);
 			RenderBoundingBox();
@@ -223,27 +220,7 @@ void CHollyWater::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 			}
 		}
-		/*
-		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
-		{
-			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
-			{
-				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
-				brick->GetBoundingBox(l2, t2, r2, b2);
-				rect2.left = (int)l2;
-				rect2.top = (int)t2;
-				rect2.right = (int)r2;
-				rect2.bottom = (int)b2;
-				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-				{
-					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
-					this->isBroke = true;
-					if (start_attack == 0)
-						start_attack = GetTickCount();
-				}
-			}
-		}*/
-		
+
 	}
 }
 
@@ -254,4 +231,3 @@ void CHollyWater::GetBoundingBox(float& left, float& top, float& right, float& b
 	right = x + HOLLYWATER_WIDTH;
 	bottom = y + HOLLYWATER_HEIGHT;
 }
-

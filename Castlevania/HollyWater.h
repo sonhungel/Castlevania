@@ -11,7 +11,7 @@
 
 #define GRAVITY	0.002f
 
-#define HOLLYWATER_TIME		1000
+#define HOLLYWATER_TIME		1500
 
 #define HOLLYWATER_ANI_ID	604
 
@@ -37,4 +37,3 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 };
-

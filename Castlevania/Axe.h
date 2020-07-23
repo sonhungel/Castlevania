@@ -28,4 +28,3 @@ public:
 
 	CAnimation* GetAnimation() { if (animations.size() > 0)return animation; }
 };
-

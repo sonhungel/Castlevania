@@ -4,18 +4,16 @@
 #include"BreakBrick.h"
 #include"Brick.h"
 #include"Enemy.h"
-
-
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
-	if (this->x <cam_x || this->x>(cam_x + SCREEN_WIDTH-KNIFE_WIDTH))
+	if (this->x <cam_x || this->x>(cam_x + SCREEN_WIDTH - KNIFE_WIDTH))
 	{
 		blood = 0;
 	}
-	
-	if (blood>0)
+
+	if (blood > 0)
 	{
 		CGameObject::Update(dt);
 
@@ -23,7 +21,7 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CollisionWithObject(dt, *coObjects);
 
 	}
-	DebugOut(L"Vi tri Knife :%f,%f\n", this->x,this->y);
+	DebugOut(L"Vi tri Knife :%f,%f\n", this->x, this->y);
 }
 
 void CKnife::Render()
@@ -38,7 +36,7 @@ void CKnife::Render()
 
 void CKnife::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (blood>0)
+	if (blood > 0)
 	{
 		left = x;
 		top = y;
@@ -70,7 +68,7 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 			if (listObj.at(i)->GetState() == STATE_TORCH_EXIST)
 			{
 				// get bounding box of the object that knife collision
-				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2); 
+				listObj.at(i)->GetBoundingBox(l2, t2, r2, b2);
 				rect2.left = (int)l2;
 				rect2.top = (int)t2;
 				rect2.right = (int)r2;
@@ -124,23 +122,5 @@ void CKnife::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>& listObj)
 
 			}
 		}
-		/*
-		if (dynamic_cast<CBreakBrick*>(listObj.at(i)))
-		{
-			if ((listObj.at(i))->GetState() == STATE_BREAK_BRICK_EXIST)
-			{
-				CBreakBrick* brick = dynamic_cast<CBreakBrick*>(listObj.at(i));
-				brick->GetBoundingBox(l2, t2, r2, b2);
-				rect2.left = (int)l2;
-				rect2.top = (int)t2;
-				rect2.right = (int)r2;
-				rect2.bottom = (int)b2;
-				if (CGame::GetInstance()->isCollision(rect1, rect2)) // => có đụng độ
-				{
-					brick->SetState(STATE_BREAK_BRICK_ITEM_EXIST);
-					this->blood = 0;
-				}
-			}
-		}*/
 	}
 }

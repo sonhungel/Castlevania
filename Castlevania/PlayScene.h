@@ -42,10 +42,6 @@ protected:
 	void _ParseSection_SETUP(string line);
 	void _ParseSection_MAP(string line);
 	void _ParseSection_CAMERA(string line);
-	void _ParseSection_TEXTURES(string line);
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
-	void _ParseSection_MAP_TEXTURES(string line);
 
 public:
 
