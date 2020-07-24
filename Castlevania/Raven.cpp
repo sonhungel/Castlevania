@@ -142,7 +142,7 @@ void CRaven::Render()
 			animations[ENEMY_RAVEN_ANI_IDLE]->RenderTrend(x, y, nx);
 		else if (stateTemp == STATE_ENEMY_RAVEN_FLY)
 			animations[ENEMY_RAVEN_ANI_FLY]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

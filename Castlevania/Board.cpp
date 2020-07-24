@@ -18,7 +18,8 @@ void CBoard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (GetTickCount() - _count >= 1000)
 	{
-		_time--;
+		if(_time>0)
+			_time--;
 		_count = GetTickCount();
 	}
 	if (timeItem > 0)
@@ -122,9 +123,9 @@ void CBoard::ChangeWeapon()
 	case eType::WEAPON_BOOMERANG:
 		simon->SetWeapon(eType::WEAPON_CLOCK);
 		break;
-	case eType::WEAPON_CLOCK:
-		simon->SetWeapon(eType::WEAPON_KNIFE);
-		break;
+	//case eType::WEAPON_CLOCK:
+		//simon->SetWeapon(eType::WEAPON_KNIFE);
+		//break;
 	default:
 		break;
 	}

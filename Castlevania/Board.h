@@ -58,6 +58,10 @@ public:
 
 	void SetBossToHUD(LPGAMEOBJECT _boss) { this->boss = _boss; }
 
+	int GetTime() { return _time; }
+
+	void SetTime(int time) { _time = time; }
+
 	void SetBossDeadth()
 	{
 		if (boss != NULL)

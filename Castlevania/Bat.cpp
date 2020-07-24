@@ -101,7 +101,7 @@ void CBat::Render()
 		else
 			animations[ENEMY_BAT_ANI_FLY]->RenderTrend(x, y, nx);
 		//DebugOut(L"Render black knight\n");
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

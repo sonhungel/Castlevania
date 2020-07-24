@@ -71,6 +71,9 @@
 
 #define TRANSITION_TIME		500
 
+#define SIMON_DISAPPEAR_TIME	5000
+
+
 #define TIME_FOR_ONE_STEP	200	// thời gian 2 frame
 
 #define ID_SUB_WEAPON_IN_SIMON_KNIFE		0
@@ -91,6 +94,8 @@ class CSimon : public CGameObject
 
 	DWORD attack_start;
 	DWORD attack_start_temp;
+
+	DWORD start_disappear;	// dùng cho khi ăn item vase
 
 	CWhip* whip;
 
@@ -188,6 +193,8 @@ public:
 			return true; 
 		return false; 
 	}
+
+	void SetSimonDisappear() { start_disappear = GetTickCount(); }
 
 	// function for score, bla bla.....
 	int GetScore() { return _score; }

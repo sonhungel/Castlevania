@@ -190,14 +190,14 @@ void CSkeleton::Render()
 	for (UINT i = 0;i < listBone.size();i++)
 	{
 		listBone.at(i)->Render();
-		DebugOut(L"so luong bone trong List :%d\n",(int)listBone.size());
+		//DebugOut(L"so luong bone trong List :%d\n",(int)listBone.size());
 	}
 
 	if (blood > 1 && animations.size() > 0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
 		//DebugOut(L"Render black knight\n");
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

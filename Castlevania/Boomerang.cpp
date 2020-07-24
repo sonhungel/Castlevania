@@ -86,7 +86,7 @@ void CBoomerang::Render()
 	{
 		if (animations.size() > 0)
 			animations[0]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 }
 

@@ -58,7 +58,7 @@ void CWhip::Render()
 	animation = animations[_level - 1];	
 	animation->RenderTrend(x, y, nx);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

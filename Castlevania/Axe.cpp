@@ -58,7 +58,7 @@ void CAxe::Render()
 	{
 		animations[0]->RenderTrend(x, y, nx);
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)

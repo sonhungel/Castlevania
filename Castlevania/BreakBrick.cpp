@@ -54,7 +54,7 @@ void CBreakBrick::Render()
 	{
 		if (animations.size() > 0 && blood > 1)
 			animations[0]->Render(x, y);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else 
 	{

@@ -91,8 +91,8 @@ void CTorch::Render()
 {
 	if (state == STATE_TORCH_EXIST)
 	{
-		animations[0]->Render(x, y);
-		
+		if(animations.size()>0)
+			animations[0]->Render(x, y);
 	}
 	else if(effectDie!=NULL)
 	{

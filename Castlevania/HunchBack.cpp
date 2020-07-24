@@ -146,7 +146,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//DebugOut(L"Vi tri HUNCHBACK : %d, %d\n", (int)this->x, (int)this->y);
 	//DebugOut(L"Vx, Vy HUNCHBACK : %d, %d\n", (int)this->vx, (int)this->vy);
-	DebugOut(L"state HUNCHBACK : %d\n", (int)this->state);
+	//DebugOut(L"state HUNCHBACK : %d\n", (int)this->state);
 	game = NULL;
 }
 
@@ -158,7 +158,7 @@ void CHunchBack::Render()
 			animations[ENEMY_HUNCHBACK_ANI_JUMP]->RenderTrend(x, y, nx);
 		else if (stateTemp == STATE_ENEMY_HUNCHBACK_WAIT|| stateTemp == STATE_ENEMY_HUNCHBACK_WALK)
 			animations[ENEMY_HUNCHBACK_ANI_WAIT]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

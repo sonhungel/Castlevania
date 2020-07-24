@@ -117,7 +117,7 @@ void CZombie::Render()
 	{
 		animations[0]->RenderTrend(x, y, nx);
 		//DebugOut(L"Render black knight\n");
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

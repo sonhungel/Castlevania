@@ -40,6 +40,7 @@ CSimon::CSimon()
 
 	untouchable_start = 0;
 	trans_start = 0;
+	start_disappear = 0;
 
 	subWeapon = eType::WEAPON_AXE;
 
@@ -102,6 +103,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			trans_start = 0;
 		}
 	}
+	if (start_disappear > 0)
+	{
+		if (GetTickCount() - start_disappear > SIMON_DISAPPEAR_TIME)
+		{
+			start_disappear = 0;
+		}
+	}
+
 	if (isAutoGo)
 	{
 		CalculateAutoGo();
@@ -147,7 +156,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		return;
 	}
-
 	else 
 	{ 
 		if (CBoss::IsActive())
@@ -294,7 +302,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		listCoObjectforSubWeapon.clear();
 
-		CollisionWithEnemy(dt, listEnemy);
+		if(start_disappear==0)
+			CollisionWithEnemy(dt, listEnemy);
 		
 
 		// reset untouchable timer if untouchable time has passed
@@ -313,9 +322,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			//state = STATE_SIMON_IDLE;
 		}
 
-		if (blood <= 0)
+		if (blood <= 0 || this->y > SCREEN_HEIGHT)
+		{
 			state = STATE_SIMON_DIE;
-		
+			vy = 0;
+			vx = 0;
+		}
 	
 		// Collsion
 #pragma region collsion
@@ -391,7 +403,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	
 	//DebugOut(L"Vi tri simon : %d, %d\n",(int)this->x,(int)this->y); 
-	//DebugOut(L"Vi tri Y simon : %d\n",(int)this->y); 
+	//DebugOut(L"VY simon : %f\n",this->vy); 
 
 	//float l1, t1, r1, b1;
 	// Get bounding box of whip
@@ -525,9 +537,14 @@ void CSimon::Render()
 	int alpha = 255;
 	//if (untouchable) alpha = 128;
 	if (untouchable==true && (GetTickCount() - untouchable_start > SIMON_HURT_TIME)) alpha = 150;
+
+	if (start_disappear > 0)
+	{
+		alpha = (GetTickCount() - start_disappear) / 1000 * 50;
+	}
 	animations[ani]->RenderTrend(x, y, nx,alpha);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	//DebugOut(L" ANI_ID simon : %d\n", ani);
 	
@@ -763,10 +780,9 @@ void CSimon::CollisionWithItem( vector<LPGAMEOBJECT>& listObj)
 				isKillAllEnemy = true;
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
-			else if (listObj.at(i)->getType() == eType::ITEM_VASE)	// hoàn thiện sau
+			else if (listObj.at(i)->getType() == eType::ITEM_VASE)
 			{
-				//untouchable = true;
-				//untouchable_start = GetTickCount();
+				start_disappear = GetTickCount();
 				listObj.at(i)->SetState(STATE_ITEM_NOT_EXSIST);
 			}
 			else if (listObj.at(i)->getType() == eType::ITEM_II)

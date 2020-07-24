@@ -473,6 +473,29 @@ void CPlayScene::Update(DWORD dt)
 	//DebugOut(L"Cam pos : %f\n", cx);
 	HUD->Update(dt);
 
+	if (HUD->GetTime() == 0)
+	{
+		simon->blood = 0;
+	}
+
+	if (simon != NULL && start_reload == 0)
+	{
+		if (simon->GetState() == STATE_SIMON_DIE)
+			start_reload = GetTickCount();
+	}
+	else//if (start_reload > 0)
+	{
+		if (GetTickCount() - start_reload > TIME_RELOAD)
+		{
+			CGame::GetInstance()->tagSwitchScene = CGame::GetInstance()->GetIDCurrentScene();
+			simon->blood = MAX_BLOOD;
+			simon->SetState(STATE_SIMON_IDLE);
+			simon->isSimonOnAir = false;
+			start_reload = 0;
+			HUD->SetTime(TIME_MAX);
+		}
+	}
+
 	if (CGame::GetInstance()->tagSwitchScene != -1)
 	{
 		CGame::GetInstance()->SwitchScene(CGame::GetInstance()->tagSwitchScene);
@@ -567,6 +590,8 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
+	if (simon->GetState() == STATE_SIMON_DIE)
+		return;
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	if (simon->IsAttacking())
 		return;
@@ -594,12 +619,16 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	CSimon* simon = CSimon::GetInstance();
 	CGame* game = CGame::GetInstance();
 	CBoard* HUD = CBoard::GetInstance();
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
+	if (simon->GetState() == STATE_SIMON_DIE)
+		return;
 	//if (simon->isSimonOnAir)
 		//return;
 	//if (simon->GetState()==STATE_SIMON_SIT_ATTACK)
 		//return;
+	
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
 	if (simon->IsAttacking())
 		return;
 
@@ -634,6 +663,15 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_D:
 		simon->isKillAllEnemy = true;
+		break;
+	case DIK_F:
+		simon->blood = MAX_BLOOD;
+		break;
+	case DIK_G:
+		simon->blood = 0;
+		break;
+	case DIK_E:
+		simon->SetSimonDisappear();
 		break;
 	case DIK_Z:
 	{
@@ -721,6 +759,9 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CSimon* simon = CSimon::GetInstance();
+
+	if (simon->GetState() == STATE_SIMON_DIE)
+		return;
 
 	if (simon->isSimonOnAir == true||simon->IsAttacking())
 		return;

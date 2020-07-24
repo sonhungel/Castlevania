@@ -115,7 +115,7 @@ void CHollyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isBroke = false;
 			}
 		}
-		DebugOut(L"VY của HollyWater :%f\n", this->vy);
+	//	DebugOut(L"VY của HollyWater :%f\n", this->vy);
 	}
 }
 
@@ -130,7 +130,7 @@ void CHollyWater::Render()
 		else if (animations.size() > 0)
 		{
 			animations[0]->RenderTrend(x, y, nx);
-			RenderBoundingBox();
+			//RenderBoundingBox();
 		}
 	}
 }

@@ -93,7 +93,7 @@ void CGhost::Render()
 	if (blood > 1 && animations.size() > 0)
 	{
 		animations[0]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{

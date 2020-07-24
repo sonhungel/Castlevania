@@ -155,7 +155,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	//DebugOut(L"Vi tri BOSS x,y :%f, %f\n",x,y);
-	DebugOut(L"STATE BOSS : %d\n", (int)state);
+	//DebugOut(L"STATE BOSS : %d\n", (int)state);
 }
 
 void CBoss::Render()
@@ -166,7 +166,7 @@ void CBoss::Render()
 			animations[BOSS_ANI_SLEEPING]->RenderTrend(x, y, nx);
 		else 
 			animations[BOSS_ANI_FLYING]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else if (effectDie != NULL)
 	{
@@ -264,7 +264,7 @@ void CBoss::RandomNewPosition()
 
 	srand(time(NULL));
 	position0.x = rand() % (SCREEN_WIDTH - BOSS_WIDTH-80) + xCam;
-	position0.y = rand() % (SCREEN_HEIGHT - 160) + 40;
+	position0.y = rand() % (SCREEN_HEIGHT - 180) + 40;
 }
 
 D3DXVECTOR2 CBoss::Rada(D3DXVECTOR2 boss, D3DXVECTOR2 target, float speedOfRaven)

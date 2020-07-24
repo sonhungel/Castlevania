@@ -21,7 +21,7 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CollisionWithObject(dt, *coObjects);
 
 	}
-	DebugOut(L"Vi tri Knife :%f,%f\n", this->x, this->y);
+	//DebugOut(L"Vi tri Knife :%f,%f\n", this->x, this->y);
 }
 
 void CKnife::Render()
@@ -30,7 +30,7 @@ void CKnife::Render()
 	{
 		animations[0]->RenderTrend(x, y, nx);
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 

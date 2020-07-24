@@ -22,15 +22,21 @@ void CEnemyZone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if(GetTickCount()-timeCreateEnemy>TIME_CREATE_ZOMBIE)
 				{
 					timeCreateEnemy = 0;
+					srand((unsigned)time(0));
+					int item_type = rand() % 9 + 51;
+
 					int sign = rand() & 1 ? -1 : 1;	// random -1, +1
 					if (sign == 1)
 					{
-						LPGAMEOBJECT obj = new CZombie(x_leftCreateZombie-ENEMY_ZOMBIE_WIDTH, CSimon::GetInstance()->y-20, eType::ITEM_SMALLHEART, sign);
+						
+						//int item_type = rand() % 58 + 51;
+						LPGAMEOBJECT obj = new CZombie(x_leftCreateZombie-ENEMY_ZOMBIE_WIDTH, CSimon::GetInstance()->y-20, item_type, sign);
 						listEnemy.push_back(obj);
 					}
 					else
 					{
-						LPGAMEOBJECT obj = new CZombie(x_rightCreateZombie, CSimon::GetInstance()->y-20, eType::ITEM_HEARTBIG, sign);
+						//srand((unsigned)time(0));
+						LPGAMEOBJECT obj = new CZombie(x_rightCreateZombie, CSimon::GetInstance()->y-20, item_type, sign);
 						listEnemy.push_back(obj);
 					}
 				}

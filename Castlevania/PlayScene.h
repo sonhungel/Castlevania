@@ -16,6 +16,9 @@
 #include"EnemyZone.h"
 
 #define TIME_KILL_ALL_ENEMY 1000
+#define TIME_RELOAD			1500
+
+#define TIME_MAX		300
 
 
 class CPlayScene:public CScene
@@ -30,6 +33,8 @@ protected:
 	CGrid* grid;
 
 	DWORD start_killAllEnemy;
+
+	DWORD start_reload;
 
 	//vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render

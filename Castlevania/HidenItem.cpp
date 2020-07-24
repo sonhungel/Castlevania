@@ -11,6 +11,7 @@ void CHidenItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y -= 0.1f * dt;
 	}
 
+	/*
 	if (isStartShowHiden == false)
 	{
 		DebugOut(L"FALSE show hiden\n");
@@ -18,7 +19,7 @@ void CHidenItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		DebugOut(L"TRUE show hiden\n");
-	}
+	}*/
 }
 
 void CHidenItem::Render()

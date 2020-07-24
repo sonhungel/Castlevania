@@ -90,8 +90,8 @@ void CCandle::Render()
 {
 	if (state == STATE_CANDLE_EXIST)
 	{
-		animations[0]->Render(x, y);
-
+		if(animations.size()>0)
+			animations[0]->Render(x, y);
 	}
 	else if (effectDie != NULL)
 	{
