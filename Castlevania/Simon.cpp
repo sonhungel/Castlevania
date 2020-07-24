@@ -255,7 +255,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			y += dy;
 		}
 
-		if (listHideObject.size() > 0 &&!isSimonOnAir)//&& isSimonOnGround)// dùng để bắt đầu thang, còn việc phát hiện va chạm swept AABB là để kết thúc thang
+		if (listHideObject.size() > 0 &&!isSimonOnAir&& isSimonOnGround)// dùng để bắt đầu thang, còn việc phát hiện va chạm swept AABB là để kết thúc thang
 		{
 			IsCanOnStair(listHideObject);
 		}
@@ -1470,6 +1470,7 @@ void CSimon::LoadSubWeapon(int subwp)
 	}
 	break;
 	}
+	_heart--;
 	if(subWeapon!=NULL)
 		listSubWeapon.push_back(subWeapon);
 }

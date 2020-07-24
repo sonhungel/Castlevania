@@ -767,7 +767,8 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 		return;
 	
 
-	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true && !simon->IsBeingOnStair())
+	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true 
+			&& !simon->IsBeingOnStair()&& simon->GetHeart()>0)
 	{
 		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
 		simon->isUseSubWeapon += 1;
