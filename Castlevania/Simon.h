@@ -58,6 +58,7 @@
 
 #define SIMON_HEIGHT_STAND			62
 #define SIMON_HEIGHT_SIT			47
+#define SIMON_HEIGHT_ON_STAIR		52
 #define SIMON_WIDTH					33
 
 #define SIMON_HEIGHT_DIE			33
@@ -120,7 +121,7 @@ class CSimon : public CGameObject
 	int _heart;
 	int _live;
 
-	int subWeapon;
+	
 
 	bool isSimonOnGround;
 
@@ -134,9 +135,13 @@ public:
 
 	bool isCanAttack;
 
+	int subWeapon;
+
 	int isUseSubWeapon;
 
 	bool isKillAllEnemy;
+
+	bool is_freeze_enemy;
 
 	int auto_x;
 
@@ -182,6 +187,8 @@ public:
 			isSimonOnAir = false;
 	}
 
+	bool GetIsAutoGo() { return isAutoGo; }
+
 	bool IsBeingOnStair() { return isBeingOnStair; } 
 	int GetStairTrend() { return _stairTrend; }
 	int GetIsCanOnStair() { return isCanOnStair; }
@@ -200,6 +207,7 @@ public:
 	int GetScore() { return _score; }
 	int GetHeart() { return _heart; }
 	int GetLive() { return _live; }
+	void PlusHeart() { _heart += 5; }
 
 	int GetWeapon() { return subWeapon; }
 	void SetWeapon(int wp) { subWeapon = wp; }

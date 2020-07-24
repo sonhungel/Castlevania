@@ -123,9 +123,9 @@ void CBoard::ChangeWeapon()
 	case eType::WEAPON_BOOMERANG:
 		simon->SetWeapon(eType::WEAPON_CLOCK);
 		break;
-	//case eType::WEAPON_CLOCK:
-		//simon->SetWeapon(eType::WEAPON_KNIFE);
-		//break;
+	case eType::WEAPON_CLOCK:
+		simon->SetWeapon(eType::WEAPON_KNIFE);
+		break;
 	default:
 		break;
 	}

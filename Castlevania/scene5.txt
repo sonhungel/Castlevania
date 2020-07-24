@@ -84,10 +84,10 @@
 # type	x	y	gr_row	gr_col	width	height	state	trendX	trendY
 # 1: stairAbove	2:stair below
 # stair đôi
-3	85	330	0	0	17	20	3	1	1
+3	95	330	0	0	17	7	3	1	1
 # stair 2
 #3	115	380	0	0	15	2	2	1	-1
-3	230	195	0	0	50	10	1	-1	1
+3	260	195	0	0	20	10	1	1	-1
 # stair 3
 3	740	390	0	2	30	5	2	1	-1
 3	810	259	0	3	45	10	1	-1	1

@@ -447,9 +447,12 @@ void CPlayScene::Update(DWORD dt)
 
 	GetEnemyOnScreen(coObjects);
 
-	for (size_t i = 0; i < coObjects.size(); i++)
+	if (start_freeze == 0)
 	{
-		coObjects[i]->Update(dt, &coObjects);
+		for (size_t i = 0; i < coObjects.size(); i++)
+		{
+			coObjects[i]->Update(dt, &coObjects);
+		}
 	}
 
 	// những enemy khác zombie được ghét từ trong này
@@ -495,6 +498,22 @@ void CPlayScene::Update(DWORD dt)
 			HUD->SetTime(TIME_MAX);
 		}
 	}
+
+	// freeze	- item clock
+	if (simon->is_freeze_enemy == true)
+	{
+		start_freeze = GetTickCount();
+		simon->is_freeze_enemy = false;
+	}
+	if (start_freeze > 0)
+	{
+		if (GetTickCount() - start_freeze > TIME_FREEZE_ENEMY)
+		{
+			start_freeze = 0;
+		}
+	}
+
+	// Cross
 
 	if (CGame::GetInstance()->tagSwitchScene != -1)
 	{
@@ -622,6 +641,8 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 
 	if (simon->GetState() == STATE_SIMON_DIE)
 		return;
+	if (simon->GetIsAutoGo())
+		return;
 	//if (simon->isSimonOnAir)
 		//return;
 	//if (simon->GetState()==STATE_SIMON_SIT_ATTACK)
@@ -661,17 +682,23 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		HUD->SetBossDeadth();
 		break;
-	case DIK_D:
+	case DIK_S:
 		simon->isKillAllEnemy = true;
 		break;
 	case DIK_F:
 		simon->blood = MAX_BLOOD;
 		break;
-	case DIK_G:
+	case DIK_D:
 		simon->blood = 0;
+		break;
+	case DIK_R:
+		simon->is_freeze_enemy = true;
 		break;
 	case DIK_E:
 		simon->SetSimonDisappear();
+		break;
+	case DIK_C:
+		simon->PlusHeart();
 		break;
 	case DIK_Z:
 	{
@@ -762,16 +789,25 @@ void CPlaySceneKeyHandler::KeyState(BYTE* states)
 
 	if (simon->GetState() == STATE_SIMON_DIE)
 		return;
-
+	if (simon->GetIsAutoGo())
+		return;
 	if (simon->isSimonOnAir == true||simon->IsAttacking())
 		return;
 	
 
 	if (game->IsKeyDown(DIK_Z) && game->IsKeyDown(DIK_UP) && simon->isCanAttack == true 
-			&& !simon->IsBeingOnStair()&& simon->GetHeart()>0)
+			&& !simon->IsBeingOnStair()&& simon->GetHeart()>0&&simon->subWeapon!=0)
 	{
-		simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
-		simon->isUseSubWeapon += 1;
+		if (simon->subWeapon != eType::WEAPON_CLOCK)
+		{
+			simon->SetState(STATE_SIMON_ATTACK_SUBWEAPON);
+			simon->isUseSubWeapon += 1;
+		}
+		else
+		{
+			simon->is_freeze_enemy = true;
+			simon->subWeapon = 0;
+		}
 	}
 	else if (game->IsKeyDown(DIK_X) && simon->GetState() != STATE_SIMON_SIT&&simon->IsBeingOnStair()==false)
 		simon->SetState(STATE_SIMON_JUMP);

@@ -46,7 +46,7 @@ public:
 		}
 		else if (state == HIDENOBJECT_TYPE_SPECIAL)
 		{
-			_autoX = (int)x + 5;
+			_autoX = (int)x;
 		}
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

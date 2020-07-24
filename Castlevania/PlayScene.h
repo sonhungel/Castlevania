@@ -17,6 +17,7 @@
 
 #define TIME_KILL_ALL_ENEMY 1000
 #define TIME_RELOAD			1500
+#define TIME_FREEZE_ENEMY	2000
 
 #define TIME_MAX		300
 
@@ -35,6 +36,8 @@ protected:
 	DWORD start_killAllEnemy;
 
 	DWORD start_reload;
+
+	DWORD start_freeze;
 
 	//vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // dùng cho việc xử lý va chạm và render

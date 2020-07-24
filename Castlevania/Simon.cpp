@@ -42,7 +42,7 @@ CSimon::CSimon()
 	trans_start = 0;
 	start_disappear = 0;
 
-	subWeapon = eType::WEAPON_AXE;
+	subWeapon = 0;//eType::WEAPON_AXE;
 
 	isBeingOnStair = false;
 	isCanOnStair = 0;
@@ -54,13 +54,14 @@ CSimon::CSimon()
 	idScene_next = 2;
 
 	this->blood = MAX_BLOOD;
-	_heart = 0;
+	_heart = 10;
 	_score = 0;
 	_live = 5;
 
 	isCanAttack = true;
 
 	isKillAllEnemy = false;
+	is_freeze_enemy = false;
 }
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -278,7 +279,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			if (isUseSubWeapon == 1)
 			{
-				if (subWeapon != -1)
+				if (subWeapon != 0)
 				{
 					LoadSubWeapon(subWeapon);
 					isUseSubWeapon = 0;
@@ -485,7 +486,7 @@ void CSimon::Render()
 	}
 	else if (state == STATE_SIMON_ATTACK_SUBWEAPON)
 	{
-		if (subWeapon!=-1)
+		if (subWeapon!=0)
 			ani = ANI_SIMON_STANDING_ATTACKING;
 	}
 	else if (trans_start > 0) {
@@ -1347,6 +1348,10 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		//if(state!=STATE_SIMON_UP)
 			bottom = this->y + SIMON_HEIGHT_SIT;
 	}
+	if (isBeingOnStair == true)
+	{
+		bottom = this->y+SIMON_HEIGHT_ON_STAIR;
+	}
 
 }
 
@@ -1406,12 +1411,13 @@ void CSimon::IsCanOnStair(vector<LPGAMEOBJECT>& listObj)
 					{
 						_stairTrend = 1;
 						isCanOnStair = -1;
-						auto_x = hidenObj->GetAutoX() + 5;
+						auto_x = hidenObj->GetAutoX(); //+5;
 					}
 					if (isGoUp)
 					{
 						_stairTrend = -1;
 						isCanOnStair = 1;
+						auto_x = hidenObj->GetAutoX(); //+5;
 					}
 					return;
 				}
