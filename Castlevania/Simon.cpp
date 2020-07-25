@@ -69,7 +69,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	if (attack_start > 0)
 	{
-		if (GetTickCount() - attack_start >=300)
+		if (GetTickCount() - attack_start >=ATTACK_TIME)
 		{
 			attack_start = 0;
 			animations[ANI_SIMON_STANDING_ATTACKING]->ResetFrame();

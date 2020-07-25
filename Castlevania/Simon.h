@@ -67,7 +67,7 @@
 #define SIMON_UNTOUCHABLE_TIME		2500
 #define SIMON_HURT_TIME			300		// thười gian đo để ani_simon hurt
 
-#define ATTACK_TIME			300
+#define ATTACK_TIME			320
 #define ATTACK_TIME_WAIT	1000
 
 #define TRANSITION_TIME		500

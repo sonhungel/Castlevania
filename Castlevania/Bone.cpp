@@ -23,7 +23,7 @@ void CBone::Render()
 	if (this->blood > 0 )
 	{
 		animations[0]->RenderTrend(x, y, nx);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 }
 
