@@ -9,7 +9,9 @@ IDE: Visual studio.
 Game have three main part:
 
 Process Input: All event from input can be process .
+
 Update: Update all Object (Simon,Weapon ,Hiden Object, Enemy, Item,...) - position, collision, state.
+
 Render: Visualize graphic to screen.
 
 This project has 6 scene, and use scene reload mechanism. 
